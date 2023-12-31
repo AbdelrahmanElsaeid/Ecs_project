@@ -1,0 +1,376 @@
+{% extends 'shell.html' %}
+{% load compress i18n static widget_tweaks %}
+{% load communication %} 
+{% load core %}
+{% load alert %}
+{% load scratchpad %}
+{% load userswitcher %}
+{% load userutils %}
+{% load static %}
+{% load version_tag %} 
+{% block head %}
+
+
+        <!-- Add these lines to your HTML template -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        {% comment %} <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+       {% endcomment %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/core.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/forms.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/diff.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/meetings.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/communication.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/administration.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/boilerplate.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/signature.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/tags.css' %}" />
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" />
+
+        {% comment %} <link rel="stylesheet" type="text/css" href="{% static '3rd-party/select2-4.0.3/select2.min.css' %}" /> {% endcomment %}
+        <link href="{% static '3rd-party/select2/dist/css/select2.min.css' %}" rel="stylesheet" />
+        <script src="{% static '3rd-party/select2/dist/js/select2.min.js' %}"></script> 
+
+
+        
+{% endblock %}
+
+{% block htmlbody %}
+<div class="content-container">
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+        <button class="navbar-toggler navbar-toggler-right" data-toggle="collapse" data-target="#navbarcontent" title="Toggle Navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>        
+        <a class="navbar-brand" href="{% url 'dashboard:view_dashboard' %}">
+            <img src="{% url 'core:logo' %}" alt="Logo"/>
+        </a>
+        <div class="collapse navbar-collapse flex-column" id="navbarcontent">
+            <div class="d-flex flex-column flex-lg-row">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item">
+                        <a href="{% url 'dashboard:view_dashboard' %}" class="nav-link text-primary">
+                            {% trans "Dashboard" %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-primary" href="{% url 'communication:list_threads' %}">
+                         
+                            {% trans "Communication" %}
+                            {% if unread_msg_count %}
+                                <strong>({{ unread_msg_count }})</strong>
+                            {% endif %}
+                        </a>
+                    </li>
+                    {% if user.profile.show_task_widget %}
+                        <li class="nav-item">
+                            <a class="nav-link text-primary" href="{% url 'tasksv:task_list' %}">
+                                {% trans "Tasks" %}
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item dropdown">
+                        <a id="studiesMenu" class="nav-link text-primary dropdown-toggle" data-toggle="dropdown" href="#">
+                            {% trans "Studies" %}
+                        </a>
+                        <div class="dropdown-menu">
+                            {% if user.profile.is_internal %}
+                                <a class="dropdown-item" href="{% url 'core:all_submissions' %}">
+                                    {% trans "All Studies" %}
+                                </a>
+                            {% endif %}
+                            {% if user or has_assigned_submissions %}
+                                <a class="dropdown-item" href="{% url 'core:assigned-submissions' %}"> 
+                                    {% trans "Assigned Studies" %}
+                                </a>
+                            {% endif %}
+                            {% if user|has_submissions %} 
+                                    <a class="dropdown-item" href="{% url 'core:my_submissions' %}">    
+                                    {% trans "My Studies" %}
+                                </a>
+                            {% endif %} 
+                                <a class="dropdown-item" href="{% url 'core:create_submission_form' %}">
+                                {% trans "New Submission" %}
+                            </a>
+                            <a class="dropdown-item" href="{% url 'core:import_submission_form' %}">
+                                {% trans "Import" %}
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'notifications:open_notifications' %}">
+                                {% trans 'Open Notifications' %}
+                            </a>
+                            <a class="dropdown-item" href="{% url 'notifications:select_notification_creation_type' %}">
+                                {% trans 'New Notification' %}
+                            </a>
+                        </div>
+                    </li>
+                    {% if user.profile.is_internal or user.profile.is_board_member or user.profile.is_resident_member or user.profile.is_omniscient_member %}
+                        <li class="nav-item dropdown">
+                            <a id="meetingsMenu" class="nav-link dropdown-toggle text-primary" data-toggle="dropdown" href="#">
+                                {% trans "Meetings" %}
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{% url 'meetings:next' %}">
+                                    {% trans "Next Meeting" %}
+                                </a>
+                                {% if user.profile.is_internal or user.profile.is_resident_member or user.profile.is_omniscient_member %}
+                                    <a class="dropdown-item" href="{% url 'meetings:upcoming_meetings' %}">
+                                        {% trans "Upcoming Meetings" %}
+                                    </a>
+                                {% endif %}
+                                {% if user.profile.is_internal %}
+                                    <a class="dropdown-item" href="{% url 'meetings:past_meetings' %}">
+                                        {% trans "Past Meetings" %}
+                                    </a>
+                                {% endif %}
+                                {% if user|is_member_of:"EC-Office" %}
+                                    <a class="dropdown-item" href="{% url 'meetings:create_meeting' %}">
+                                        {% trans "New Meeting" %}
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </li>
+                    {% endif %}
+                </ul>
+                <ul class="nav navbar-nav ml-lg-auto mr-1">
+                    <li class="nav-item">
+                        <a href="{% static 'help/index.html' %}" target="_blank" class="nav-link py-0 fa fa-question-circle-o fa-2x text-primary" title="{% trans "Click here to get help." %}"></a>
+                    </li>
+                    <li class="nav-item">
+                        {% get_scratchpad as scratchpad %}
+                        <a href="{% url 'scratchpad:popup' %}{% if submission %}?submission={{ submission.pk }}{% endif %}" class="nav-link py-0 scratchpad fa fa-sticky-note{% if not scratchpad or scratchpad.is_empty %}-o{% endif %} fa-2x text-primary" title="{% if submission %}{% blocktrans with submission|ec_number as ec_number %}Show my scratchpad for submission {{ ec_number }}{% endblocktrans %}{% else %}{% trans "Show my scratchpad" %}{% endif %}"></a>
+                    </li>
+                    {% if user.profile.is_internal %}
+                        <li class="nav-item dropdown">
+                            <a id="adminMenu" class="nav-link dropdown-toggle py-0 text-primary" data-toggle="dropdown" href="#" title="{% trans "Administration" %}">
+                                <span class="fa fa-cog fa-2x text-primary py-0"></span>
+                            </a>
+                            <div class="dropdown-menu">
+                                {% if user|is_member_of:"EC-Office" or user|is_member_of:"EC-Executive" %}
+                                    <a class="dropdown-item" href="{% url 'users:administration' %}">
+                                        {% trans "User Administration" %}
+                                    </a>
+                                    <a class="dropdown-item" href="{% url 'billing:submission_billing' %}">
+                                        {% trans "Accounting of fees" %}
+                                    </a>
+                                    <a class="dropdown-item" href="{% url 'billing:external_review_payment' %}">
+                                        Gutachter Bezahlung
+                                    </a>
+                                    <a class="dropdown-item" href="{% url 'core:advanced_settings' %}">
+                                        {% trans 'Advanced Settings' %}
+                                    </a>
+                                {% endif %}
+                                <a class="dropdown-item" href="{% url 'statistic:stats' %}">
+                                    {% trans 'Statistics' %}
+                                </a>
+                                <a class="dropdown-item" href="{% url 'boilerplate:list_boilerplate' %}">
+                                    {% trans 'Boilerplates' %}
+                                </a>
+                                <a class="dropdown-item" href="{% url 'pki:cert_list' %}">
+                                    {% trans 'PKI' %}
+                                </a>
+                                <a class="dropdown-item" href="{% url 'tags:index' %}">
+                                    {% trans "Tags" %}
+                                </a>
+                            </div>
+                        </li>
+                    {% endif %}
+                     <li class="dropdown nav-item">
+                        <a href="#" id="userMenu" class="nav-link py-0 dropdown-toggle text-primary" data-toggle="dropdown" title="{% trans "User" %}">
+                            <span class="fa fa-user fa-2x text-primary"></span>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'users:profile' %}">
+                                {{ user }}
+                            </a>
+                            <a class="dropdown-item" href="/accounts/logout">
+                                Logout
+                            </a>
+                        </div>
+                    </li> 
+                
+                    {% comment %} <li class="nav-item dropdown" id="user_dropdown">
+                        <a class="nav-link dropdown-toggle text-primary" href="#" id="userMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fa fa-user fa-2x text-primary"></span>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="userMenu">
+                            <a class="dropdown-item" href="{% url 'users:profile' %}">{{ user }}</a>
+                            <a class="dropdown-item" href="/accounts/logout">Logout</a>
+                        </div>
+                    </li> {% endcomment %}
+                </ul>
+                <form class="form-inline" action="{% url 'core:all_submissions' %}" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="keyword" value="{% block quicksearch_keyword %}{% endblock %}" placeholder="Suche">
+                        <span class="input-group-btn">
+                            <button class="btn btn-outline-success" type="submit" title="{% trans 'Search' %}"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+            <div class="clearfix">
+                {% userswitcher %}
+                <small class="float-right">
+                    {% if user.profile.is_internal %}
+                        {% comment %} {% get_breadcrumbs as crumbs %} {% endcomment %}
+                        {% if get_breadcrumbs %}
+                            {% for submission in crumbs %}
+                                <a class="mr-1" href="{% url 'core:view_submission' submission_pk=submission.pk %}">
+                                    {{ submission|ec_number }}
+                                </a>
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                    {% current_version %} 
+                </small>
+            </div>
+        </div>
+    </nav>
+
+    <div id="header" class="bg-faded px-3 pb-3 pt-1">
+        <h1 id="headertitle" class="text-truncate m-0" tabindex="-1">
+            {% block headertitle %}{% endblock %}
+        </h1>
+
+        {% if request.task_management.form %} 
+
+            {% include 'tasks/manage_task.html' with form=request.task_management.form %}
+        {% endif %}
+    </div>
+
+    <div class="bg-faded px-3">
+        {% block headernav %}
+            {% if user.profile.is_indisposed %}
+            <div>
+              {% url 'users:profile' as profile_url %}
+              {% blocktrans trimmed %}
+                  You are currently marked indisposed. To reclaim your tasks,
+                  please visit your <a href="{{ profile_url }}">profile</a>.
+              {% endblocktrans %}
+            </div>
+            {% endif %}
+        {% endblock %}
+    </div>
+
+    <div id="content" class="container-fluid my-3">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.level|level2alert }} alert-dismissible text-center">
+                <button type="button" class="close" data-dismiss="alert">
+                    <span>&times;</span>
+                </button>
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</div>
+
+
+
+<div id="scratchpad"></div>
+{% endblock %}
+
+{% block jsbottom %}
+    {{ block.super }} 
+      
+        <script src="{% static 'js/__init__.js' %}"></script>
+        <script src="{% static 'js/TabController.js' %}"></script>
+        <script src="{% static 'js/TabbedForm.js' %}"></script>
+        <script src="{% static 'js/InlineFormset.js' %}"></script>
+        <script src="{% static 'js/fieldhistory.js' %}"></script>
+        <script src="{% static 'js/textarea.js' %}"></script>
+        <script src="{% static 'js/textarea.toolbarItems.js' %}"></script>
+        <script type="module" src="{% static 'js/utils.js' %}"></script>
+        <script type="module" src="{% static 'js/widgets.js' %}"></script>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/utils.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/widgets.js' %}"></script>
+
+      
+        <script src="{% static 'js/tasks.js' %}"></script>
+        <script src="{% static 'js/communication.js' %}"></script>
+
+         <!-- Include jQuery library -->
+         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+         <!-- Include the Select2 JS -->
+ 
+         <script src="{% static 'js/tasks.js' %}"></script>
+         <script src="{% static 'js/communication.js' %}"></script>
+ 
+         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+ 
+ <!-- Select2 -->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+ 
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"></script>
+
+ <script type="text/javascript" src="{% static '3rd-party/select2-4.0.3/select2.min.js' %}"></script>
+ <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+ 
+        <script type="text/javascript">
+            //$(function(){
+                $(document).ready(function() {
+                    console.log("Document ready");
+
+    // Check if jQuery is working
+    console.log(jQuery.fn.jquery);
+
+    // Check if Select2 is loaded
+    console.log($.fn.select2);
+                var selected = '{% block menuSelection %}dashboard{% endblock %}';
+                $('#usermenu .nav-link.' + selected).addClass('active');
+                console.log("helooooooo")
+    
+                {% if request.task_management.form %}
+                    ecs.init_task_form();
+                {% endif %}
+    
+                $('#userswitcher_input').select2({placeholder: null});
+    
+                var scratchpad = $('#scratchpad');
+    
+                $(document).on('click', 'a.scratchpad', function(ev) {
+                    ev.preventDefault();
+    
+                    if (scratchpad.is(':visible')) {
+                        var form = scratchpad.find('form');
+                        if (form.length)
+                            $.post(form.attr('action'), form.serialize());
+    
+                        scratchpad.hide();
+                        scratchpad.html('');
+                        return;
+                    }
+    
+                    scratchpad.css('display', 'flex');
+                    scratchpad.load($(this).attr('href'));
+                });
+    
+                $(window).on('beforeunload', function() {
+                    if (scratchpad.is(':visible')) {
+                        var form = scratchpad.find('form');
+                        if (form.length)
+                            $.post(form.attr('action'), form.serialize());
+                    }
+                });
+    
+                $.fn.select2.defaults.set('placeholder', '\u2026');
+                $.fn.select2.defaults.set('dropdownAutoWidth', true);
+            });
+        </script>
+{% endblock %}

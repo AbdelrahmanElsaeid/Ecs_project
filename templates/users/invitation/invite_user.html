@@ -1,0 +1,44 @@
+{% extends 'administration/detail.html' %}
+{% load i18n %}
+{% block htmltitle %}{% trans "Invite User" %} | {{ block.super }}{% endblock %}
+
+{% block administration_detail %}
+<h2>{% trans "Invite User" %}</h2>
+
+<form action="" method="post">
+    {% csrf_token %}
+    {% for field in form %}
+        {% include "bootstrap/form_field.html" with inline=True %}
+    {% endfor %}
+    <div class="my-4">
+        <input class="btn btn-primary" type="submit" value="{% trans "Invite" %}" />
+    </div>
+</form>
+{% endblock %}
+
+{% block jsbottom %}
+    {{ block.super }}
+
+    <script type="text/javascript">
+        $(function(){
+            new ecs.textarea.TextArea('#id_invitation_text', [
+                ecs.textarea.toolbarItems.boilerplate(
+                    "{% trans 'Insert Boilerplate' %}",
+                    "{% url 'boilerplate:select_boilerplate' %}"
+                )
+            ]);
+
+            $(
+                '#{{ form.groups.id_for_label }}, ' +
+                '#{{ form.task_types.id_for_label}}, ' +
+                '#{{ form.medical_categories.id_for_label }}'
+            ).each(function() {
+                var input = $(this);
+                input.select2({
+                    width: '100%',
+                    dropdownParent: input.parent(),
+                });
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'public.html' %}
+{% load core static %}
+
+{% block content %}
+<div class="text-center">
+    <a href="/">
+        <img class="logo mb-3" src="{% url 'core:logo' %}" alt="Logo"/>
+    </a>
+    <h1>Fehler 403</h1>
+    <h2>Zugriff verweigert!</h2>
+    <p>
+        Dies kann verschiedene Ursachen haben, wie beispielsweise die Abgabe ihrer Funktion als Einreicher an einen anderen Einreicher oder den Ablauf Ihrer temporären Leseberechtigung.
+    </p> 
+    {% db_setting 'contact_email' as email %}
+    <p>Falls Sie denken, dass dies ein Irrtum ist, kontaktieren Sie die Ethikkommission unter der Adresse</p>
+    <p><a href="mailto:{{ email }}">{{ email }}</a></p>
+    <p>mit Angabe der EK-Nummer und Ihrer Funktion (falls es sich um eine Studie handelt).</p>
+    <p>Um zur Hauptseite zu wechseln, <a href="/">klicken Sie hier</a>.</p>
+</div>
+{% endblock %}

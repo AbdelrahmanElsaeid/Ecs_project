@@ -1,0 +1,8 @@
+{% extends 'msg_core.txt' %}
+{% load core %}
+
+{% block content %}
+Bezüglich des von Ihnen erstellten Gutachtens zur Studie {{ submission|ec_number }} "{{ submission.project_title_display }}" haben sich Rückfragen seitens der Ethikkommission ergeben.
+
+Kontrollieren Sie bitte Ihren Nachrichteneingang für nähere Angaben.
+{% endblock %}

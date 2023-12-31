@@ -1,0 +1,12 @@
+{% extends 'public.html' %}
+{% load i18n %}
+
+{% block content %}
+
+    {{ block.super }}
+    <div class="alert alert-success">
+        <h3 class="alert-heading">Ihr Passwort wurde geändert.</h3>
+        <p>Sie können sich nun mit dem neuen Passwort <a href="{% url 'users:login' %}" class="alert-link">einloggen</a>.</p>
+    </div>
+
+{% endblock %}

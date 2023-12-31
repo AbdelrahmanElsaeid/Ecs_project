@@ -1,0 +1,25 @@
+{% load i18n %}
+<ul class="list-group">
+    {% for docstash in stashed_notifications %}
+        {% if docstash.value %}
+            <li class="list-group-item d-block">
+                <a href="{% url 'notifications:create_notification' notification_type_pk=docstash.value.type_id docstash_key=docstash.key %}">
+                    {{ docstash.name|default:"<strong>Unbenannt</strong>" }}
+                </a>
+                <a class="delete_docstash btn btn-outline-danger float-right" href="{% url 'notifications:delete_docstash_entry' docstash_key=docstash.key %}?next={{ request.path|urlencode }}">
+                    {% trans 'Delete' %}
+                </a>
+                <div class="text-muted">
+                    {% blocktrans with modified_at=docstash.modtime|date:'d.m.Y, H:i' trimmed %}
+                        Last Change: {{ modified_at }}
+                    {% endblocktrans %}
+                </div>
+                {% if docstash.value.submission_forms %}
+                    für {% for submission_form in docstash.value.submission_forms %}
+                        <a href="{% url 'readonly_submission_form' submission_form_pk=submission_form.pk %}">{{ submission_form }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>

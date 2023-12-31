@@ -1,0 +1,262 @@
+{% extends "submissions/base_form.html" %}
+{% load core i18n static %}
+
+{% block htmltitle %}
+    … |
+    {% if notification_type %}
+      {{ notification_type.name }} für {{ submission|ec_number }}
+    {% else %}
+        {% if submission %}{{ submission|ec_number }}{% else %}{% trans "New Submission" %}{% endif %}
+    {% endif %}
+    | {{ block.super }}
+{% endblock %}
+{% block headertitle %}
+    {% if notification_type %}
+      {{ notification_type.name }} für {{ submission|ec_number }}
+    {% else %}
+        {% if submission %}{{ submission|ec_number }}{% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block submission_action_buttons %}
+    <li class="nav-item ml-auto">
+        <small class="mr-3 text-muted last_save">&nbsp;</small>
+        <a href="" id="save-button" class="btn btn-secondary">{% trans "Just Save" %}</a>
+        <a href="" id="submit-button" class="btn btn-primary">
+            {% if submission and submission.current_submission_form %}
+                {% if notification_type %}
+                    {% trans "Submit Amendment" %}
+                {% else %}
+                    {% trans "Resubmit" %}
+                {% endif %}
+            {% else %}
+                {% trans "Submit" %}
+            {% endif %}
+        </a>
+    </li>
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post" enctype="multipart/form-data" class="form_main">
+        {% csrf_token %}
+        {{ block.super }}
+        <input type="submit" name="validate" value="validate" class="hidden" />
+        <input type="submit" name="submit" value="submit" class="hidden" />
+    </form>
+{% endblock %}
+
+{% block section_6_1 %}
+    <div class="alert alert-info text-center">
+        Bitte beachten Sie die
+        <a href="{% static 'help/index.html' %}">Hinweise in den Hilfeseiten</a>
+    </div>
+    {{ block.super }}
+{% endblock %}
+
+{% block jsbottom %}
+    {{ block.super }}
+
+    <script type="text/javascript"> 
+        $(function(){
+            var setup = ecs.setupForms();
+            console.log('Setup result:', ecs.setupForms());
+
+            var formsets = [
+                '{{ measure_formset.prefix }}',
+                '{{ routinemeasure_formset.prefix }}',
+                '{{ nontesteduseddrug_formset.prefix }}',
+                '{{ participatingcenternonsubject_formset.prefix }}',
+                '{{ foreignparticipatingcenter_formset.prefix }}',
+            ].map(function(prefix){
+                return new ecs.InlineFormSet('#' + prefix + '_formset', {
+                    prefix: prefix
+                });
+            });
+
+            new ecs.FormFieldController({
+                fields: '#id_project_type_reg_drug, #id_project_type_non_reg_drug',
+                sources: [],
+                toggleTab: {
+                    tab: setup.tabController.getTab('#tabs-6'),
+                    requiredFields:
+                        '#id_substance_preexisting_clinical_tries,' +
+                        '#id_submission_type,' +
+                        '#id_eudract_number,' +
+                        '#id_pharma_checked_substance,' +
+                        '#id_pharma_reference_substance'
+                }
+            });
+
+            new ecs.FormFieldController({
+                fields: '#id_project_type_reg_drug',
+                disable: true,
+                sourceFieldClass: 'pl-5',
+                sources: 'input[id^=id_project_type_reg_drug_]'
+            });
+
+            new ecs.FormFieldController({
+                fields: '#id_project_type_medical_device',
+                disable: true,
+                sourceFieldClass: 'pl-5',
+                sources: 'input[id^=id_project_type_medical_device_]',
+                toggleTab: {
+                    tab: setup.tabController.getTab('#tabs-7'),
+                    requiredFields:
+                        '#id_medtech_checked_product,' +
+                        '#id_medtech_reference_substance,' +
+                        '#id_medtech_product_name,' +
+                        '#id_medtech_manufacturer,' +
+                        '#id_medtech_certified_for_exact_indications,' +
+                        '#id_medtech_certified_for_other_indications,' +
+                        '#id_medtech_ce_symbol,' +
+                        '#id_medtech_manual_included,' +
+                        '#id_medtech_technical_safety_regulations,' +
+                        '#id_medtech_departure_from_regulations'
+                }
+            });
+
+            new ecs.FormFieldController({
+                fields: '#id_substance_p_c_t_phase,' +
+                        '#id_substance_p_c_t_period,' +
+                        '#id_substance_p_c_t_application_type,' +
+                        '#id_substance_p_c_t_gcp_rules,' +
+                        '#id_substance_p_c_t_final_report',
+                sources: '#id_substance_preexisting_clinical_tries',
+                auto: function() {
+                    this.requireField(this.fields, this.sources.val() != 3);
+                }
+            });
+
+            new ecs.FormFieldController({
+                fields: '#id_study_plan_abort_crit',
+                sources: '#id_study_plan_interim_evaluation',
+                auto: function() {
+                    var require = this.sources.is(':checked');
+                    this.requireField(this.fields, require);
+                    this.setDisabled(!require);
+                }
+            });
+
+            new ecs.FormFieldController({
+                fields: '#id_study_plan_multiple_test_correction_algorithm',
+                sources: '#id_study_plan_multiple_test',
+                auto: function() {
+                    var require = this.sources.is(':checked');
+                    this.requireField(this.fields, require);
+                    this.setDisabled(!require);
+                }
+            });
+
+            new ecs.FormFieldController({
+                fields: '#id_study_plan_dataprotection_reason,' +
+                        '#id_study_plan_dataprotection_dvr',
+                sources: '#id_study_plan_dataprotection_choice',
+                auto: function() {
+                    var personal = this.sources.val() == 'personal';
+                    this.setDisabled(!personal);
+                    this.requireField(this.fields, personal);
+                }
+            });
+
+            new ecs.FormFieldController({
+                fields: '#id_study_plan_dataprotection_anonalgoritm',
+                sources: '#id_study_plan_dataprotection_choice',
+                auto: function(values){
+                    var personal = this.sources.val() == 'personal';
+                    this.setDisabled(personal);
+                    var f = $('#id_study_plan_dataprotection_anonalgoritm');
+                    this.requireField(f, !personal);
+                }
+            });
+
+            new ecs.FormFieldController({
+                fields: '#id_insurance_name,' +
+                        '#id_insurance_address,' +
+                        '#id_insurance_phone,' +
+                        '#id_insurance_contract_number,' +
+                        '#id_insurance_validity',
+                sources: '#id_insurance_not_required',
+                auto: function(values){
+                    this.setDisabled(this.sources.is(':checked'));
+                }
+            });
+
+
+
+            new ecs.FormFieldController({
+                fields: '#id_invoice_name,' +
+                        '#id_invoice_contact_gender,' +
+                        '#id_invoice_contact_title,' +
+                        '#id_invoice_contact_first_name,' +
+                        '#id_invoice_contact_last_name,' +
+                        '#id_invoice_address,' +
+                        '#id_invoice_zip_code,' +
+                        '#id_invoice_city,' +
+                        '#id_invoice_phone,' +
+                        '#id_invoice_fax,' +
+                        '#id_invoice_email,' +
+                        '#id_invoice_uid',
+                sources: '#id_invoice_differs_from_sponsor',
+                auto: function() {
+                    var requiredFields =
+                        '#id_invoice_name,' +
+                        '#id_invoice_contact_gender,' +
+                        '#id_invoice_contact_first_name,' +
+                        '#id_invoice_contact_last_name,' +
+                        '#id_invoice_address,' +
+                        '#id_invoice_zip_code,' +
+                        '#id_invoice_city,' +
+                        '#id_invoice_phone,' +
+                        '#id_invoice_email';
+
+                    var require = this.sources.is(':checked');
+                    $('#tabs-4 .fieldset_2').toggle(require);
+                    this.setDisabled(!require);
+                    this.requireField($(requiredFields), require);
+                }
+            });
+            
+            $('#save-button').click(function(ev){
+                ev.preventDefault();
+                ecs.mainForm.save();
+            });
+            $('#submit-button').click(function(ev){
+                ev.preventDefault();
+                ecs.mainForm.submit('validate');
+            });
+
+            $('.upload_container').load(
+                '{% url 'core:upload_document_for_submission' docstash_key=request.docstash.key %}');
+            
+            {% if valid %}
+                ecs.confirm({
+                    question: '{% if notification_type %}{% trans "You filled out the form correctly. Do you want to create a notification now?" %}{% else %}{% trans "You filled out the form correctly. Do want to submit the study?" %}{% endif %}',
+                    ok: '{% if notification_type %}{{ _("Create Notification")|escapejs }}{% else %}{{ _("Submit")|escapejs }}{% endif %}',
+                    cancel: '{% if notification_type %}{{ _("Cancel")|escapejs }}{% else %}{{ _("Don't Submit")|escapejs }}{% endif %}',
+                    success: function() {
+                        $('#submit-button').hide();
+
+                        var modal = ecs.popup({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+                        modal.find('.modal-dialog').addClass('modal-sm');
+                        modal.find('.modal-content').html('\
+                            <div class="modal-body text-center">\
+                                <span class="fa fa-spinner fa-pulse fa-2x mr-3"></span>\
+                                {% if notification_type %}\
+                                    {{ _("Your are being redirected to the notification form")|escapejs }}\
+                                {% else %}\
+                                    {{ _("Your study is being submitted")|escapejs }}\
+                                {% endif %}\
+                                &hellip;\
+                            </div>\
+                        ');
+
+                        ecs.mainForm.submit('submit');
+                    }
+                });
+            {% endif %}
+        });
+    </script>
+{% endblock %}

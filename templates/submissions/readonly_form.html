@@ -1,0 +1,467 @@
+{% extends "submissions/base_form.html" %}
+{% load core i18n userutils %}
+
+
+{% block htmltitle %}… | {{ submission_form.submission|ec_number }} | {{ block.super }}{% endblock %}
+
+{% block headertitle %}
+    <a href="{% url 'core:readonly_submission_form' submission_form_pk=submission_form.pk %}" target="_blank">
+        {{ submission_form.submission|ec_number }}
+    </a>
+    <small title="{{ submission.project_title_display }}">
+        {{ submission.project_title_display }}
+        {% if submission.is_finished %}
+            ({% trans 'finished' %})
+        {% endif %}
+    </small>
+{% endblock %}
+
+
+{% block submission_action_buttons %}
+    <li class="nav-item ml-auto">
+        {% if submission_form|allows_edits_by:user %}
+            <a class="btn btn-primary" href="{% url 'core:copy_latest_submission_form' submission_pk=submission.pk %}">
+                {% trans 'Edit' %}
+            </a>
+        {% endif %}
+        {% if submission_form|allows_amendments_by:user %}
+            {% for notification_type in diff_notification_types %}
+                <a class="btn btn-primary" href="{% url 'core:copy_latest_submission_form' submission_pk=submission.pk notification_type_pk=notification_type.pk %}">
+                    {% blocktrans with notification_type_name=notification_type.name trimmed %}
+                        New {{ notification_type_name }}
+                    {% endblocktrans %}
+                </a>
+            {% endfor %}
+        {% endif %}
+    </li>
+{% endblock %}
+
+
+{% block headernav %}
+  <div class="readonly">
+    <ul class="tab_header_groups nav nav-tabs flex-wrap">
+    {% block tab_header_groups %}
+        <li class="nav-item"><a class="nav-link" href="#tabs_general">{% trans "General" %}</a></li>
+        {{ block.super }}
+        {% if checklist_reviews or user.profile.is_internal %}
+            <li class="nav-item"><a class="nav-link" href="#tabs_checklists">{% trans "Evaluations" %}</a></li>
+        {% endif %}
+        <li class="nav-item"><a class="nav-link" href="#tabs_votes">{% trans "Votes" %}</a></li>
+        <li class="nav-item"><a class="nav-link" href="#tabs_notifications">{% trans "Notifications" %}</a></li>
+        <li class="nav-item"><a class="nav-link" href="#tabs_communication">{% trans "Communication" %}</a></li>
+    {% endblock %}
+    </ul>
+  </div>
+{% endblock %}
+
+{% block content %}
+    <div class="readonly">
+        {% block tab_headers %}
+            <div id="tabs_general" class="collapse">
+                <ul class="nav nav-tabs flex-wrap mb-3 tab_headers">
+                    <li class="nav-item"><a class="nav-link" href="#status_tab">{% trans 'Status' %}</a></li>
+                    {% if categorization_form %}
+                        <li class="nav-item"><a class="nav-link {% if not categorization_form.readonly or categorization_review %}active{% endif %}" href="#categorization_tab">{% trans "Categorization" %}</a></li>
+                    {% endif %}
+                    {% if user.profile.show_task_widget %}
+                        <li class="nav-item"><a class="nav-link" href="#tasks_tab">{% trans 'Tasks' %}</a></li>
+                        {% if user.profile.is_internal %}
+                            <li class="nav-item"><a class="nav-link" href="#workflow_log">{% trans 'Workflow' %}</a></li>
+                        {% endif %}
+                    {% endif %}
+                    {% if user not in submission_form.get_presenting_parties %}
+                        <li class="nav-item"><a class="nav-link" href="#involved_parties_tab">{% trans 'Involved Parties' %}</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            {{ block.super }}
+
+            {% if checklist_reviews or user.profile.is_internal %}
+            <div id="tabs_checklists" class="collapse">
+                <ul class="nav nav-tabs flex-wrap mb-3 align-items-end tab_headers">
+                    {% if user.profile.is_internal %}
+                        <li class="nav-item"><a class="nav-link" href="#checklist_summary_tab">{% trans "Checklist Summary" %}</a></li>
+                    {% endif %}
+                    {% for checklist, checklist_review_form in checklist_reviews %}
+                        <li class="nav-item"><a class="nav-link {% if not checklist_review_form.readonly or active_checklist == checklist.pk %}active{% endif %}" href="#checklist_{{ checklist.pk }}_review_form">{{ checklist.short_name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            
+            <div id="tabs_votes" class="collapse">
+                <ul class="nav nav-tabs flex-wrap mb-3 tab_headers">
+                    <li class="nav-item"><a class="nav-link" href="#published_votes_tab">{% trans "Published Votes" %}</a></li>
+                    {% if vote_review_form %}
+                        <li class="nav-item"><a class="nav-link {% if not vote_review_form.readonly %}active{% endif %}" href="#vote_review_tab">Votum</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div id="tabs_notifications" class="collapse">
+                <ul class="nav nav-tabs flex-wrap mb-3 tab_headers">
+                    <li class="nav-item"><a class="nav-link" href="#pending_notifications_tab">{% trans "Pending Notifications" %}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#answered_notifications_tab">{% trans "Answered Notifications" %}</a></li>
+                </ul>
+            </div>
+
+            <div id="tabs_communication" class="collapse">
+                <ul class="nav nav-tabs flex-wrap mb-3 tab_headers">
+                    <li class="nav-item"><a class="nav-link" href="#communication_tab">{% trans "My Communication" %}</a></li>
+                    {% if user.profile.is_internal %}
+                        <li class="nav-item"><a class="nav-link" href="#communication_overview_tab">{% trans "Communication Overview" %}</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        {% endblock %}
+
+        {{ block.super }}
+    </div>
+{% endblock %}
+
+{% block tabs %}
+    <div id="status_tab" class="collapse">
+        {% include 'submissions/tabs/status.html' %}
+    </div>
+
+    {% if categorization_form %}
+        <div id="categorization_tab" class="container collapse">
+            <p>
+                Typ:
+                {% if submission_form.is_amg %}
+                    {% trans "AMG" %}(ECT:{{submission_form.eudract_number }}, {{ submission_form.get_submission_type_display }})
+                {% endif %}
+                {% if submission_form.is_mpg %}{% trans "MPG" %}{% endif %}
+                {% if submission_form.is_thesis %}{{ submission_form.get_project_type_education_context_display }}{% endif %}
+                {% if submission_form.includes_minors %}{% trans "minors" %}{% endif %}
+            </p>
+            {% with categorization_form as review_form %}
+                {% include 'submissions/review_form.html' %}
+            {% endwith %}
+            {% if categorization_form.allow_reopen %}
+                <div class="my-3">
+                    {% url 'core:reopen_categorization' submission_pk=submission.pk as reopen_url %}
+                    <a class="btn btn-outline-primary" href="{{ reopen_url }}">
+                        {% trans 'Reopen' %}
+                    </a>
+                </div>
+            {% endif %}
+            {% if categorization_task %}
+                <p>
+                    <a href="{% url 'communication:new_thread' submission_pk=submission.pk to_user_pk=categorization_task.assigned_to_id %}" target="_blank">
+                        <span class="fa fa-envelope-o"></span>
+                        {% blocktrans with user=categorization_task.assigned_to|full_name trimmed %}
+                            Send Message to {{ user }}
+                        {% endblocktrans %}
+                    </a>
+                </p>
+            {% endif %}
+            {% if user.profile.is_internal %}
+                <div data-widget-url="{% url 'checklists:categorization_tasks' submission_pk=submission.pk %}"></div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if user not in submission_form.get_presenting_parties %}
+        <div id="involved_parties_tab" class="collapse">
+            {% include 'submissions/tabs/involved_parties.html' %}
+        </div>
+    {% endif %}
+    <div id="pending_notifications_tab" class="container collapse">
+        <h3>{% trans "Open Notifications" %}</h3>
+        <ul class="list-group">
+            {% for notification in open_notifications %}
+                <li class="list-group-item d-block">
+                    <h5>
+                        {{ notification.timestamp|date:'d.m.Y' }}
+                        <a href="{% url 'notifications:view_notification' notification_pk=notification.pk %}">
+                            <strong>{{ notification.short_name }}</strong>
+                        </a>
+                    </h5>
+                    von {{ notification.user }}
+                </li>
+            {% empty %}
+                <li class="list-group-item d-block text-center">
+                    <em>{% trans "There are no open notifications." %}</em>
+                </li>
+            {% endfor %}
+        </ul>
+        {% if stashed_notifications %}
+            <h3 class="mt-3">Nicht eingereichte Meldungen</h3>
+            {% include 'notifications/stashed_notification_list.html' %}
+        {% endif %}
+        {% if submission.presenter == user or submission.susar_presenter == user %}
+            {% url 'notifications:select_notification_creation_type' as create_url %}
+            <a class="btn btn-outline-primary mt-3" href="{{ create_url }}">
+                {% trans "Create a new notification" %}
+            </a>
+        {% endif %}
+    </div>
+    <div id="answered_notifications_tab" class="container collapse">
+        <h3>{% trans "Answered Notifications" %}</h3>
+        <ul class="list-group">
+            {% for notification in answered_notifications %}
+                <li class="list-group-item align-items-start {% if notification.answer.is_rejected %}list-group-item-danger{% endif %}">
+                    <div>
+                        <h5>
+                            {{ notification.timestamp|date:'d.m.Y' }}
+                            <a href="{% url 'notifications:view_notification' notification_pk=notification.pk %}">
+                                <strong>{{ notification.short_name }}</strong>
+                            </a>
+                        </h5>
+                        von {{ notification.user }}
+                        {% if notification.is_rejected %}({% trans 'rejected' %}){% endif %}
+                    </div>
+                    {% if user.profile.is_internal %}
+                        <a class="ml-auto" href="javascript:void(ecs.fieldhistory.show('{% url 'core:field_history' model_name='notification_answer' pk=notification.answer.pk %}'))">
+                            <span class="fa fa-history"></span>
+                            {% trans 'History' %}
+                        </a>
+                    {% endif %}
+                </li>
+            {% empty %}
+                <li class="list-group-item d-block text-center">
+                    <em>{% trans "There are no answered notifications." %}</em>
+                </li>
+            {% endfor %}
+        </ul>
+        {% if submission.presenter == user %}
+            {% url 'notifications:select_notification_creation_type' as create_url %}
+            <a class="btn btn-outline-primary mt-3" href="{{ create_url }}">
+                {% trans "Create a new notification" %}
+            </a>
+        {% endif %}
+    </div>
+    {% if vote_review_form %}
+        <div id="vote_review_tab" class="container collapse">
+            {% with vote=vote_review_form.instance %}
+                <h3>B{{ vote.result }} Votum{% if vote.top %} der Sitzung {{ vote.top.meeting.title }} am {{ vote.top.meeting.start|date:'d.m.Y' }}{% endif %}{% if vote.changed_after_voting %} <span class="text-danger">!!{% trans 'Changed after voting' %}!</span>{% endif %}</h3>
+            {% endwith %}
+
+            {% with vote_review_form as review_form %}
+                {% include 'submissions/review_form.html' %}
+            {% endwith %}
+
+            {% if debug and vote_review_form.instance.pk %}
+                <a href="{% url 'votes:vote_pdf_debug' vote_pk=vote_review_form.instance.pk %}">
+                    PDF Debug
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <div id="published_votes_tab" class="container collapse">
+        <h3>{% trans "Published Votes" %}</h3>
+        {% if published_votes %}
+            <ul class="list-group">
+                {% for vote in published_votes %}
+                    <li class="list-group-item {% if vote == submission.current_published_vote %}list-group-item-info{% endif %}">
+                        {{ vote.result_text }}
+                        {% if vote.top %}
+                             (in der Sitzung am {{ vote.top.meeting.start|date:'d.m.Y' }})
+                        {% endif %}
+                        {% if vote.valid_until %}
+                             {% trans 'valid until' %} {{ vote.valid_until|date:'d.m.Y' }}
+                        {% endif %}
+                        <span class="ml-auto">
+                            <a class="ml-3" href="{% url 'votes:download_vote' vote_pk=vote.pk %}">
+                                <span class="fa fa-file-pdf-o"></span>
+                                {% trans "Download" %}
+                            </a>
+                            <br>
+                            {% if debug %}
+                                <a class="ml-3" href="{% url 'votes:vote_pdf_debug' vote_pk=vote.pk %}">
+                                    <span class="fa fa-file-pdf-o"></span>
+                                    PDF Debug
+                                </a>
+                                <br>
+                            {% endif %}
+                            {% if user.profile.is_internal %}
+                                <a class="ml-3" href="javascript:void(ecs.fieldhistory.show('{% url 'core:field_history' model_name='vote' pk=vote.pk %}'))">
+                                    <span class="fa fa-history"></span>
+                                    {% trans 'History' %}
+                                </a>
+                            {% endif %}
+                        </span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>{% trans "There are no published votes." %}</p>
+        {% endif %}
+    </div>
+
+    {% if user.profile.is_internal %}
+        <div id="checklist_summary_tab" class="container collapse">
+            {% include 'submissions/checklist_summary.html' %}
+        </div>
+    {% endif %}
+
+    {% for checklist, formset in checklist_reviews %}
+    <div id="checklist_{{ checklist.pk }}_review_form" class="container collapse">
+        {% if formset.readonly and checklist.pdf_document and not checklist.status == 'new' %}
+            {% url 'checklists:checklist_pdf' checklist_pk=checklist.pk as pdf_url %}
+            <p>
+                <a class="btn btn-outline-primary" href="{{ pdf_url }}">
+                    <span class="fa fa-file-pdf-o"></span>
+                    <span>
+                        {% if checklist.blueprint.slug == 'external_review' and checklist.status != 'review_ok' %}
+                            {% trans 'Download unpublished Version as PDF' %}
+                        {% else %}
+                            {% trans "Download PDF" %}
+                        {% endif %}
+                    <span>
+                </a>
+
+                {% if debug %}
+                    {% url 'checklists:checklist_pdf_debug' checklist_pk=checklist.pk as pdf_url %}
+                    <a class="btn btn-outline-primary" href="{{ pdf_url }}">
+                        <span class="fa fa-file-pdf-o"></span>
+                        PDF Debug
+                    </a>
+                {% endif %}
+            </p>
+        {% endif %}
+        {% include 'submissions/checklist_review_form.html' %}
+        {% if formset.allow_reopen and formset.readonly %}
+            {% url 'core:reopen_checklist' submission_pk=submission.pk blueprint_pk=checklist.blueprint.pk as reopen_url %}
+            <div class="mt-3">
+                <a class="btn btn-outline-primary" href="{{ reopen_url }}">
+                    {% trans 'Reopen' %}
+                </a>
+            </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    
+    <div id="communication_tab" class="container collapse">
+        <div data-widget-url="{% url 'communication:list_threads' submission_pk=submission.pk %}"></div>
+        <a class="btn btn-outline-primary" href="{% url 'communication:new_thread' submission_pk=submission.pk %}" target="_blank">{% trans "Write a new message" %}</a>
+    </div>
+    {% if user.profile.is_internal %}
+        <div id="communication_overview_tab" class="container collapse">
+            <div data-widget-url="{% url 'communication:communication_overview_widget' submission_pk=submission.pk %}"></div>
+        </div>
+    {% endif %}
+    {% if user.profile.show_task_widget %}
+        <div id="tasks_tab" class="container collapse">
+            <div data-widget-url="{% url 'tasksv:my_tasks' submission_pk=submission.pk %}"></div>
+        </div>
+        {% if user.profile.is_internal %}
+            <div id="workflow_log" class="collapse">
+                <div data-widget-url="{% url 'core:task_backlog' submission_pk=submission.pk %}"></div>
+                {% if submission.allows_dynamic_task_creation %}
+                    <div class="container mt-4" data-widget-url="{% url 'checklists:create_task' submission_pk=submission.pk %}"></div>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endif %}
+    {{ block.super }}
+{% endblock %}
+
+{% block jsbottom %}
+    {{ block.super }}
+    <script type="text/javascript"> 
+        $(function(){
+            {% if categorization_form %}
+                var input_medcat = $('#{{ categorization_form.medical_categories.id_for_label }}');
+                input_medcat.select2({
+                    width: '100%',
+                    dropdownParent: input_medcat.parent(),
+                });
+            {% endif %}
+            {% if user.profile.is_executive %}
+                var input_ta_user = $('#{{ temporary_auth_form.user.id_for_label }}');
+                input_ta_user.select2({
+                    minimumInputLength: 3,
+                    width: '100%',
+                    dropdownParent: input_ta_user.parent(),
+                });
+            {% endif %}
+
+            ecs.setupForms();
+            ecs.setupWidgets();
+
+            $('#checklist_summary_tab textarea').each(function() {
+                new ecs.textarea.TextArea(this);
+            });
+
+            {% for checklist, formset in checklist_reviews %}
+                {% for form in formset %}
+                    new ecs.textarea.TextArea('#{{ form.comment.id_for_label }}', [
+                        {% if user.profile.is_internal and not formset.readonly %}
+                            ecs.textarea.toolbarItems.boilerplate(
+                                "{% trans 'Insert Boilerplate' %}",
+                                "{% url 'boilerplate:select_boilerplate' %}"
+                            )
+                        {% endif %}
+                    ]);
+                    {% if not formset.readonly %}
+                        {% if user.profile.is_internal or checklist.last_edited_by == user %}
+                            ecs.textarea.installToolbarItem('#{{ form.comment.id_for_label }}',
+                                ecs.textarea.toolbarItems.versionHistory(
+                                    "{% trans 'History' %}",
+                                    "{% url 'core:field_history' model_name='checklist_answer' pk=form.instance.pk %}"
+                                )
+                            );
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+
+            {% if vote_review_form %}
+                new ecs.textarea.TextArea('#{{ vote_review_form.text.id_for_label }}', [
+                    {% if user.profile.is_internal and not vote_review_form.readonly %}
+                        ecs.textarea.toolbarItems.boilerplate(
+                            "{% trans 'Insert Boilerplate' %}",
+                            "{% url 'boilerplate:select_boilerplate' %}"
+                        )
+                    {% endif %}
+                ]);
+            {% endif %}
+            {% if user.profile.is_internal and not vote_review_form.readonly and vote_review_form.instance.pk %}
+                ecs.textarea.installToolbarItem(
+                    '#{{ vote_review_form.text.id_for_label }}',
+                    ecs.textarea.toolbarItems.versionHistory(
+                        "{% trans 'History' %} ({{ vote_version }})",
+                        "{% url 'core:field_history' model_name='vote' pk=vote_review_form.instance.pk %}"
+                    )
+                );
+            {% endif %}
+
+            if (!$('#id_invoice_differs_from_sponsor').is(':checked'))
+                $('#tabs-4 .fieldset_2').hide();
+
+            $('#tabs_submission a.nav-link').each(function() {
+                var container = $($(this).attr('href'));
+                container.find('input[type="checkbox"]:not(:checked)')
+                    .closest('.BooleanField')
+                    .closest('li.form-group')
+                    .hide();
+            });
+
+            $('.expand_submission_forms').click(function(ev) {
+                ev.preventDefault();
+                var tr = $(this);
+                tr.siblings().removeClass('collapse');
+                tr.remove();
+            }).hover(function(ev) {
+                $(this).toggleClass('table-active', ev.type == 'mouseenter');
+            });
+
+	    $('a.delete_docstash').click(function(ev) {
+		ev.preventDefault();
+		var href = $(this).attr('href');
+		ecs.confirm({
+		    question: '{% trans 'Do you want to delete the submission draft?' %}',
+                    ok: '{{ _("Delete")|escapejs }}',
+                    cancel: '{{ _("Don't Delete")|escapejs }}',
+		    success: function() {
+			window.location.href = href;
+		    }
+		});
+	    });
+        });
+    </script>
+{% endblock %}

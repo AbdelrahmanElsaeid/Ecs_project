@@ -1,0 +1,58 @@
+{% extends 'core.html' %}
+{% load core i18n %}
+
+{% block menuSelection %}notifications{% endblock %}
+
+{% block htmltitle %}Antwort: {{ notification }} | {{ block.super }}{% endblock %}
+{% block headertitle %}{% endblock %}
+
+{% block content %}
+<div class="notification container">
+    <h2>Antwort auf <a target="_blank" href="{% url 'notifications:view_notification' notification_pk=notification.pk %}">{{ notification }}</a> vom {{ notification.timestamp|date:'d.m.Y' }}</h2>
+
+    <p>
+    {% block notification_answer_head %}
+        <h3>Eingereicht von: {{ notification.user }}</h3>
+    {% endblock %}
+    </p>
+
+    {% with notification.submission_forms.all as submission_forms %}
+        {% include "notifications/submission_data.html" %}
+    {% endwith %}
+
+    <form action="{{ request.path }}" method="post" class="bound_to_task">
+        {% csrf_token %}
+        {% for field in form %}
+            {% include 'bootstrap/form_field.html' %}
+        {% endfor %}
+    </form>
+
+    {% if notification.type.grants_vote_extension %}
+        <br>
+        <p>
+            Die aktuelle Gültigkeit des Votums endet mit
+            <b>{{ notification.get_submission.votes.positive.permanent.latest.valid_until|date:'d.m.Y' }}</b>
+        </p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block jsbottom %}
+    {{ block.super }}
+    <script type="text/javascript"> 
+        $(function(){
+            new ecs.textarea.TextArea('#id_text', [
+                {% if answer and user.profile.is_internal %}
+                    ecs.textarea.toolbarItems.versionHistory(
+                        "{{ _('History')|escapejs }} ({{ answer_version }})",
+                        "{% url 'core:field_history' model_name='notification_answer' pk=answer.pk %}"
+                    ),
+                {% endif %}
+                ecs.textarea.toolbarItems.boilerplate(
+                    "{{ _('Insert Boilerplate')|escapejs }}",
+                    "{% url 'boilerplate:select_boilerplate' %}"
+                )
+            ]);
+        });
+    </script>
+{% endblock %}

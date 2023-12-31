@@ -1,0 +1,283 @@
+{% load i18n userutils core %}
+<table class="table table-sm">
+    <colgroup>
+        <col class="bg-faded">
+        <col class="w-100">
+    </colgroup>
+    {% if user.profile.is_internal %}
+        <tr>
+            <th class="text-nowrap">{% trans 'Tags' %}</th>
+            <td>
+                <div data-widget-url="{% url 'tags:assign' submission_pk=submission.pk %}"></div>
+            </td>
+        </tr>
+    {% endif %}
+    <tr><th class="text-nowrap">Formulare</th><td>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Version</th>
+                    <th>von</th>
+                    <th>am</th>
+                    <th>Unterschiede</th>
+                    <th>{% trans 'Amendment' %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if current_docstash %}
+                    <tr>
+                        <td>{{ submission_forms|length|add:1 }}</td>
+                        <td colspan="4" class="text-center">
+                            <i>{% trans "This form has not been submitted yet." %}</i>
+                            <div class="text-muted">
+                                {% blocktrans with modified_at=current_docstash.modtime|date:'d.m.Y, H:i' trimmed %}
+                                    Last Change: {{ modified_at }}
+                                {% endblocktrans %}
+                            </div>
+                        </td>
+                        <td>
+                            {% if submission_form|allows_edits_by:user or submission_form|allows_amendments_by:user %}
+                                <a href="{% url 'core:create_submission_form' docstash_key=current_docstash.key %}">
+                                    <span class="fa fa-pencil"></span>
+                                    {% trans 'Edit' %}
+                                </a><br>
+                                <a class="delete_docstash" href="{% url 'core:delete_docstash_entry' docstash_key=current_docstash.key %}?next={{ request.path|urlencode }}">
+                                    <span class="fa fa-trash-o"></span>
+                                    {% trans 'Delete Changes' %}
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+                {% with submission.newest_submission_form as newest_form %}
+                    {% for sf in submission_forms %}
+                    <tr class="{% if not sf.is_acknowledged %}table-danger{% elif sf == submission.current_submission_form %}table-info{% endif %} {% if forloop.counter0 > current_form_idx %}collapse{% endif %}">
+                        <td>{{ forloop.revcounter }}</td>
+                        <td>{{ sf.presenter }}</td>
+                        <td>{{ sf.created_at|date:'d.m.Y, H:i' }} Uhr</td>
+                        <td>
+                            {% if sf.previous_form %}
+                                <a href="{% url 'core:diff' old_submission_form_pk=sf.previous_form.pk new_submission_form_pk=sf.pk %}">
+                                    <span class="fa fa-pencil-square-o"></span>
+                                    Unterschiede zur Vorversion
+                                </a><br>
+                            {% endif %}
+                            {% if sf != newest_form %}
+                                <a href="{% url 'core:diff' old_submission_form_pk=sf.pk new_submission_form_pk=newest_form.pk %}">
+                                    <span class="fa fa-pencil-square-o"></span>
+                                    Unterschiede zur neuesten Version
+                                </a><br>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if sf.is_notification_update %}
+                                {% with sf.new_for_notification.all.0 as notif %}
+                                    {% if notif %}
+                                        {% url 'notifications:view_notification' notification_pk=notif.pk as url %}
+                                        <a href="{{ url }}"> {% trans 'Amendment' %}</a>
+                                    {% else %}
+                                        <em>{% trans 'Not submitted yet.' %}</em>
+                                    {% endif %}
+                                {% endwith %}
+                            {% else %}
+                                –
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if forloop.first %}
+                                {% if sf.pdf_document_id %}
+                                    <a href="{% url 'core:submission_form_pdf' submission_form_pk=sf.pk %}">
+                                        <span class="fa fa-file-pdf-o"></span>
+                                        {% trans 'Download PDF' %}
+                                    </a>
+                                {% else %}
+                                    {% trans 'PDF is being rendered' %}
+                                    <i class="fa fa-spinner fa-spin"></i>
+                                {% endif %}
+                                <br>
+                            {% endif %}
+                            {% if debug %}
+                                <a href="{% url 'core:submission_form_pdf_debug' submission_form_pk=sf.pk %}">
+                                    <span class="fa fa-file-pdf-o"></span>
+                                    PDF Debug
+                                </a><br>
+                            {% endif %}
+                            {% if sf == submission.current_submission_form %}
+                                {% if user.profile.is_internal or user == submission.presenter %}
+                                    <a href="{% url 'core:export_submission' submission_pk=submission.pk %}">
+                                        <span class="fa fa-file-archive-o"></span>
+                                        {% trans "Export" %}
+                                    </a><br>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% if current_form_idx < submission_forms|length|add:-1 %}
+                        <tr class="expand_submission_forms">
+                            <td colspan=6 class="text-center text-muted">
+                                <span class="fa fa-caret-down"></span>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endwith %}
+            </tbody>
+        </table>
+    </td></tr>
+    <tr>
+        <th class="text-nowrap">Eingereicht von</th>
+        <td>
+            {% with submission.presenter.profile.organisation as organisation %}
+                {{ submission.presenter }}{% if organisation %} ({{ organisation }}){% endif %}
+            {% endwith %}
+            {% if user.profile.is_executive or user == submission.presenter %}
+                <a class="ml-2" href="{% url 'core:change_submission_presenter' submission_pk=submission.pk %}">
+                    <span class="fa fa-pencil"></span>
+                    {% trans "change" %}
+                </a>
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th class="text-nowrap">Sicherheitsmeldungsersteller</th>
+        <td>
+            {% with submission.susar_presenter.profile.organisation as organisation %}
+                {{ submission.susar_presenter }}{% if organisation %} ({{ organisation }}){% endif %}
+            {% endwith %}
+            {% if user.profile.is_executive or user == submission.susar_presenter %}
+                <a class="ml-2" href="{% url 'core:change_submission_susar_presenter' submission_pk=submission.pk %}">
+                    <span class="fa fa-pencil"></span>
+                    {% trans "change" %}
+                </a>
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th class="text-nowrap">Antragsteller</th>
+        {% with submission_form.submitter_organisation as organisation %}
+            <td>{{ submission_form.submitter }}{% if organisation %} ({{ organisation }}){% endif %}</td>
+        {% endwith %}
+    </tr>
+    <tr>
+        <th class="text-nowrap">Sponsor</th>
+        {% with submission_form.sponsor_name as organisation %}
+            <td>{{ submission_form.sponsor }}{% if organisation %} ({{ organisation }}){% endif %}</td>
+        {% endwith %}
+    </tr>
+    <tr>
+        <th class="text-nowrap">Rechnungsempfänger</th>
+        {% with submission_form.invoice_name as organisation %}
+            <td>
+            {% if organisation %}
+                {{ submission_form.invoice_contact }}{% if organisation %} ({{ organisation }}){% endif %}
+            {% else %}
+                <em>{% trans "same as sponsor" %}</em>
+            {% endif %}
+            </td>
+        {% endwith %}
+    </tr>
+    <tr>
+        <th class="text-nowrap">Hauptprüfer</th>
+        <td>
+            {% with submission_form.primary_investigator as pi %}
+                {% if pi %}
+                    {{ pi.contact.full_name }}{% if pi.organisation %} ({{ pi.organisation }}){% endif %}
+                {% else %}
+                    <em>{% trans "No Primary Investigator" %}</em>
+                {% endif %}
+            {% endwith %}
+        </td>
+    </tr>
+    <tr>
+        <th class="text-nowrap">Phase</th>
+        <td>
+            {{ submission.lifecycle_phase }}
+        </td>
+    </tr>
+    <tr>
+        <th class="text-nowrap">Typ</th>
+        <td>
+            {{ submission_form.get_type_display }}
+        </td>
+    </tr>
+    <tr>
+        <th class="text-nowrap">Kategorien</th>
+        <td>
+            {% for cat in submission.medical_categories.all %}
+                {{ cat }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <th class="text-nowrap">Ethikkommission</th>
+        <td>{{ submission_form.main_ethics_commission|default:'<em>Keine Angabe</em>' }}</td>
+    </tr>
+    {% if user.profile.is_internal %}
+    <tr>
+        <th class="text-nowrap">Arbeitsablauf</th>
+        <td>
+            {% if submission.workflow_lane %}
+                {{ submission.get_workflow_lane_display }}
+            {% else %}
+                {% trans 'New/Undecided' %}
+            {% endif %}
+        </td>
+    </tr>
+    {% endif %}
+    <tr>
+        <th class="text-nowrap">Sitzungen</th>
+        <td>
+            {% sudo %}{# non-internal users aren't allowed to see meetings by default (see auth_conf.py) #}
+            {% for meeting in submission.meetings.all %}
+                <div>
+                    {% if user.profile.is_internal %}
+                        <a href="{% url 'meetings:meeting_details' meeting_pk=meeting.pk %}">{{ meeting.start|date:'d.m.Y' }} {{ meeting.title }}</a>
+                    {% else %}
+                        {{ meeting.start|date:'d.m.Y' }} {{ meeting.title }}{% if not forloop.last %}, {% endif %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+            {% endsudo %}
+            {% if user.profile.is_executive and submission.is_reschedulable %}
+                <a href="{% url 'meetings:reschedule_submission' submission_pk=submission.pk %}">{% trans 'Reschedule' %}</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% if user.profile.is_internal %}
+    <tr>
+        <th class="text-nowrap">Voten</th>
+        <td>
+            {% for vote in published_votes %}
+                {% if vote.result %}
+                <div>{{ vote.result_text }}{% if vote.top %} (in der Sitzung am {{ vote.top.meeting.start|date:'d.m.Y' }}){% endif %}</div>
+                {% endif %}
+            {% endfor %}
+        </td>
+    </tr>
+    {% endif %}
+    {% if user.profile.is_internal and external_review_checklists %}
+    <tr>
+        <th class="text-nowrap">Gutachten</th>
+        <td>
+            {% for checklist in external_review_checklists %}
+                <div>{{ checklist }} [{{ checklist.get_status_display }}]
+                {% if checklist.status == 'new' or checklist.status == 'review_fail' %}
+                    <a class="ml-2" href="{% url 'core:drop_checklist_review' submission_form_pk=submission_form.pk checklist_pk=checklist.pk %}">
+                        {% trans "drop" %}
+                    </a>
+                {% endif %}</div>
+            {% endfor %}
+        </td>
+    </tr>
+    {% elif user not in submission_form.get_presenting_parties %}
+        <tr>
+            <th class="text-nowrap">Gutachten erforderlich</th>
+            <td>{{ external_review_checklists|yesno }}</td>
+        </tr>
+    {% endif %}
+</table>
+
+{% if user.profile.is_internal %}
+    <div class="mt-4" data-widget-url="{% url 'core:index' submission_pk=submission.pk %}"></div>
+{% endif %}

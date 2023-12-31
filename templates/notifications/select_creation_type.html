@@ -1,0 +1,29 @@
+{% extends 'core.html' %}
+{% load i18n %}
+
+{% block htmltitle %}{% trans "New Notification" %} | {{ block.super }}{% endblock %}
+
+{% block headertitle %}
+  Neue Meldung zur laufenden Studie(n)
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="m-3 row">
+        {% for notification_type in notification_types %}
+            <div class="col-lg-6">
+                <a class="btn btn-block btn-primary mb-3" href="{% url 'notifications:create_notification' notification_type_pk=notification_type.pk %}">
+                    {{ notification_type.name }}
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <div class="text-center">
+        <span class="fa fa-info text-info"></span>
+        Um eine Protokolländerung zu machen, gehen Sie in die betreffende Studie und klicken Sie auf den Knopf Amendment.
+    </div>
+</div>
+{% endblock %}
+
+{% block menuSelection %}notifications{% endblock %}

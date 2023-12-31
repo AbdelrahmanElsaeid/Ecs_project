@@ -1,0 +1,55 @@
+{% extends 'pdf/skeleton.html' %}
+{% load core corepdf i18n notifications %}
+
+{% block title %}Meldung{% endblock %}
+
+{% block content %}
+    {% include 'pdf/ec_head.html' %}
+    <div class="header">
+        <h1>{% block answer_title %}Antwort zur Meldung vom {{ notification.timestamp|date:'d.m.Y' }}<br/>{{ notification.short_name }}{% endblock %}</h1>
+    </div>
+    
+    <div>
+        {% block study_info %}
+        <h4>Angaben zur Studie</h4>
+        {% for sf in notification.submission_forms.all %}
+        <p>
+            <b>EK Nr:</b> <b>{{ sf.submission.get_ec_number_display }}</b><br />
+            <b>Projekttitel:</b> {{ sf.submission.project_title_display }}<br />
+            <b>Antragsteller:</b> {{ sf.submitter }}<br />
+            <b>Institution:</b> {{ sf.submitter_organisation }}<br />
+            <b>Sponsor:</b> {{ sf.sponsor_name }}<br />
+        <p>
+        {% endfor %}
+        {% endblock %}
+    </div>
+
+    {% block documents %}
+        {% if documents %}
+            <h4>Eingereichte Unterlagen</h4>
+            {% include 'pdf/documents.html' %}
+        {% endif %}
+    {% endblock %}
+
+    <p style="height:0.5cm"></p>
+    <p>{{ answer.text|linebreaksbr }}</p>
+
+    {% if notification.type.grants_vote_extension %}
+        <br />
+        <p>Die aktuelle Gültigkeit des Votums endet mit
+            <b>{{ notification.get_submission.votes.positive.permanent.latest.valid_until|date:'d.m.Y' }} </b></p>
+    {% endif %}
+
+    {% block reviewer %}
+        {% if answer.notification.type.name == 'Amendment' %}
+            {% with answer.notification|amendment_reviewer as reviewer %}
+            {% if reviewer %}
+                <p>{{ reviewer }}</p>
+            {% endif %}
+            {% endwith %}
+        {% endif %}
+    {% endblock %}
+
+
+    <p><b>Datum der Ausfertigung:</b> {% now "d.m.Y" %}</p>
+{% endblock %}

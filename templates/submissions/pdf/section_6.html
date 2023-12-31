@@ -1,0 +1,55 @@
+{% load core corepdf %}
+
+<p>6.1. Welche Maßnahmen bzw. Behandlungen werden <b>ausschließlich studienbezogen</b> durchgeführt? </p>
+
+<center>
+<table class="full_width withborders">
+    <thead>
+        <tr>
+            <th style="width: 30%;">Art</th>
+            <th style="width: 30%;">Anzahl/Dosis</th>
+            <th style="width: 25%;">Zeitraum</th>
+            <th style="width: 15%;">Insgesamt</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for m in submission_form.measures_study_specific %}
+            <tr>
+                <td>{{ m.type }}</td>
+                <td>{{ m.count }}</td>
+                <td>{{ m.period }}</td>
+                <td>{{ m.total }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</center>
+
+<p>6.2. Welche speziellen Untersuchungen (<strong>nur invasive und strahlenbelastende</strong>) werden während des Studienzeitraumes <strong>zu Routinezwecken</strong> durchgeführt: </p>
+
+<table class="full_width withborders">
+    <thead>
+        <tr>
+            <th style="width: 30%;">Art</th>
+            <th style="width: 30%;">Anzahl/Dosis</th>
+            <th style="width: 25%;">Zeitraum</th>
+            <th style="width: 15%;">Insgesamt</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for m in submission_form.measures_nonspecific %}
+            <tr>
+                <td>{{ m.type }}</td>
+                <td>{{ m.count }}</td>
+                <td>{{ m.period }}</td>
+                <td>{{ m.total }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p> 6.3. Ergänzende Informationen zu studienbezogenen Maßnahmen und alle erforderlichen Abweichungen von der Routinebehandlung: </p>
+
+<div class="value">
+    {{ submission_form.additional_therapy_info|default_if_none:""|linebreaksbr }}
+</div>

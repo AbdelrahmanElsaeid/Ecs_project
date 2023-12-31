@@ -1,0 +1,205 @@
+{% extends 'meetings/assistant/base.html' %}
+{% load core i18n userutils meetingutils widget_tweaks %}
+
+{% block meeting_assistant_body %}
+    <div class="column_main mr-3">
+        {% if not meeting.open_tops.exists and meeting.started and not meeting.ended %}
+            <div class="mb-3 text-center text-danger">
+                Alle TOPs wurden geschlossen. <b>Achtung: Weitere TOPs überprüfen.</b> Sie können die Sitzung jetzt beenden.
+            </div>
+        {% endif %}
+    <form id="meeting_assistant_form" action="{% url 'meetings:meeting_assistant_top' meeting_pk=meeting.pk top_pk=top.pk %}" method="post" class="open-in-widget">
+        {% csrf_token %}
+        <h3>{{ top }}, {{ submission|ec_number|default:top.title }}{% if submission %} {% with top|last_recessed_vote as vote %}{% if vote %}({% trans "Recessed" %}, {% if vote.result == '3a' %}{% trans "not examined" %}{% else %}{% trans "examined" %}{% endif %}) {% endif %}{% endwith %}<a class="fa fa-search text-info" href="{% url 'view_submission' submission_pk=submission.pk %}" target="_blank"></a>{% endif %}</h3>
+        {% if not top.is_break %}
+            <div>
+                {{ submission.project_title_display }}
+            </div>
+            {% if top.submission.invite_primary_investigator_to_meeting %}
+                {% with top.submission.current_submission_form.primary_investigator as pi %}
+                <b>Prüfer ({% if pi.user %}{{ pi.user }}{% else %}{{ pi.contact.full_name }}{% endif %}) eingeladen um {{ top.start|datetimeround:-10|date:'H:i' }} Uhr</b>
+                {% endwith %}
+            {% endif %}
+        {% endif %}
+        <span class="meta">
+            Geplante Startzeit: {{ top.start|date:'H:i' }} Uhr,
+            Geplante Dauer: {{ top.duration|simple_timedelta_format }}
+        </span>
+    {% if not submission %}
+        <div class="meeting_assistant_block">
+            {% if not top.is_break %}
+                {{ form.text|add_class:'form-control' }}
+            {% endif %}
+
+            <div class="text-center">
+                {% if top.is_break %}
+                    <h1 class="text-danger my-3">PAUSE</h1>
+                {% endif %}
+            </div>
+            <div class="text-center mt-5">
+                <a id="complete" class="btn btn-primary btn-block" href="">Fertig</a>
+            </div>
+        </div>
+    {% else %}
+        <input id="id_close_top" type="hidden" name="close_top" value="1" />
+        <input id="id_simple_save" type="hidden" name="simple_save" value="" />
+          <h3>Votum</h3>
+            <div class="meeting_assistant_block">
+                          
+              <div class="float-left">
+                  {% if form.result.errors %}
+                      <span class="errors">{{ form.result.errors }}</span>
+                  {% endif %}
+                  {{ form.result }}
+              </div>
+  
+              <div class="float-left">
+                <a id="complete" class="btn btn-primary btn-block {% if vote and not top.is_open %}active{% endif %}" href="">Fertig</a>
+                <a id="save" class="btn btn-secondary btn-block" href="">Nur Speichern<br><small>Nicht abgeschlossen</small></a>
+              </div>
+              
+            </div>
+            
+            {{ form.text|add_class:'form-control' }}
+    {% endif %}
+
+    </form>
+            
+  </div>
+{% endblock %}
+
+{% block meeting_assistant_navigation %}
+    <div class="btn-group-vertical btn-block">
+    {% if top.previous_open %}
+        <a class="btn btn-secondary open-in-widget" href="{% url 'meetings:meeting_assistant_top' meeting_pk=meeting.pk top_pk=top.previous_open.pk %}">
+            Vorheriges offenes TOP ({{ top.previous_open }})
+        </a>
+    {% endif %}
+    {% if top.next_open %}
+        <a class="btn btn-secondary open-in-widget" href="{% url 'meetings:meeting_assistant_top' meeting_pk=meeting.pk top_pk=top.next_open.pk %}">
+            Nächstes offenes TOP ({{ top.next_open }})
+        </a>
+    {% endif %}
+    </div>
+
+    <div class="btn-group-vertical btn-block">
+    {% if top.previous %}
+        <a class="btn btn-secondary open-in-widget" href="{% url 'meetings:meeting_assistant_top' meeting_pk=meeting.pk top_pk=top.previous.pk %}">
+            Vorheriges TOP ({{ top.previous }})
+        </a>
+    {% endif %}
+    {% if top.next %}
+        <a class="btn btn-secondary open-in-widget" href="{% url 'meetings:meeting_assistant_top' meeting_pk=meeting.pk top_pk=top.next.pk %}">
+            Nächstes TOP ({{ top.next }})
+        </a>
+    {% endif %}
+    </div>
+
+    {{ block.super }}
+{% endblock %}
+
+{% block meeting_assistant_sidebar %}
+    <div class="column">
+        <ul class="list-group">
+          {% for blueprint, checklists in checklist_review_states %}
+            {% for task, checklist in checklists %}
+              <li class="list-group-item d-block {% if not checklist or not task.closed_at or not checklist.is_complete %}list-group-item-warning{% elif checklist.is_positive %}list-group-item-success{% else %}list-group-item-danger{% endif %}">
+                <div class="font-weight-bold">
+                    {{ task.task_type }}
+                </div>
+                {% if task.assigned_to %}
+                  ({{ task.assigned_to }})
+                {% endif %}
+                {% if checklist and task.closed_at %}
+                  <div class="btn-group-vertical btn-block">
+                  {% if checklist.has_positive_comments %}
+                    {% url 'checklists:checklist_comments' flavour='positive' checklist_pk=checklist.pk as copy_url %}
+                    <a class="textblock btn btn-sm btn-secondary" href="{{ copy_url }}">
+                        {% trans 'copy positive' %}
+                    </a>
+                  {% endif %}
+                  {% if checklist.has_negative_comments %}
+                    {% url 'checklists:checklist_comments' flavour='negative' checklist_pk=checklist.pk as copy_url %}
+                    <a class="textblock btn btn-sm btn-secondary" href="{{ copy_url }}">
+                        {% trans 'copy negative' %}
+                    </a>
+                  {% endif %}
+                  </div>
+                {% endif %}
+              </li>
+            {% endfor %}
+          {% endfor %}
+
+          {% if submission %}
+              {% sudo %}
+              {% with submission.paper_submission_review_task as task %}
+              {% if task and not task.closed_at %}
+                  <li class="list-group-item d-block list-group-item-danger font-weight-bold">
+                    <strong>
+                        {{ task.task_type }}
+                    </strong>
+                    {% if task.assigned_to %}
+                      ({{ task.assigned_to }})
+                    {% endif %}
+                  </li>
+              {% endif %}
+              {% endwith %}
+              {% endsudo %}
+          {% endif %}
+        </ul>
+    </div>
+
+    <script type="text/javascript">
+        $(function(){
+            {% if submission %}
+                new ecs.textarea.TextArea('#id_text', [
+                    ecs.textarea.toolbarItems.boilerplate(
+                        "{{ _('Insert Boilerplate')|escapejs }}",
+                        "{% url 'boilerplate:select_boilerplate' %}"
+                    )
+                ]);
+            {% elif not top.is_break %}
+                new ecs.textarea.TextArea('#id_text', [
+                    ecs.textarea.toolbarItems.versionHistory(
+                        "{{ _('History')|escapejs }} ({{ answer_version }})",
+                        "{% url 'core:field_history' model_name='timetable_entry' pk=top.pk %}"
+                    ),
+                    ecs.textarea.toolbarItems.boilerplate(
+                        "{{ _('Insert Boilerplate')|escapejs }}",
+                        "{% url 'boilerplate:select_boilerplate' %}"
+                    )
+                ]);
+            {% endif %}
+            
+            var meetingAssistantForm = $('#meeting_assistant_form');
+            $('#complete').click(function(ev) {
+                ev.preventDefault();
+                meetingAssistantForm.submit();
+            });
+            $('#save').click(function(ev) {
+                ev.preventDefault();
+                $('#id_close_top').val('0');
+                $('#id_simple_save').val('1');
+                meetingAssistantForm.submit();
+            });
+            $('a.textblock').click(function(ev) {
+                ev.preventDefault();
+                $.get({
+                    url: $(this).attr('href'),
+                    success: function(text) {
+                        var textarea = $('#id_text');
+                        var v = textarea.val();
+                        var s = textarea.prop('selectionStart');
+                        var e = textarea.prop('selectionEnd');
+                        text += '\n';
+                        textarea.val(v.slice(0, s) + text + v.slice(e, -1));
+                        textarea.prop('selectionStart', s + text.length);
+                        textarea.prop('selectionEnd', s + text.length);
+                        textarea.trigger('input');
+                        textarea.focus();
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

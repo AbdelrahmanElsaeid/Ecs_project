@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style type="text/css">
+            div#main {
+                font-family:sans-serif;
+                margin:3rem auto 0;
+                padding:1rem;
+                width:33rem;
+                border:1px solid black;
+                border-radius:0.25rem;
+                text-align:center;
+                background-color:#d9edf7;
+                border-color:#bcdff1;
+                color:#31708f;
+            }
+            h3 {
+                margin-top:0;
+            }
+            div {
+                margin-top:1rem;
+            }
+            a:link, a:visited {
+                color:#0275d8;
+                text-decoration:none;
+            }
+        </style>
+    </head>
+    <body>
+        <div id ="main">
+            <h3>Es ist ein Fehler aufgetreten!</h3>
+            <div>
+                Der Fehler wurde protokolliert. 
+                {% if request.sentry.id %}
+                    Um auf diesen Fehler Bezug zu nehmen,<br> 
+                    notieren Sie sich bitte diese Nummer: 
+                    <p>
+                        <strong>{{ request.sentry.id }}</strong>
+                    </p>
+                {% endif %}
+            </div>
+            <div>
+                Um zur Hauptseite zu wechseln, <a href="/"> klicken Sie hier</a>.
+            </div>
+        </div>
+    </body>
+</html>
+

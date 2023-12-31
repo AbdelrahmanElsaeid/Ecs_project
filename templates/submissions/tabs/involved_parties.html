@@ -1,0 +1,99 @@
+{% load i18n %}
+<h3>{% trans "Involved Parties" %}</h3>
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th>{% trans 'Involvement' %}</th>
+            <th>{% trans 'Name' %}</th>
+            <th>{% trans 'Organization' %}</th>
+            {% if user.profile.is_internal %}
+                <th>{% trans 'E-Mail' %}</th>
+            {% endif %}
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for party in submission_form.get_involved_parties %}
+            <tr>
+                <td>{{ party.involvement }}</td>
+                <td>{{ party.name|default:'' }}</td>
+                <td>{{ party.organization|default:'' }}</td>
+                {% if user.profile.is_internal %}
+                    <td>{{ party.email|default:'' }}</td>
+                {% endif %}
+                <td>
+                    {% if party.user %}
+                        <a href="{% url 'communication:new_thread' submission_pk=submission_form.submission.pk to_user_pk=party.user.pk %}" target="_blank">
+                            <span class="fa fa-envelope-o"></span>
+                            {% trans "Send Message" %}
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if temporary_auth or user.profile.is_executive %}
+    <h3 class="mt-4">{% trans 'Temporary Authorization' %}</h3>
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>{% trans 'Timeframe' %}</th>
+                <th>{% trans 'Name' %}</th>
+                <th>{% trans 'Organization' %}</th>
+                {% if user.profile.is_internal %}
+                    <th>{% trans 'E-Mail' %}</th>
+                {% endif %}
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ta in temporary_auth %}
+                <tr>
+                    <td>{{ ta.start|date:'d.m.Y, H:i' }} Uhr – {{ ta.end|date:'d.m.Y, H:i' }} Uhr</td>
+                    <td>{{ ta.user }}</td>
+                    <td>{{ ta.user.profile.organisation }}</td>
+                    {% if user.profile.is_internal %}
+                        <td>{{ ta.user.email|default:'' }}</td>
+                    {% endif %}
+                    <td>
+                        <a href="{% url 'communication:new_thread' submission_pk=submission_form.submission.pk to_user_pk=ta.user.pk %}" target="_blank">
+                            <span class="fa fa-envelope-o"></span>
+                            {% trans "Send Message" %}
+                        </a>
+                    </td>
+                        {% if ta.is_active and user.profile.is_executive %}
+                            <td>
+                                <a href="{% url 'core:revoke_temporary_access' submission_pk=submission.pk temp_auth_pk=ta.pk %}">
+                                    <span class="fa fa-ban text-danger"></span>
+                                </a>
+                            </td>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr class="text-center text-muted">
+                    <td colspan="6">
+                        <em>{% trans 'No temporary authorizations yet.' %}</em>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+{% if user.profile.is_executive %}
+    <form class="container" action="{% url 'core:grant_temporary_access' submission_pk=submission.pk %}" method="post">
+        {% csrf_token %}
+        {% for field in temporary_auth_form %}
+            {% include 'bootstrap/form_field.html' with inline=True %}
+        {% endfor %}
+        <input class="btn btn-primary mb-3" type="submit" value="{% trans 'Authorize' %}"/>
+    </form>
+{% endif %}
+
+{% if user.profile.is_internal %}
+    <h3 class="mt-4">{% trans "Biased Parties" %}</h3>
+    <div data-widget-url="{% url 'core:biased_board_members' submission_pk=submission.pk %}"></div>
+{% endif %}

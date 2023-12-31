@@ -1,0 +1,149 @@
+{% load core i18n %}
+
+{% if running_optimization %}
+  <h1>Es läuft derzeit eine Optimierung!</h1>
+{% endif %}
+{% if recommendations_not_done %}
+    <div class="text-danger m-4">
+        <strong>Achtung: Es sind noch nicht alle Empfehlungen fertig abgegeben.</strong>
+    </div>
+{% endif %}
+<div id="meeting_editor">
+    {% if not readonly %}
+        <ol class="options">
+            <li><a class="open-in-widget" href="{% url 'meetings:add_free_timetable_entry' meeting_pk=meeting.pk %}">Termin hinzufügen</a></li>
+            <li><a class="open-in-widget" href="{% url 'meetings:optimize_timetable' meeting_pk=meeting.pk algorithm='ga' %}">Optimieren</a></li>
+            <li><a class="open-in-widget" href="{% url 'meetings:optimize_timetable_long' meeting_pk=meeting.pk algorithm='ga' %}">Lange optimieren</a></li>
+        </ol>
+    {% endif %}
+    <div class="my-2">
+    Wartezeit: 
+        sum={{ meeting.metrics.waiting_time_total|simple_timedelta_format|default:'-' }},
+        avg={{ meeting.metrics.waiting_time_avg|simple_timedelta_format|default:'-' }}, 
+        max={{ meeting.metrics.waiting_time_max|simple_timedelta_format|default:'-' }}, 
+        min={{ meeting.metrics.waiting_time_min|simple_timedelta_format|default:'-' }},
+        var={{ meeting.metrics.waiting_time_variance|simple_timedelta_format|default:'-' }},
+    </div>
+    <div class="my-2">Verletzte Einschränkungen: {{ meeting.metrics.constraint_violation_total }}</div>
+    <div class="score">Score: {{ score }}</div>
+    <ol id="timetable">
+    {% for entry in meeting %}
+        <li id="entry_{{ entry.pk }}" class="entry{% if entry.is_break %} break{% endif %}{% if not entry.submission %} free{% endif %}{% if entry in meeting.timetable_entries_which_violate_constraints %} violates_constraint{% endif %}{% if entry.has_ignored_participations %} has_ignored_participations{% endif %}">
+            <span class="dragHandle bg-primary text-white">
+                {{ entry }}
+                {% if not readonly %}
+                    <div class="text-center">
+                        <span class="fa fa-bars fa-2x"></span>
+                    </div>
+                {% endif %}</span>
+            <h4>
+                {{ entry.start|date:'H:i' }} - {{ entry.end|date:'H:i' }}
+                {{ entry.title }}
+                {% if entry.submission %}
+                    <a href="{% url 'core:view_submission' submission_pk=entry.submission.pk %}" target="_blank">{{ entry.submission|ec_number }}</a>
+                    {{ entry.submission.project_title_display }}
+                {% endif %}
+            </h4>
+            {% with entry|last_recessed_vote as vote %}
+                {% if vote %}
+                    <span class="float-right mr-3">
+                        ({% trans "Recessed" %}, {% if vote.result == '3a' %}{% trans "not examined" %}{% else %}{% trans "examined" %}{% endif %})
+                    </span>
+                {% endif %}
+            {% endwith %}
+            {% if not readonly %}
+                {% if not entry.submission %}
+                    <a class="open-in-widget remove fa fa-times text-danger" href="{% url 'meetings:remove_timetable_entry' meeting_pk=meeting.pk entry_pk=entry.pk %}"></a>
+                {% endif %}
+                <form action="{% url 'meetings:update_timetable_entry' meeting_pk=meeting.pk entry_pk=entry.pk %}" method="post" class="open-in-widget">
+                    {% csrf_token %}
+                    <input type="text" value="{{ entry.duration }}" name="duration" class="duration" />
+                    <input type="text" value="{{ entry.optimal_start|default:'' }}" name="optimal_start" class="optimal_start" />
+                </form>
+            {% endif %}
+            {% if entry.is_expedited %}E{% endif %} {% if entry.is_retrospective %}R{% endif %} {% if entry.is_thesis %}T{% endif %}
+            {% if not entry.is_break%}
+                {% if entry.submission or entry.users %}
+                <span class="users">Teilnehmer: 
+                    {% if entry.submission.invite_primary_investigator_to_meeting %}
+                        {% with entry.submission.current_submission_form.primary_investigator as pi %}
+                        Prüfer ({{ pi.contact.full_name }}){% if entry.users %},{% endif %}
+                        {% endwith %}
+                    {% endif %}
+                    {% for user, ignored in entry.users %}
+                        <a href="{% url 'meetings:toggle_participation' meeting_pk=meeting.pk user_pk=user.pk entry_pk=entry.pk %}" class="open-in-widget{% if ignored %} ignored{% endif %}">{{ user }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </span>
+                {% endif %}
+            {% else %}
+                <span>
+                    Brötchen: {% trans 'before' %}: {{ entry.broetchen.0 }}, {% trans 'waiting' %}: {{ entry.broetchen.1 }}, {% trans 'after' %}: {{ entry.broetchen.2 }}
+                </span>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ol>
+    <div id="userlist">
+        <h4>Teilnehmer ({{ meeting.users_with_constraints|length }})</h4>
+        <ul class="list-group list-group-flush">
+            {% for user in meeting.users_with_constraints %}
+                <li class="list-group-item p-2"><span class="user">{{ user }}</span>
+                    <div class="info">
+                    {% with meeting.metrics.waiting_time_per_user|getitem:user as waiting_time %}
+                        {% if waiting_time %}
+                            <span class="text-muted">Wartezeit: {{ waiting_time|simple_timedelta_format }}</span>
+                        {% endif %}
+                    {% endwith %}
+                    {% if user.constraints %}
+                        <ul class="list-unstyled">
+                            {% for constraint in user.constraints %}
+                            <li class="mt-1 {% if meeting.metrics.constraint_violations|getitem:constraint %}text-danger{% else %}text-success{% endif %}">
+                                    {{ constraint.start_time|time:"H:i" }} - {{ constraint.end_time|time:"H:i" }}
+                                    ({{ constraint.get_weight_display }})
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {% if not readonly %}
+                        <div><a href="{% url 'meetings:edit_user_constraints' meeting_pk=meeting.pk user_pk=user.pk %}">Einschränkungen bearbeiten</a></div>
+                    {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+    {% if running_optimization %}
+        setTimeout(function() {
+            window.location.reload();
+        }, 10000);
+    {% else %}
+        $('.entry form input').keydown(function(ev){
+            if (ev.key == 'Enter')
+                $(this).parents('form').submit();
+        });
+
+        {% if not readonly %}
+            $('#timetable').sortable({
+                handle: '.dragHandle',
+                placeholder: 'entry-placeholder',
+                start: function(ev, ui) {
+                    ui.item.data('startPosition', ui.item.index());
+                },
+                update: function(ev, ui) {
+                    var fromIndex = ui.item.data('startPosition');
+                    ui.item.removeData('startPosition');
+                    var toIndex = ui.item.index();
+                    var widget = $('#timetable_tab .ecs-Widget').data('widget');
+                    widget.load(
+                        '{% url 'meetings:move_timetable_entry' meeting_pk=meeting.pk %}?from_index=' + fromIndex + '&to_index=' + toIndex
+                    );
+                }
+            });
+        {% endif %}
+    {% endif %}
+    });
+</script>

@@ -1,0 +1,52 @@
+{% extends 'pdf/skeleton.html' %}
+
+{% block title %}{{ vote }}{% endblock %}
+
+{% block inline_css %}
+    {{ block.super }}
+    <style type="text/css">
+        body, #content {
+            width: auto;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<center><p><b>
+{% if vote.top %}
+    Sitzung der Ethik-Kommission am {{ vote.top.meeting.start|date:'d.m.Y' }}, {{ vote.top }}:
+{% else %}
+    {% if vote.result == '1' or vote.result == '4' %}Votum{% else %}Mitteilung{% endif %}:
+{% endif %}
+</b></p></center>
+
+<p>
+    <b>EK Nr:</b> <b>{{ vote.get_ec_number }}</b><br />
+    {%if form.eudract_number %}
+        <b>EudraCT Nr:</b> {{form.eudract_number}}<br />
+    {% endif %}
+    <b>Projekttitel:</b> {{ submission.project_title_display }}<br />
+    <b>Antragsteller/in:</b> {{ form.submitter }}<br />
+    <b>Institution:</b> {{ form.submitter_organisation }}<br />
+    <b>Sponsor:</b> {{ form.sponsor_name }}<br />
+</p>
+
+<h4>Die Kommission fasst folgenden Beschluss:</h4>
+
+<p>{% include 'votes/pdf/vote_result.html' with result=vote.result %}<p>
+
+{% if past_votes %}
+    {% for vote in past_votes %}
+        <b>Ergänzende Kommentare {% if vote.top %} der Sitzung am {{ vote.top.meeting.start|date:'d.m.Y' }}{% endif %}:</b><br>
+        <p>{{ vote.text|linebreaksbr }}</p>
+    {% endfor %}
+    {{ submission.current_published_vote.text|linebreaksbr }}
+{% endif %}
+
+{% if vote.text %}
+  <b>Ergänzende Kommentare{% if vote.top %} der Sitzung am {{ vote.top.meeting.start|date:'d.m.Y' }}{% endif %}:</b><br />
+  <p>
+    {{ vote.text|linebreaksbr }}
+  </p>
+{% endif %}
+{% endblock %}

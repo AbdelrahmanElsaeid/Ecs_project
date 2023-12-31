@@ -1,0 +1,15 @@
+.boilerplate_container {
+    display: none;
+    position: relative;
+
+    .boilerplate_selector {
+        position: absolute;
+        width: 100%;
+        z-index: 1000;
+
+        .resultlist {
+            max-height: 20rem;
+            overflow: auto;
+        }
+    }
+}

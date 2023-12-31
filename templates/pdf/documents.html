@@ -1,0 +1,26 @@
+{% regroup documents by doctype as doctype_list %}
+
+{% for doctype in doctype_list %}
+    <h4>{{ doctype.grouper }}</h4>
+
+    <table class="full_width withborders">
+        <thead>
+            <tr>
+                <th style="width: 60%;">Name</th>
+                <th style="width: 25%;">Version</th>
+                <th style="width: 15%;">Datum</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for doc in doctype.list %}
+                <tr>
+                    <td>{{ doc.name }}</td>
+                    <td>{{ doc.version }}</td>
+                    <td>{{ doc.date|date:'d.m.Y' }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% empty %}
+    <em>(keine Unterlagen)</em>
+{% endfor %}

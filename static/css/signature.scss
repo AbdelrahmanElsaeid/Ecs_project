@@ -1,0 +1,24 @@
+#batch_sign {
+    position: relative;
+
+    .sign-nav {
+        position: relative;
+        width: 220px;
+
+        iframe {
+            min-height: 250px;
+        }
+    }
+
+    .preview {
+        position: absolute;
+        left: 250px;
+        top: 0;
+        right: 0;
+
+        iframe {
+            width: 100%;
+            height: 500px;
+        }
+    }
+}

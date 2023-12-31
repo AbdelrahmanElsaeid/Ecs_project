@@ -1,0 +1,23 @@
+{% extends 'shell.html' %}
+{% load compress i18n static %}
+
+{% block htmlcss %}
+    {{ block.super }} 
+    <link rel="stylesheet" type="text/css" href="{% static 'css/public.css' %}" /> 
+{% endblock %}
+
+{% block htmlbody %}
+<div id="container">
+    <div id="content">
+        <div class="innerwrap">
+            {% block content %}
+                <a href="/">
+                    <img class="logo full mb-3" src="{% url 'core:logo' %}" alt="Logo"/>
+                </a>
+            {% endblock %}
+        </div>
+    </div>
+
+    {% include 'imprint.html' %}
+</div>
+{% endblock %}

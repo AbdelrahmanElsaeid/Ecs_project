@@ -1,0 +1,14 @@
+{% extends 'public.html' %}
+{% load i18n %}
+
+{% block content %}
+
+    {{ block.super }}
+
+    <div class="alert alert-danger">
+        <p>Sie haben Ihre E-Mailadresse {{ existing_user.email }} bereits registriert.</p>
+        <p><a href="{% url 'users:login' %}" class="alert-link">Zum Login ..</a></p>
+        <p>Sollten sie Ihr Passwort vergessen haben oder noch keines gesetzt haben, können Sie <a href="{% url 'users:request_password_reset' %}" class="alert-link">ein neues Passwort vergeben</a>.</p>
+    </div>
+
+{% endblock %}

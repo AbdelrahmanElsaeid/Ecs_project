@@ -1,0 +1,15 @@
+{% load core %}
+
+<form action="{{ request.path }}" method="post" class="open-in-widget">
+    {% csrf_token %}
+    <h3>Neuer TOP</h3>
+
+    {% for field in form %}
+        {% include "bootstrap/form_field.html" with inline=True %}
+    {% endfor %}
+
+    <input class="btn btn-primary" type="submit" value="Speichern" />
+    <a class="btn btn-danger open-in-widget" href="{% url 'meetings:timetable_editor' meeting_pk=meeting.pk %}">
+        Abbrechen (zurück zur Sitzung)
+    </a>
+</form>

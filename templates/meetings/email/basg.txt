@@ -1,0 +1,8 @@
+{% load core %}
+Im Anhang finden Sie das elektronisch signierte Votum.
+
+{% db_setting 'signature_block' %}
+
+{% ec_name %}
+{% db_setting 'address' %}
+{% db_setting 'contact_url' %}

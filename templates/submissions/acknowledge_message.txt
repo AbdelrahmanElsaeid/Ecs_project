@@ -1,0 +1,8 @@
+{% extends 'msg_core.txt' %}
+{% load core %}
+
+{% block content %}
+Die Ethik-Kommission bestätigt den Eingang Ihres Antrags {{ submission|ec_number }} "{{ submission.project_title_display }}".
+Informationen über den Stand der Bearbeitung der Studie finden Sie in Ihrem ECS Account unter dem Reiter Generell/Status.
+Siehe: {{ ABSOLUTE_URL_PREFIX }}{% url 'core:view_submission' submission_pk=submission.pk %}
+{% endblock %}

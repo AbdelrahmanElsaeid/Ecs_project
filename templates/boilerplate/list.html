@@ -1,0 +1,41 @@
+{% extends "core.html" %}
+
+{% load i18n %}
+
+{% block htmltitle %}{% trans 'Boilerplates' %} | {{ block.super }}{% endblock %}
+{% block headertitle %}{% trans 'Boilerplates' %}{% endblock %}
+{% block menuSelection %}administration{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="mb-3">
+        <a href="{% url 'boilerplate:edit_boilerplate' %}" class="btn btn-primary">
+            {% trans 'New' %}
+        </a>
+    </div>
+    {% for text in texts %}
+    <div class="card mb-2">
+        <div class="card-block pb-0">
+            <h4 class="card-title">{{ text.slug }}</h4>
+            <h6 class="card-subtitle text-muted">
+                Erstellt am {{ text.ctime|date:'d.m.Y' }} um {{ text.ctime|date:'H:i' }} Uhr - 
+                Zuletzt bearbeitet am {{ text.mtime|date:'d.m.Y' }} um {{ text.mtime|date:'H:i' }} Uhr von {{ text.author }}
+            </h6>
+        </div>
+        <div class="card-block mt-0">
+            <p class="card-text">{{ text.text|linebreaksbr }}</p>
+            <a href="{% url 'boilerplate:edit_boilerplate' text_pk=text.pk %}" class="card-link">
+                {% trans "edit" %}
+            </a>
+            <a href="{% url 'boilerplate:delete_boilerplate' text_pk=text.pk %}" class="card-link">
+                {% trans 'Delete' %}
+            </a>
+        </div>
+    </div>
+    {% empty %}
+    <div class="boilerplate">
+        <em>{% trans "No boilerplate yet!" %}</em>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

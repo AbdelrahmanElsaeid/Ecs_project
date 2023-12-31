@@ -1,0 +1,16 @@
+{% extends "signature/batch_base.html" %}
+{% load i18n %}
+
+{% block actions %}
+    {{ block.super }}
+
+    {% url 'signature:batch_action' pdf_id=pdf_id action="retry" as retry_url %}
+    <a class="btn btn-primary btn-block mb-3" href="{{ retry_url }}">
+        {% trans 'Try again' %}
+    </a>
+
+    <div class="alert alert-danger mt-5">
+        <strong>{{ error|escape }}</strong>
+        {{ cause|escape }}
+    </div>
+{% endblock %}

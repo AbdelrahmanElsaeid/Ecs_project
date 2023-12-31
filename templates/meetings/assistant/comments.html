@@ -1,0 +1,18 @@
+{% extends 'meetings/assistant/base.html' %}
+{% load core widget_tweaks %}
+
+{% block meeting_assistant_body %}
+    <form id="meeting_comments_form" action="{% url 'meetings:meeting_assistant_comments' meeting_pk=meeting.pk %}" method="post" class="open-in-widget">
+        {% csrf_token %}
+        {{ form.comments|add_class:'form-control' }}
+        <input class="btn btn-primary mt-3" type="submit" value="Speichern und Zurück" />
+    </form>
+
+    <script type="text/javascript">
+        $(window).unload(function(ev) {
+            var data = $('#meeting_comments_form').serializeArray();
+            data.push({name: 'autosave', value: '1'});
+            $.post('{{ request.path }}', data);
+        });
+    </script>
+{% endblock %}

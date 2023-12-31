@@ -1,0 +1,106 @@
+{% extends "core.html" %}
+{% load i18n core communication %}
+
+{% block htmltitle %}{% trans 'New Message' %} | {{ block.super }}{% endblock %}
+{% block menuSelection %}communication{% endblock %}
+
+{% block headertitle %}
+    {% trans "New Message" %}
+    {% if submission %}
+        -
+        <a href="{% url 'core:view_submission' submission_pk=submission.pk %}#communication_tab" target="_blank">
+            {{ submission|ec_number }}
+        </a>
+        <small title="{{ submission.project_title_display }}">
+            {{ submission.project_title_display }}
+        </small>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="message_display container">
+    <form action="{{ request.path }}" method="post" class="form message open-in-widget">
+        {% csrf_token %}
+
+        {% include 'bootstrap/form_field.html' with field=form.subject inline=True %}
+
+        <div class="row">
+            <label class="col-md-2" for="{{ form.receiver.auto_id }}" class="receiver">Empfänger</label>
+            {% if to_user %}
+                <div class="col-md-10 ml-3">
+                    {{ to_user }}
+                    <input type="hidden" name="receiver" value="{{ to_user.pk }}"/>
+                </div>
+            {% else %}
+                <div class="col-md-10 col-form-label">
+                    {% for choice in form.fields.receiver_type.choices %}
+                        <div class="mb-2">
+                            <label for="{{ form.receiver_type.auto_id }}_{{ forloop.counter0 }}">
+                                <input id="{{ form.receiver_type.auto_id}}_{{ forloop.counter0 }}" type="radio" name="{{ form.receiver_type.html_name }}" value="{{ choice.0 }}" {% if choice.0 == form.receiver_type.value %}checked="checked"{% endif %}>
+                                {{ choice.1 }}
+                            </label>
+                            {% if choice.0 == "involved" %}
+                                {{ form.receiver_involved }}
+                                {% if form.receiver_involved.errors %}
+                                    <div class="errors">{{ form.receiver_involved.errors }}</div>
+                                {% endif %}
+                            {% endif %}
+                            {% if choice.0 == "person" %}
+                                {{ form.receiver_person }}
+                                {% if form.receiver_person.errors %}
+                                    <div class="errors">{{ form.receiver_person.errors }}</div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    {% if form.receiver_type.errors %}
+                        <div class="errors">{{ form.receiver_type.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+
+        {% include 'bootstrap/form_field.html' with field=form.text %}
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger mt-3 mb-0" role="alert">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <input type="submit" class="btn btn-primary" value="Nachricht abschicken" />
+    </form>
+</div>
+{% endblock %}
+
+{% block jsbottom %}
+    {{ block.super }}
+    <script type="text/javascript">
+        $(function(){
+            var container = $('.message_display');
+            ecs.setupMessagePopup(container);
+
+            var input_involved = $('#{{ form.receiver_involved.id_for_label }}');
+            input_involved.select2({
+                dropdownParent: input_involved.parent(),
+            });
+
+            var input_person = $('#{{ form.receiver_person.id_for_label }}');
+            input_person.select2({
+                minimumInputLength: 3,
+                dropdownParent: input_person.parent(),
+            });
+
+            new ecs.textarea.TextArea(container.find('textarea[name="text"]'), [
+                {% if user.profile.is_internal %}
+                    ecs.textarea.toolbarItems.boilerplate(
+                        "{{ _('Insert Boilerplate')|escapejs }}",
+                        "{% url 'boilerplate:select_boilerplate' %}"
+                    )
+                {% endif %}
+            ]);
+        });
+    </script>
+{% endblock %}

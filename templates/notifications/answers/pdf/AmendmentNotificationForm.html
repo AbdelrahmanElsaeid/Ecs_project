@@ -1,0 +1,36 @@
+{% extends 'notifications/answers/pdf/base.html' %}
+{% load core notifications %}
+{% block answer_title %}Antwort zur Meldung vom {{ notification.timestamp|date:'d.m.Y' }}<br/>Protokolländerung (Amendment){% endblock %}
+
+{% block study_info %}
+    {{ block.super }}
+    <h4>Liste der Änderungen</h4>
+    {% with notification.amendmentnotification as notification %}
+        <div class="diff">
+            {{ notification|diff:1|safe }}
+        </div>
+    {% endwith %}
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    {% db_setting 'display_biased_in_amendment_answer_pdf' as display_biased %}
+    {% if notification.amendmentnotification.is_substantial and display_biased %}
+        <p>
+            {% db_setting 'member_list_url' as url %}
+            Die aktuelle Mitgliederliste der Ethik-Kommission ist unter folgender Adresse abrufbar:<br>
+            <a href="{{ url }}">{{ url }}</a>
+        </p>
+
+        <p>
+            Mitglieder der Ethik-Kommission, die für diesen Tagesordnungspunkt
+            als befangen anzusehen waren und daher laut Geschäftsordnung an der
+            Entscheidungsfindung/Abstimmung nicht teilgenommen haben:
+            {% for bef in notification.get_submission.biased_board_members.all %}
+                {{ bef }}{% if not forloop.last %},{% endif %}
+            {% empty %}
+                <strong>keine</strong>
+            {% endfor %}
+        </p>
+    {% endif %}
+{% endblock %}

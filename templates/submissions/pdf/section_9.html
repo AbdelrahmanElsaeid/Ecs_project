@@ -1,0 +1,58 @@
+{% load core corepdf %}
+{% include 'pdf/documents.html' %}
+</center>
+
+
+<h4>Name und Unterschrift der Antragstellerin/des Antragstellers</h4>
+
+<p class="pbi_avoid">
+    9.1 Name: <strong> {{ submission_form.submitter_contact }} </strong>
+</p>
+
+<p class="pbi_avoid">
+    9.2 Institution/ Firma: <strong> {{ submission_form.submitter_organisation }} </strong>
+</p>
+
+<p class="pbi_avoid">
+    9.3 Position: <strong> {{ submission_form.submitter_jobtitle }} </strong>
+</p>
+
+<table class="full_width nopadding">
+    <tbody>
+        <tr>
+            <td style="width: 25%;">
+                9.4 Antragsteller/in ist:
+                (nur AMG-Studien)
+            </td>
+            <td style="width: 75%;">
+                {{ submission_form.submitter_is_coordinator|checkbox }} 9.4.1 koordinierende/r Prüfer/in (multizentrische Studie)
+                <br>
+                {{ submission_form.submitter_is_main_investigator|checkbox }} 9.4.2 Hauptprüfer/in (monozentrische Studie)
+                <br>
+                {{ submission_form.submitter_is_sponsor|checkbox }} 9.4.3 Sponsor bzw. Vertreter/in des Sponsors
+                <br>
+                {{ submission_form.submitter_is_authorized_by_sponsor|checkbox }} 9.4.4 vom Sponsor autorisierte Person/Organisation
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<p> Ich bestätige hiermit, dass die in diesem
+Antrag gemachten Angaben korrekt sind und dass ich der Meinung
+bin, dass die Durchführung der Studie in Übereinstimmung mit dem
+Protokoll, nationalen Regelun­gen und mit den Prinzipien der Guten
+Klinischen Praxis möglich sein wird. </p>
+
+<p>
+    Weiters stimme ich mit meiner Unterschrift zu, dass folgende Daten aus meinem Antrag ggf. durch die
+    Ethikkommission veröffentlicht werden, um die Anträge nach Zahl und Inhalt transparent zu machen:<br/>
+    EK-Nummer, Einreich-Datum, Projekttitel, Hauptprüfer, Sponsor/CRO, weitere Zentren.<br/> 
+</p>
+
+
+<div class="signature_date">
+  <span class="line">Unterschrift Antragstellerin/des Antragstellers</span>
+  <span class="line">Datum</span>
+</div>
+
+<div class="infotext">!!! Achtung: Diese Unterschrift ist in jedem Fall erforderlich !!!</div>

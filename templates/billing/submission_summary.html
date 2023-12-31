@@ -1,0 +1,41 @@
+{% extends "core.html" %}
+{% load core i18n %}
+
+{% block menuSelection %}administration{% endblock %}
+
+{% block htmltitle %}Rechnungsstellung - Einreichungen | {{ block.super }}{% endblock %}
+
+{% block headertitle %}
+    Rechnungsstellung - Einreichungen
+{% endblock %}
+
+{% block content %}
+    <div class="container my-3">
+        <a class="btn btn-secondary" href="{% url 'billing:invoice_pdf' invoice_pk=invoice.pk %}">
+            {% trans 'Download Invoice as xls file' %}
+        </a>
+
+        <h2 class="mt-3">{% blocktrans with invoice.created_at|date:'d.m.Y' as date %}Invoice of {{ date }}{% endblocktrans %}</h2>
+        {% with invoice.stats as stats %}
+        <table class="table table-sm">
+            {% for item in stats.summary.values %}
+                <tr>
+                    <td>{{ item.label }}</td>
+                    <td>{{ item.count }}</td>
+                    <td><span class="price">{{ item.price.price|euro }}</span></td>
+                    <td><span class="price">{{ item.price.text }}</span></td>
+                    <td><span class="price">{{ item.price.price|multiply:item.count|euro }}</span></td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td><strong>(brutto = netto)</strong></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><strong>{{ stats.total|euro }}</strong></td>
+            </tr>
+        </table>
+        {% endwith %}
+    </div>
+{% endblock %}
+

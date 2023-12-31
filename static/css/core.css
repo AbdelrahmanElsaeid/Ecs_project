@@ -1,0 +1,131 @@
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-container {
+  overflow: auto;
+  flex: 2 0 0%;
+}
+
+#scratchpad {
+  display: none;
+  flex-direction: column;
+  overflow-y: auto;
+  flex: 1 0 0%;
+  border-color: rgba(0, 0, 0, 0.125);
+  border-style: solid;
+  border-width: 1px 0 0 0;
+}
+#scratchpad form {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+#scratchpad form .ecs-TextAreaToolbar {
+  margin-top: -3rem;
+}
+#scratchpad form textarea {
+  flex-grow: 1;
+  resize: none;
+}
+
+@media (min-width: 1200px) {
+  body {
+    flex-direction: row;
+    margin-right: 100px
+  }
+  #scratchpad {
+    width: 500px;
+    height: 100%;
+    border-width: 0 0 0 1px;
+  }
+}
+/* content */
+.ecs-TextAreaToolbar {
+  display: block;
+}
+.ecs-TextAreaToolbar a {
+  margin: 0 10px 5px 0;
+}
+
+/* documents */
+.document_upload ol {
+  margin: 10px 0px;
+}
+.document_upload input[type=submit].error {
+  background: red;
+}
+.document_upload .warning {
+  display: none;
+}
+.document_upload progress {
+  display: none;
+}
+
+/*
+ * select2 styling
+ *
+ * XXX: Our stylesheets contain some overzelous selectors, so we have to
+ * reset styles for select2.
+ */
+.select2-container {
+  padding: 0 !important;
+  display: inline-block !important;
+}
+.select2-container .selection {
+  display: inline !important;
+  padding: 0 !important;
+}
+.select2-container .selection .select2-selection {
+  padding: 0 !important;
+}
+.select2-container .selection .select2-selection .select2-selection__rendered,
+.select2-container .selection .select2-selection .select2-selection__arrow,
+.select2-container .selection .select2-selection .select2-selection__placeholder {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.select2-container .dropdown-wrapper {
+  padding: 0 !important;
+}
+.select2-container ul {
+  margin: 0 !important;
+}
+
+select[data-ajax--url] {
+  min-width: 250px;
+}
+
+nav.navbar .navbar-brand img {
+  width: auto;
+  max-height: 50px;
+}
+
+/* dashboard task widgets */
+.no-flex-grow {
+  flex-grow: 0 !important;
+}
+
+/* document diff view */
+.text-black {
+  color: #000;
+}
+
+/* tasks */
+.task_back_log tr.deleted {
+  text-decoration: line-through;
+}
+
+.task_back_log tr.task:not(.text-muted):not(.deleted) {
+  font-weight: bold;
+}
+
+/*# sourceMappingURL=core.css.map */

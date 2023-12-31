@@ -1,0 +1,42 @@
+{% extends "core.html" %}
+{% load core i18n %}
+
+{% block menuSelection %}administration{% endblock %}
+
+{% block htmltitle %}Rechnungsstellung - Gutachten | {{ block.super }}{% endblock %}
+
+{% block headertitle %}
+    Rechnungsstellung - Gutachten
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2>{% trans 'Old Payments' %}</h2>
+
+        {% include 'paginator.html' with page=payments %}
+    
+        <ul class="list-group mb-3">
+            {% for payment in payments.object_list %}
+                <li class="list-group-item d-block">
+                    <a href="{% url 'billing:view_checklist_payment' payment_pk=payment.pk %}">
+                        {% blocktrans with payment.created_at|date:'d.m.Y' as date %}Payment of {{ date }}{% endblocktrans %}
+                    </a>:
+                    {% with payment.checklists.count as count %}
+                        {% if count == 1 %}
+                            {% trans '1 Review' %}
+                        {% else %}
+                            {% blocktrans with count as count %}{{ count }} Reviews{% endblocktrans %}
+                        {% endif %}
+                        -
+                    {% endwith %}
+                    {{ payment.total|euro }}
+                </li>
+            {% empty %}
+                <li class="list-group-item d-block text-center">
+                    <em>{% trans 'No payment yet.' %}</em>
+                </li>
+            {% endfor %}
+        </ul>
+        {% include 'paginator.html' with page=payments %}
+    </div>
+{% endblock %}

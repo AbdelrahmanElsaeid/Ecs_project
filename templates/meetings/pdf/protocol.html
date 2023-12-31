@@ -1,0 +1,172 @@
+{% extends 'pdf/skeleton.html' %}
+{% load core i18n %}
+
+{% block title %}Meeting Agenda{% endblock %}
+
+{% block content %}
+    {% include 'pdf/ec_head.html' %}
+    <div align="center" style="font-weight:bold;font-size:14pt;margin-bottom:0.5cm;">
+    Sitzung der Ethik-Kommission am {{ meeting.start|date:'d.m.Y' }}<br />
+    Protokoll<br />
+    </div>
+
+    <p>
+        Beginn: {{ meeting.started|date:'H:i' }}<br />
+        Ende: {{ meeting.ended|date:'H:i' }}
+    </p>
+
+    {% if meeting.comments %}
+    <p>
+        {{ meeting.comments|linebreaksbr }}
+    </p>
+    {% endif %}
+
+    {% for top, vote in tops %}
+        {% ifchanged top.timetable_index|is_none %}
+            {% if top.timetable_index|is_none %}
+                <h2>Weitere TOPs</h2>
+            {% endif %}
+        {% endifchanged %}
+        <div class="pbi_avoid">
+            {% with top.submission as submission %}
+                <span class="bold">#{{ top }}</span>
+                {% if submission %}
+                    <span class="bold">EK Nr.</span> {{ submission|ec_number }}<br />
+                    <span class="bold">Antragsteller:</span>
+                        {% with submission.current_submission_form.submitter as submitter %}
+                            {% if not submitter.first_name or not submitter.last_name %}
+                                {{ submission.current_submission_form.submitter_contact }}
+                            {% else %}
+                                {{ submitter }}
+                            {% endif %}
+                        {% endwith %}
+                        <br />
+                    <span class="bold">Sponsor/CRO:</span> {{ submission.current_submission_form.sponsor_name }}<br />
+                    <span class="bold">Einreichendes Institut:</span> {{ submission.current_submission_form.submitter_organisation }}<br />
+                    <span class="bold">Projekttitel:</span> {{ submission.project_title_display }}<br />
+                    {% include 'meetings/pdf/protocol_submission.html' %}
+                {% else %}
+                    <span class="bold">{{ top.title|default:'<i>No title.</i>' }}</span><br />
+                    {% if top.text %}
+                        {{ top.text|linebreaksbr }}<br />
+                    {% endif %}
+                    <br />
+                {% endif %}
+            {% endwith %}
+        </div>
+    {% endfor %}
+
+    {% if substantial_amendments.exists %}
+        <h2>Substanzielle Amendments</h2>
+        {% for amendment in substantial_amendments %}
+            <div class="pbi_avoid">
+                {% with submission=amendment.get_submission %}
+                    <span class="bold">EK Nr.:</span> {{ submission|ec_number }}<br />
+                    <span class="bold">Projekttitel:</span> {{ submission.project_title_display }}<br />
+                {% endwith %}
+                {% with answer=amendment.answer %}
+                    <div style="font-weight: bold;">Die Kommission fasst folgenden Beschluss (mit X markiert):</div>
+                    <table class="full_width withborders">
+                        <tbody>
+                            <tr>
+                                <td style="width: 5%;">[X]</td>
+                                <td style="width: 95%;">
+                                    {% if answer.is_rejected %}
+                                        Der Antrag wird von der Ethik-Kommission abgelehnt.
+                                    {% else %}
+                                        Es besteht kein Einwand gegen die Änderung.
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% if answer.text %}
+                        <span class="bold">Kommentar:</span><br />
+                        {{ answer.text|linebreaksbr }}<br />
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <br />
+        {% endfor %}
+    {% endif %}
+
+    {% if b1ized.exists %}
+        <span class="bold">Folgende Tagesordnungspunkte wurden seit der letzten Sitzung positiv erledigt:</span><br />
+        <br />
+        {% for b1 in b1ized.all %}
+            <div class="pbi_avoid">
+                {% with sf=b1.submission_form %}
+                    <span class="bold">EK-Nr.:</span> {{ sf.submission|ec_number }}<br />
+                    <span class="bold">Antragsteller:</span>
+                        {% with sf.submitter as submitter %}
+                            {% if not submitter.first_name or not submitter.last_name %}
+                                {{ sf.submitter_contact }}
+                            {% else %}
+                                {{ submitter }}
+                            {% endif %}
+                        {% endwith %}
+                        <br />
+                        <span class="bold">Sponsor/CRO:</span> {{ sf.sponsor_name }}<br />
+                    <span class="bold">Einreichendes Institut:</span> {{ sf.submitter_organisation }}<br />
+                    <span class="bold">Projekttitel:</span> {{ sf.german_project_title|default:sf.project_title }}<br />
+                {% endwith %}
+            </div>
+            <br />
+        {% endfor %}
+    {% endif %}
+
+    {% if answers %}
+        <span class="bold">Folgende Meldungen wurden seit der letzten Sitzung bearbeitet:</span><br />
+        <br />
+        {% for answer in answers %}
+            <div class="pbi_avoid">
+                {% with notification=answer.notification %}
+                    <span class="bold">{{ notification.short_name }}</span><br />
+                    {% for sf in notification.submission_forms.all %}
+                        <span class="bold">{{ sf.submission.get_ec_number_display }}</span>
+                        {{ sf.german_project_title|default:sf.project_title }}<br />
+                    {% endfor %}
+
+                    {% if notification.centerclosenotification %}
+                        {% with ccn=notification.centerclosenotification %}
+                            <table class="full_width">
+                                <thead>
+                                    <th style="width: 33.33%;">
+                                        {% trans 'Investigator Organisation' %}
+                                    </th>
+                                    <th style="width: 33.33%;">
+                                        {% trans 'Ethics Commission' %}
+                                    </th>
+                                    <th style="width: 33.33%;">
+                                        {% trans 'Investigator contact' %}
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <td>{{ ccn.investigator.organisation }}</td>
+                                    <td>{{ ccn.investigator.ethics_commission }}</td>
+                                    <td>{{ ccn.investigator.contact }}</td>
+                                </tbody>
+                            </table>
+                        {% endwith %}
+                    {% endif %}
+
+                    {% with publish_date=answer.published_at|date:'d.m.Y' %}
+                        {% if answer.is_rejected %}
+                            {% blocktrans trimmed %}
+                                <span class="bold">rejected</span>
+                                on the {{ publish_date }}
+                            {% endblocktrans %}
+                        {% else %}
+                            {% blocktrans trimmed %}
+                                <span class="bold">acknowledged</span>
+                                on the {{ publish_date }}
+                            {% endblocktrans %}
+                        {% endif %}
+                    {% endwith %}<br />
+                {% endwith %}
+            </div>
+            <br />
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}

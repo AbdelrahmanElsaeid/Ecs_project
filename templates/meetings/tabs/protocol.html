@@ -1,0 +1,37 @@
+{% load i18n widget_tweaks %}
+<div class="container">
+    <form action="{{ request.path }}" method="post" class="open-in-widget">
+        {% csrf_token %}
+        {{ formset.management_form }}
+
+        {% for form in formset.forms %}
+            <fieldset class="form-group">
+                {{ form.id }}
+                {{ form.text.errors }}
+                <label for="{{ form.text.id_for_label }}">
+                    {{ form.instance }}, {{ form.instance.title }}
+                </label>
+                {% render_field form.text class+="form-control" %}
+            </fieldset>
+        {% endfor %}
+
+        <button class="btn btn-primary submit-in-widget">Speichern</button>
+    </form>
+</div>
+
+<script type="text/javascript">
+    (function() {
+        {% for form in formset.forms %}
+            new ecs.textarea.TextArea('#{{ form.text.id_for_label }}', [
+                ecs.textarea.toolbarItems.versionHistory(
+                    "{{ _('History')|escapejs }} ({{ answer_version }})",
+                    "{% url 'core:field_history' model_name='timetable_entry' pk=form.instance.pk %}"
+                ),
+                ecs.textarea.toolbarItems.boilerplate(
+                    "{{ _('Insert Boilerplate')|escapejs }}",
+                    "{% url boilerplate:select_boilerplate' %}"
+                )
+            ]);
+        {% endfor %}
+    })();
+</script>

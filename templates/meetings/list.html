@@ -1,0 +1,77 @@
+{% extends 'core.html' %}
+{% load core i18n %}
+
+{% block htmltitle %}{{ title }} | {{ block.super }}{% endblock %}
+{% block headertitle %}{{ title }}{% endblock %}
+
+{% block headernav %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <table class="table table-sm">
+        <colgroup>
+            <col style="width: 50%;">
+            <col>
+            <col>
+            <col>
+            <col>
+            <col style="width: 10%;">
+            <col style="width: 5%;">
+            <col style="width: 5%;">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>{% trans 'Title' %}</th>
+                <th class="text-center pr-3" colspan="2">
+                    {% trans 'Deadline for Thesis Submission' %}
+                </th>
+                <th class="text-center" colspan="2">
+                    {% trans 'Deadline for Submission' %}
+                </th>
+                <th>{% trans 'Scheduled for' %}</th>
+                <th>{% trans 'Start' %}</th>
+                <th>{% trans 'End' %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for meeting in meetings.object_list %}
+            <tr>
+                <td>
+                    <a href="{% url 'meetings:meeting_details' meeting_pk=meeting.pk %}">
+                        {{ meeting.title }}
+                    </a>
+                </td>
+                <td class="text-right px-3">
+                    {{ meeting.deadline_diplomathesis|date:'d.m.Y' }}
+                </td>
+                <td class="px-3">
+                    {{ meeting.deadline_diplomathesis|date:'H:i' }}
+                </td>
+                <td class="text-right px-3">
+                    {{ meeting.deadline|date:'d.m.Y' }}
+                </td>
+                <td class="px-3">
+                    {{ meeting.deadline|date:'H:i' }}
+                </td>
+                <td class="pr-3">
+                    {{ meeting.start|date:'d.m.Y' }}
+                </td>
+                <td class="pr-3">
+                    {{ meeting.start|date:'H:i' }}
+                </td>
+                <td class="pr-3">
+                    {{ meeting.end|date:'H:i' }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% include 'paginator.html' with page=meetings %}
+
+</div>
+{% endblock %}
+
+{% block menuSelection %}meetings{% endblock %}

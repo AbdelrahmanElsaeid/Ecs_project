@@ -1,0 +1,184 @@
+{% extends 'core.html' %}
+{% load core i18n notifications %}
+
+{% block headernav %}
+    <ul class="nav nav-tabs flex-wrap tab_header_groups hidden-xs-up">
+        <li class="nav-item">
+            <a class="nav-link" href="#tabs_notification">{% trans "New Notification" %}</a>
+        </li>
+    </ul>
+
+    {{ block.super }}
+{% endblock %}
+
+{% block htmltitle %}Neu: {{ notification_type.name }} | {{ block.super }}{% endblock %}
+{% block headertitle %}Neu: {{ notification_type.name }}{% endblock %}
+
+{% block content %}
+    <div id="tabs_notification" class="collapse">
+        <ul class="nav nav-tabs flex-wrap mb-3 tab_headers">
+            {% for tab in tabs %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#tabs-{{ forloop.counter }}">{{ tab }}</a>
+                </li>
+            {% endfor %}
+            <li class="nav-item ml-auto">
+                <small class="mr-3 text-muted last_save">&nbsp;</small>
+                <a href="" id="save-button" class="btn btn-secondary">{% trans "Save" %}</a>
+                <a href="" id="submit-button" class="btn btn-primary">{% trans "Submit" %}</a>
+            </li>
+        </ul>
+    </div>
+
+<form action="" method="post" enctype="multipart/form-data" class="form_main notifications">
+    {% csrf_token %}
+    <div id="tabs">
+        {% for tab in tabs %}
+            <div id="tabs-{{ forloop.counter }}" class="container collapse">
+                {% if tab.slug == 'documents' %}
+                    <div class="field">
+                        <div class="upload_container"></div>
+                    </div>
+                {% endif %}
+                
+                {% if tab.slug == 'changes' %}
+                    <div class="field">
+                        {% if notification_type.includes_diff %}
+                            <div class="mb-3">
+                                <div class="btn-group diff-toggles">
+                                    <button class="btn btn-outline-danger" data-toggle-value="old">
+                                        {% trans "old" %} (-)
+                                    </button>
+                                    <button class="btn btn-outline-success" data-toggle-value="new">
+                                        {% trans "new" %} (+)
+                                    </button>
+                                    <button class="btn btn-outline-info active" data-toggle-value="all">
+                                        {% trans "all" %} (-/+)
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="diff">
+                                {{ request.docstash|diff_from_docstash|safe }}
+                            </div>
+                        {% else %}
+                            <em>{% trans 'No changes.' %}</em>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                
+                {% for legend, fields in tab.fieldsets %}
+                    <div class="fieldset_{{ forloop.counter }}">
+                        {% if legend %}
+                            <h3 class="mb-3">{{ legend }}</h3>
+                        {% endif %}
+                        {% for field_name in fields %}
+                            {% with form|getitem:field_name as field %}
+                                {% include "notifications/form_field.html" %}
+                            {% endwith %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+    {% comment %} <input type="submit" value="submit" name="submit" class="hidden" />
+    <input type="submit" value="validate" name="validate" class="hidden" /> {% endcomment %}
+</form>
+{% endblock %}
+
+{% block menuSelection %}notifications{% endblock %}
+{% block jsbottom %}
+    {{ block.super }}
+    <script type="text/javascript">
+        $(function(){
+            ecs.setupForms();
+            
+            $('.diff-toggles button').click(function(ev) {
+                ev.preventDefault();
+
+                var btn = $(this);
+                btn.siblings('button').removeClass('active');
+                btn.addClass('active');
+
+                var val = btn.data('toggleValue');
+                $('.diff .deleted').toggle(['old', 'all'].indexOf(val) > -1);
+                $('.diff .inserted').toggle(['new', 'all'].indexOf(val) > -1);
+            });
+
+            $('#save-button').click(function(ev){
+                ev.preventDefault();
+                ecs.mainForm.save(true);
+            });
+            $('#submit-button').click(function(ev){
+                ev.preventDefault();
+                ecs.mainForm.submit('submit');
+            });
+
+            var submissionFormsSelect = $('#id_submission_forms');
+            var submissionFormSelect = $('#id_submission_form');
+            var submissionDataDisplay = $('<div/>');
+            var investigatorSelect = $('#id_investigator');
+
+            submissionFormsSelect.add(submissionFormSelect)
+                .closest('.form-group')
+                .after(submissionDataDisplay);
+
+            function loadSubmissionFormData(pks) {
+                submissionDataDisplay.load(
+                    '{% url 'notifications:submission_data_for_notification' %}',
+                    'submission_form=' + pks.join('&submission_form=')
+                );
+            }
+
+            submissionFormsSelect.change(function(ev) {
+                loadSubmissionFormData(submissionFormsSelect.find(':selected').map(function() {
+                    return $(this).val();
+                }).get());
+            });
+            submissionFormsSelect.change();
+
+            submissionFormSelect.change(function(ev) {
+                var pk = submissionFormSelect.val();
+                var investigator_pk = investigatorSelect.val();
+                loadSubmissionFormData([pk]);
+                if (investigatorSelect.length) {
+                    investigatorSelect.html('');
+                    if (pk) {
+                        investigatorSelect.load(
+                            '{% url 'notifications:investigators_for_notification' %}',
+                            'submission_form=' + pk,
+                            function() {
+                                investigatorSelect.val(investigator_pk);
+                            }
+                        );
+                    }
+                }
+            });
+            submissionFormSelect.change();
+
+            submissionFormsSelect.add(submissionFormSelect).each(function() {
+                var input = $(this);
+                input.select2({
+                    width: '100%',
+                    dropdownParent: input.parent(),
+                });
+            });
+
+            $('.upload_container').load(
+                '{% url 'notifications:upload_document_for_notification' docstash_key=request.docstash.key %}');
+
+            if ($('#id_study_started').length) {
+                new ecs.FormFieldController({
+                    fields: '#id_reason_for_not_started',
+                    sources: '#id_study_started',
+                    auto: function() {
+                        var started = this.sources.is(':checked');
+                        this.requireField(this.fields, !started);
+                        this.setDisabled(started);
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock %}
+

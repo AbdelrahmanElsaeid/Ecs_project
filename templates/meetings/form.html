@@ -1,0 +1,25 @@
+{% extends 'core.html' %}
+{% load core i18n widget_tweaks %}
+
+{% block htmltitle %}{% if not meeting %}{% trans "new meeting" %}{% else %}{% trans "edit meeting" %}{% endif %} | {{ block.super }}{% endblock %}
+{% block headertitle %}{% if not meeting %}{% trans "new meeting" %}{% else %}{% trans "edit meeting" %}{% endif %}{% endblock %}
+
+{% block content %}
+<form action="{{ request.path }}" method="post" class="container">
+    {% csrf_token %}
+    {% for field in form %}
+        {% include 'bootstrap/form_field.html' with inline=True %}
+    {% endfor %}
+    <div class="col-md-6 offset-md-3 mt-3">
+        <input class="btn btn-primary btn-block" type="submit" value="Speichern" />
+    </div>
+</form>
+{% endblock %}
+
+{% block menuSelection %}meetings{% endblock %}
+{% block jsbottom %}
+    {{ block.super }}
+    <script type="text/javascript">
+        $(ecs.setupFormFieldHelpers);
+    </script>
+{% endblock %}

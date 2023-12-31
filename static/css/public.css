@@ -1,0 +1,40 @@
+html {
+  font-size: 75%; /* 12px, assuming a default font size of 16px */
+}
+
+#container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+
+#content {
+  -webkit-flex: 1;
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.innerwrap {
+  display: block;
+  margin: 5rem auto 0;
+  padding: 10px;
+  width: 400px;
+}
+
+img.logo {
+  width: auto;
+  height: 60px;
+}
+img.logo.full {
+  width: 100%;
+  height: auto;
+}
+
+/*# sourceMappingURL=public.css.map */

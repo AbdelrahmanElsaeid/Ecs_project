@@ -1,0 +1,42 @@
+{% extends 'core.html' %}
+{% load core i18n %}
+
+{% block htmltitle %}{% blocktrans %}Statistics {{ current_year }}{% endblocktrans %} | {{ block.super }}{% endblock %}
+{% block headertitle %}{% blocktrans %}Statistics for the year of {{ current_year }}{% endblocktrans %}{% endblock %}
+
+{% block content %}
+    <div class="container my-3">
+        <div class="btn-group mb-3">
+            {% for year in years %}
+                {% if year == current_year %}
+                    <button class="btn btn-primary active">{{ year }}</button>
+                {% else %}
+                    <a class="btn btn-primary" href="{% url 'statistic:stats' year=year %}">{{ year }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        {% for section in stats.values %}
+            <h2 class="mt-3">
+                {{ section.label }}
+            </h2>
+            <ul class="list-group mb-3">
+                {% for entry in section %}
+                    <li class="list-group-item d-block">
+                        {{ entry.label }} <small class="text-muted">({{ entry.paper_number }})</small>
+                        <span class="badge badge-default badge-pill float-right">{{ entry.count }}</span>
+                        {% if entry.with_listing %}
+                            <p class="mb-0">
+                                {% for submission in entry.submissions %}
+                                    <a href="{% url 'core:view_submission' submission_pk=submission.pk %}">{{ submission|ec_number }}</a>{% if not forloop.last %},{% endif %}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block menuSelection %}administration{% endblock %}

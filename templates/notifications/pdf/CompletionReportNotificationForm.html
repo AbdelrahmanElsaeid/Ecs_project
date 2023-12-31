@@ -1,0 +1,16 @@
+{% extends "notifications/pdf/ReportNotificationForm.html" %}
+{% load i18n %}
+
+{% block formname %}Formular für Abschlussberichte / Beendigung der Studie{% endblock %}
+{% block typeoptions %}<h1>1. Beendigung der Studie / Abschlussbericht</h1>{% endblock %}
+
+{% block study_status %}
+{% with notification.completionreportnotification as notification %}
+    {% if notification.study_aborted %}
+        Die Studie wurde abgebrochen am
+    {% else %}
+        Die Studie wurde abgeschlossen am
+    {% endif %}
+    {{ notification.completion_date|date:'d.m.Y' }}
+{% endwith %}
+{% endblock %}

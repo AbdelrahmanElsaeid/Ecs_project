@@ -1,0 +1,6 @@
+/* user administration */
+table.cert_list tr.invalid {
+  text-decoration: line-through;
+}
+
+/*# sourceMappingURL=administration.css.map */

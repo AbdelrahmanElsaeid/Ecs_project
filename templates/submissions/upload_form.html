@@ -1,0 +1,8 @@
+{% extends 'documents/upload_form.html' %}
+{% block delete_url %}{% url 'core:delete_document_from_submission' docstash_key=request.docstash.key %}{% endblock %}
+{% block extra_hint %}
+    <div class="hint mb-3">
+        <span class="fa fa-info text-info"></span>
+        Bitte beachten Sie, dass Name, Version und Datum Ihrer Dateien im Votum aufscheinen und niemand außer Ihnen diese Metadaten verändern kann.
+    </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'core.html' %}
+{% load core i18n %}
+
+{% block headertitle %}{% trans "Administration" %}{% endblock %}
+
+{% block content %}
+    <ul class="nav nav-tabs flex-wrap mb-3 tab_headers">
+        <li class="nav-item">
+            <a class="nav-link {% if active == 'user_administration' %}active{% endif %}" href="{% url 'users:administration' %}">{% trans "User Administration" %}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if active == 'user_invite' %}active{% endif %}" href="{% url 'users:invite' %}">{% trans "Invite User" %}</a>
+        </li>
+        {% if user.profile.is_executive %}
+            <li class="nav-item">
+                <a class="nav-link {% if active == 'login_history' %}active{% endif %}" href="{% url 'users:login_history' %}">{% trans 'Login History' %}</a>
+            </li>
+        {% endif %}
+    </ul>
+
+    <div class="administration_detail container">
+        {% block administration_detail %}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block menuSelection %}administration{% endblock %}

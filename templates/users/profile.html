@@ -1,0 +1,17 @@
+{% extends 'core.html' %}
+{% load i18n %}
+
+{% block content %}
+
+{% with profile_user.profile as profile %}
+<div class="container">
+    <h2>{{ profile_user }}</h2>
+    <div class="mb-3">
+        <a class="btn btn-primary" href="{% url 'users:edit_profile' %}">{% trans "Edit Profile" %}</a>
+        <a class="btn btn-primary" href="{% url 'users:change_password' %}">{% trans "Change Password" %}</a>
+    </div>
+    {% include "users/base_profile.html" %}
+</div>
+{% endwith %}
+
+{% endblock %}

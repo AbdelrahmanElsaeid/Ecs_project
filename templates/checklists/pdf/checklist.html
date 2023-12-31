@@ -1,0 +1,50 @@
+{% extends 'pdf/skeleton.html' %}
+{% load core i18n %}
+
+{% block title %}{{ checklist.blueprint }} für {{ checklist.submission }}{% endblock %}
+
+{% block inline_css %}
+    {{ block.super }}
+    <style type="text/css">
+        .checklist .entry {
+            padding-bottom: 0.5cm;
+        }
+        .checklist .question {
+            font-weight: bold;
+        }
+        .checklist .question .number {
+            font-size: 110%;
+        }
+        .checklist .answer {
+            padding-left: 0.1cm;
+        }
+        .checklist .comment {
+            padding-top: 0.1cm;
+            padding-left: 0.7cm;
+            overflow: hidden;
+            white-space: pre-wrap;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    {% include 'pdf/ec_head.html' %}
+    <h1>
+        {% with submission=checklist.submission %}
+            {{ checklist.blueprint }} für {{ submission|ec_number }}<br>
+            <small>{{ submission.project_title_display }}</small>
+        {% endwith %}
+    </h1>
+
+    <ul class="checklist">
+    {% for answer in checklist.answers.all %}
+        <li class="entry">
+            <span class="question"><span class="number">{{ answer.question.number }}.</span> {{ answer.question.text }}</span>
+            <span class="answer">- {{ answer.answer|yes_no_unknown }}</span>
+            {% if answer.comment %}
+                <div class="comment">{{ answer.comment }}</div>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}

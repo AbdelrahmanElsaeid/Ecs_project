@@ -1,0 +1,35 @@
+{% extends "core.html" %}
+{% load i18n %}
+{% load static %}
+{% block menuSelection %}dashboard{% endblock %}
+
+{% block htmltitle %}
+{% trans "Dashboard" %} | {{ block.super }}{% endblock %}
+
+{% block headertitle %}{% trans "Dashboard" %}{% endblock %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+{% block content %}
+    <div class="clearfix">
+        <div class="dashboard_widget half {% if user.profile.show_task_widget %}float-left{% else %}mx-auto{% endif %}" data-widget-url="{% url 'communication:dashboard_widget' %}">
+        </div>
+    {% if user.profile.show_task_widget %}
+                <div data-widget-url="{% url 'tasksv:my_tasks' %}">
+            </div>
+        {% endif %} 
+    </div>
+{% endblock %}
+
+{% block jsbottom %}
+{{ block.super }}  
+   
+
+
+
+<script type="text/javascript">
+    $(function () {
+        ecs.setupWidgets(); // Call the function here        submission_pk=1  'ecs.tasks.views.my_tasks'
+    });
+</script>
+{% endblock %}
+

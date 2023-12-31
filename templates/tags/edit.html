@@ -1,0 +1,31 @@
+{% extends "core.html" %}
+{% load core i18n %}
+
+{% block headertitle %}{% trans 'Tags' %}{% endblock %}
+{% block htmltitle %}{% trans 'Tags' %} | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <p>
+        <a href="{% url 'tags:index' %}">
+            <span class="fa fa-chevron-left"></span>
+            {% trans 'Back to the tag list' %}
+        </a>
+    </p>
+
+    <form method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+            {% include 'bootstrap/form_field.html' with inline=True %}
+        {% endfor %}
+        <input type="submit" class="btn btn-primary" value="{% trans 'save' %}"/>
+        {% if form.instance.pk %}
+            <a class="btn btn-danger" href="{% url 'tags:delete' pk=form.instance.pk %}">
+                {% trans 'delete' %}
+            </a>
+        {% endif %}
+    </form>
+</div>
+{% endblock %}
+
+{% block menuSelection %}administration{% endblock %}

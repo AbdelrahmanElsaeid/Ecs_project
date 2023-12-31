@@ -1,0 +1,48 @@
+{% load core i18n %}
+
+<div class="task_back_log">
+    <table class="table table-sm">
+        <tr>
+            <th>{% trans "Created At" %}</th>
+            <th>{% trans "Activity" %}</th>
+            <th>{% trans "Group" %}</th>
+            <th>{% trans "Assigend At" %}</th>
+            <th>{% trans "Assigend To" %}</th>
+            <th>{% trans "Closed At" %}</th>
+            <th></th>
+        </tr>
+    {% for task in tasks %}
+        <tr class="task{% if task.closed_at %} text-muted{% endif %}{% if task.deleted_at %} deleted{% endif %}">
+            <td>{{ task.created_at|date:'d.m.Y H:i' }}</td>
+            <td>
+                {{ task.task_type }}
+                {% if task.medical_category %}- {{ task.medical_category }}{% endif %}
+            </td>
+            <td>{% if task.task_type.group %}{{ task.task_type.group }}{% endif %}</td>
+            <td>{% if task.assigned_at %}{{ task.assigned_at|date:'d.m.Y H:i' }}{% else %}-{% endif %}</td>
+            <td>
+                {% if task.assigned_to %}
+                    <a href="{% url 'communication:new_thread' submission_pk=submission.pk to_user_pk=task.assigned_to.pk %}" target="_blank">
+                        <span class="fa fa-envelope-o"></span>
+                        {{ task.assigned_to }}
+                    </a>
+                    {% if not task.accepted %}
+                        <span class="fa fa-exclamation text-info" title="{% trans 'assigned' %}"></span>
+                    {% endif %}
+                {% else %}-{% endif %}
+            </td>
+            <td>{% if task.closed_at %}{{ task.closed_at|date:'d.m.Y H:i' }}{% else %}-{% endif %}</td>
+            <td>
+                {% if not task.closed_at and not task.deleted_at and task.task_type.is_dynamic %}
+                    <a class="fa fa-ban text-danger open-in-widget" href="{% url 'tasksv:delete_task' submission_pk=submission.pk task_pk=task.pk %}"></a>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+
+    <p>
+        <span class="fa fa-info text-info"></span>
+        {% trans "Closed tasks are grayed out. Deleted tasks are crossed out." %}
+    </p>
+</div>

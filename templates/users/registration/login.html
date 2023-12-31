@@ -1,0 +1,110 @@
+{% extends 'public.html' %}
+{% load i18n core  widget_tweaks %}
+{% load static %}
+
+{% block htmlcss %}
+    {{ block.super }}
+    <noscript>
+        <style type="text/css">
+            #login_form, .pw_reg {
+                display: none;
+            }
+        </style>
+    </noscript>
+{% endblock %}
+
+{% block content %}
+
+    <script type="text/javascript">
+        if(top != self){
+            top.location.href = '{% url 'users:login' %}';
+        }
+    </script>
+
+    <img class="logo full mb-3" src="{% url 'core:logo' %}" alt="Logo"/>
+
+    <noscript>
+        <div id="script_warning" class="alert alert-danger">
+            <strong>Achtung:</strong> Sie verwenden einen Webbrowser der Javascript deaktiviert hat oder nicht unterst&uuml;tzt.
+            Lesen Sie <a href="{% static 'help/noscript.html' %}" class="alert-link">hier</a> wie Sie Javascript aktivieren k&ouml;nnen.
+        </div>
+    </noscript>
+
+    <div id="login_form">
+        {% if not request.ua.is_supported and not request.ua.is_crawler %}
+            <div id="browser_warning" class="alert alert-warning">
+                <strong>Achtung:</strong> Sie verwenden einen nicht unterstützen Webbrowser.
+                Zur korrekten Darstellung brauchen sie einen Browser der HTML5 Generation, wie
+                <a href="http://www.mozilla-europe.org/de/firefox/" class="alert-link">Firefox 28+</a>,
+                <a href="http://www.google.com/chrome/intl/de/landing_tv.html" class="alert-link">Chrome 29+</a>,
+                <a href="http://www.apple.com/de/safari/download/" class="alert-link">Safari 7+</a>,
+                Microsoft Edge.
+                Ältere Browser sind nicht geeignet und führen zu Fehlern.
+                Neuere/Unbekannte können funktionieren.
+                <p class="mt-3"><a id="show_login" href="" class="alert-link">Ich möchte es auf eigenes Risiko trotzdem versuchen.</a></p>
+            </div>
+        {% endif %}
+        <div class="d-flex justify-content-between mb-1">
+            <div class="pw_reg">
+                <a href="{% url 'users:register' %}">Registrieren</a>
+                <a class="ml-3" href="{% url 'users:request_password_reset' %}">
+                    Passwort vergessen/zurücksetzen
+                </a>
+            </div>
+            <a href="{% static 'help/index.html' %}" target="_blank">
+                {% trans 'Online Help Pages' %}
+            </a>
+        </div>
+        <form method="post" action="{{ request.path }}">
+            {% csrf_token %}
+            <div class="form-group {% if form.username.errors %}has-danger{% endif %}">
+                <label for="{{ form.username.id_for_label }}" class="sr-only">{{ form.username.label }}</label>
+                {% if form.username.errors %}
+                    {% render_field form.username class+="form-control form-control-danger" placeholder=form.username.label %}
+                    <div class="form-control-feedback">
+                        {% for error in form.username.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {% render_field form.username class+="form-control" placeholder=form.username.label autofocus="autofocus" %}
+                {% endif %}
+            </div>
+            <div class="form-group {% if form.password.errors %}has-danger{% endif %}">
+                <label for="{{ form.password.id_for_label }}" class="sr-only">{{ form.password.label }}</label>
+                {% if form.password.errors %}
+                    {% render_field form.password class+="form-control form-control-danger" placeholder=form.password.label %}
+                    <div class="form-control-feedback">
+                        {% for error in form.password.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {% render_field form.password class+="form-control" placeholder=form.password.label %}
+                {% endif %}
+            </div>
+            <input type="submit" value="Login" id="login_button" class="btn btn-primary btn-block mt-3" {% if not request.ua.is_supported or request.ua.is_crawler %}style="display:none;"{% endif %} />
+            <input type="hidden" name="next" value="{{ next }}" />
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger mt-3 mb-0">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </form>
+    </div>
+
+{% endblock %}
+
+{% block jsbottom %}
+    {{ block.super }}
+    <script type="text/javascript">
+        $(function() {
+            $('#show_login').click(function(ev) {
+                ev.preventDefault();
+                $('#login_button').show();
+            });
+        });
+    </script>
+{% endblock %}

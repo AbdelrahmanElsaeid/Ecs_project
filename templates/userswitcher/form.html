@@ -1,0 +1,9 @@
+<form class="d-inline-block" id="userswitcher_form" method="post" action="{% url 'userswitcher:switch' %}?url={{ url }}">
+    {% csrf_token %}
+    {{ form.user }}
+    <script type="text/javascript">
+        document.getElementById('userswitcher_input').onchange = function(){
+            this.form.submit();
+        };
+    </script>
+</form>

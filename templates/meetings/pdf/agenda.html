@@ -1,0 +1,94 @@
+{% extends 'pdf/skeleton.html' %}
+{% load core i18n meetingutils %}
+
+{% block title %}Meeting Agenda{% endblock %}
+
+{% block content %}
+    {% include 'pdf/ec_head.html' %}
+    <div class="center_bold">
+    Tagesordnung<br />
+    f&uuml;r die Sitzung der Ethik-Kommission am<br />
+    {{ meeting.start|date:'d.m.Y, H:i' }} Uhr, sine tempore<br />
+    {% db_setting 'meeting_address' as address %}
+    {{ address|linebreaksbr }}<br />
+    </div>
+    
+    {% for entry in meeting %}
+        <div class="pbi_avoid">
+            <span class="bold">#{{ entry }}</span>
+            {% if entry.submission %}
+                <span class="bold">EK Nr.</span>
+                    {{ entry.submission.get_ec_number_display }}{% with entry|last_recessed_vote as vote %}{% if vote %} ({% trans "Recessed" %}, {% if vote.result == '3a' %}{% trans "not examined" %}{% else %}{% trans "examined" %}{% endif %}){% endif %}{% endwith %}
+                    {{ entry.submission.current_submission_form.get_type_display }}
+                    <br />
+                <span class="bold">Antragsteller:</span>
+                    {% with entry.submission.current_submission_form.submitter as submitter %}
+                        {% if not submitter.first_name or not submitter.last_name %}
+                            {{ entry.submission.current_submission_form.submitter_contact }}
+                        {% else %}
+                            {{ submitter }}
+                        {% endif %}
+                    {% endwith %}
+                    <br />
+                <span class="bold">Einreichende Institution:</span>
+                    {{ entry.submission.current_submission_form.submitter_organisation }}<br />
+                <span class="bold">Projekttitel:</span>
+                    {{ entry.submission.project_title_display }}<br />
+                {% with entry.submission.current_submission_form.primary_investigator as pi %}
+                    {% if pi %}
+                        <span class="bold">Prüfer:</span>
+                            {{ pi.contact.full_name }}
+                            {% if entry.submission.invite_primary_investigator_to_meeting %}
+                                <span class="bold">(eingeladen um {{ entry.start|datetimeround:-10|date:'H:i' }} Uhr)</span>
+                            {% endif %}
+                            <br />
+                        <span class="bold">Prüfzentrum:</span>
+                            {% if pi.organisation %}{{ pi.organisation }}{% endif %}<br />
+                    {% endif %}
+                {% endwith %}
+            {% else %}
+                <span class="bold">{{ entry.title|default:'<i>No title.</i>' }}</span><br />
+            {% endif %}
+        </div>
+        <br />
+    {% endfor %}
+
+    {% if meeting.additional_entries.exists %}
+        <h2>Weitere TOPs</h2>
+        {% for entry in meeting.additional_entries.all %}
+            <div class="pbi_avoid">
+                <span class="bold">#{{ entry }}</span>
+                <span class="bold">EK Nr.</span>
+                    {{ entry.submission.get_ec_number_display }}{% with entry|last_recessed_vote as vote %}{% if vote %} ({% trans "Recessed" %}, {% if vote.result == '3a' %}{% trans "not examined" %}{% else %}{% trans "examined" %}{% endif %}){% endif %}{% endwith %}
+                    {{ entry.submission.current_submission_form.get_type_display }}
+                    <br />
+                <span class="bold">Antragsteller:</span>
+                    {% with entry.submission.current_submission_form.submitter as submitter %}
+                        {% if not submitter.first_name or not submitter.last_name %}
+                            {{ entry.submission.current_submission_form.submitter_contact }}
+                        {% else %}
+                            {{ submitter }}
+                        {% endif %}
+                    {% endwith %}
+                    <br />
+                <span class="bold">Einreichende Institution:</span>
+                    {{ entry.submission.current_submission_form.submitter_organisation }}<br />
+                <span class="bold">Projekttitel:</span>
+                    {{ entry.submission.project_title_display }}<br />
+                {% with entry.submission.current_submission_form.primary_investigator as pi %}
+                    {% if pi %}
+                        <span class="bold">Prüfer:</span>
+                            {% if pi.user %}{{ pi.user }}{% else %}{{ pi.contact.full_name }}{% endif %}
+                            {% if entry.submission.invite_primary_investigator_to_meeting %}
+                                <span class="bold">(eingeladen um {{ entry.start|datetimeround:-10|date:'H:i' }} Uhr)</span>
+                            {% endif %}
+                            <br />
+                        <span class="bold">Prüfzentrum:</span>
+                            {% if pi.organisation %}{{ pi.organisation }}{% endif %}<br />
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <br />
+        {% endfor %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'core.html' %}
+{% load i18n core %}
+
+{% block htmltitle %}{{ submission|ec_number }} - {% trans 'Change Susar Presenter' %} | {{ block.super }}{% endblock %}
+{% block headertitle %}{{ submission|ec_number }} - {% trans 'Change Susar Presenter' %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form action="{{ request.path }}" method="POST">
+        {% csrf_token %}
+        {% include 'bootstrap/form_field.html' with field=form.susar_presenter inline=True %}
+        <input type="submit" class="btn btn-primary" value="{% trans 'Change Susar Presenter' %}" />
+    </form>
+</div>
+{% endblock %}
+
+{% block jsbottom %}
+    {{ block.super }}
+    <script type="text/javascript">
+        $(function(){
+            var input = $('select#{{ form.susar_presenter.id_for_label }}');
+            input.select2({
+                minimumInputLength: 3,
+                width: '100%',
+                dropdownParent: input.parent(),
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block menuSelection %}submissions{% endblock %}

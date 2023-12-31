@@ -1,0 +1,38 @@
+{% load core %}
+
+{% if submission_forms %}
+    <table class="table table-sm mt-3">
+        <thead class="thead-default">
+            <tr>
+                <th>Studie</th>
+                <th>EudraCT-Nr.</th>
+                <th>Ethik-Kommission</th>
+                <th>Prüfer</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for submission_form in submission_forms %}
+                {% with submission=submission_form.submission %}
+                    <tr>
+                        <td>
+                            {% url 'core:view_submission' submission_pk=submission.pk as submission_url %}
+                            <a href="{{ submission_url }}">
+                                {{ submission|ec_number }}
+                                {{ submission.project_title_display }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ submission.current_submission_form.eudract_number|default:'<em>nicht vorhanden</em>' }}
+                        </td>
+                        <td>
+                            {{ submission.main_ethics_commission }}
+                        </td>
+                        <td>
+                            {{ submission.primary_investigator.contact }}
+                        </td>
+                    </tr>
+                {% endwith %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

@@ -1,0 +1,45 @@
+/* structure */
+
+html {
+    font-size: 75%;     /* 12px, assuming a default font size of 16px */
+}
+
+body {
+    overflow: auto;
+}
+
+#header {
+    position: relative;
+}
+
+#headertitle {
+    line-height: normal;
+
+    &:focus {
+        white-space: normal;
+    }
+}
+
+/* general content-specific */
+
+#content h2 {
+    margin-bottom: 1rem;
+}
+
+.innerwrap img,
+.innerwrap a img {
+    margin: 0 0 1rem 1rem;
+}
+
+.inline_formset td {
+    padding: 0;
+}
+
+/* input fields and buttons */
+
+input:not(.form-control):not(.btn),
+input[type=file]:not(.form-control),
+textarea:not(.form-control),
+select:not(.form-control) {
+    border: 1px solid #b7b7b7;
+}

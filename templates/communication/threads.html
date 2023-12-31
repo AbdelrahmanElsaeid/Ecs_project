@@ -1,0 +1,131 @@
+{% load humanize i18n core communication widget_tweaks %}
+
+<form id="thread_list_filter" action="{{ request.path }}" method="post" class="form-inline open-in-widget d-flex justify-content-around">
+    {% csrf_token %}
+    <ul class="list-unstyled">
+        <li>
+            {{ filterform.incoming }}
+            <span class="fa fa-envelope-o"></span>
+            {% trans "Incoming" %}
+        </li>
+        <li>
+            {{ filterform.outgoing }}
+            <span class="fa fa-paper-plane-o"></span>
+            {% trans "Outgoing" %}
+        </li>
+    </ul>
+    <ul class="list-unstyled">
+        <li>
+            {{ filterform.starred }}
+            <span class="fa fa-star"></span>
+            {% trans "Starred" %}
+        </li>
+        <li>
+            {{ filterform.unstarred }}
+            <span class="fa fa-star-o"></span>
+            {% trans "Not Starred" %}
+        </li>
+    </ul>
+    <ul class="list-unstyled">
+        <li>
+            {{ filterform.read }}
+            <span class="fa fa-check-square"></span>
+            {% trans "Read" %}
+        </li>
+        <li>
+            {{ filterform.unread }}
+            <span class="fa fa-check-square-o"></span>
+            {% trans "Unread" %}
+        </li>
+    </ul>
+    <ul class="list-unstyled">
+        <li>
+            {% render_field filterform.query class+='form-control' placeholder=filterform.query.label %}
+        </li>
+    </ul>
+    {{ filterform.page }}
+</form>
+
+<table class="table table-sm">
+    <colgroup>
+        <col>
+        <col>
+        {% if not submission_pk %}
+            <col>
+        {% endif %}
+        <col class="w-100">
+        <col>
+        <col>
+    </colgroup>
+    <thead>
+        <tr>
+            <th></th>
+            <th>{% trans "Von/An" %}</th>
+            {% if not submission_pk %}
+                <th>{% trans "Submission" %}</th>
+            {% endif %}
+            <th>{% trans "Subject" %}</th>
+            <th class="text-right">{% trans "Date" %}</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for thread in page.object_list %}
+            <tr {% if thread.last_message.unread and thread.last_message.receiver_id == user.id %}class="font-weight-bold"{% endif %}>
+                <td class="pr-3">
+                    {% if thread|starred_by:user %}
+                        {% url 'communication:unstar' thread_pk=thread.pk as unstar_url %}
+                        <a class="open-in-widget fa fa-2x fa-star text-warning" title="{% trans "Remove star" %}" href="{{ unstar_url }}?next={{ request.path|urlencode }}"></a>
+                    {% else %}
+                        {% url 'communication:star' thread_pk=thread.pk as star_url %}
+                        <a class="open-in-widget fa fa-2x fa-star-o text-muted" title="{% trans "Add star" %}" href="{{ star_url }}?next={{ request.path|urlencode }}"></a>
+                    {% endif %}
+                </td>
+                <td class="text-nowrap align-middle">
+                    {% if thread.last_message.sender == user %}
+                        <span class="fa fa-paper-plane-o"></span>
+                        {% trans "an" %} {{ thread.last_message.receiver }}
+                    {% else %}
+                        <span class="fa fa-envelope-o"></span>
+                        {% trans "von" %} {{ thread.last_message.sender }}
+                    {% endif %}
+                </td>
+                {% if not submission_pk %}
+                    <td class="text-nowrap align-middle">
+                        {% if thread.submission %}
+                            <a href="{% url 'core:view_submission' submission_pk=thread.submission.id %}">
+                                {{ thread.submission|ec_number }}
+                            </a>
+                        {% endif %}
+                    </td>
+                {% endif %}
+                <td class="align-middle">
+                    {% url 'communication:read_thread' thread_pk=thread.pk as read_url%}
+                    <a href="{{ read_url }}" title="{{ thread.last_message|preview:1000 }}">
+                        {{ thread.subject|truncatewords:10 }}
+                    </a>
+                </td>
+                <td class="text-nowrap align-middle text-right">
+                    {{ thread.last_message.timestamp|naturalday:'d.m.Y' }},
+                    {{ thread.last_message.timestamp|date:'H:i'}}
+                </td>
+                <td class="pl-3 align-middle">
+                {% if thread.last_message.unread and thread.last_message.receiver_id == user.id %}
+                    {% url 'communication:mark_read' thread_pk=thread.pk as mark_read_url %}
+                    <a class="open-in-widget" href="{{ mark_read_url }}?next={{ request.path|urlencode }}">
+                        <span class="fa fa-2x fa-check text-primary" title="{% trans "Mark as read" %}"></span>
+                    </a>
+                {% endif %}
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td class="text-center text-muted" colspan="6">
+                    <em>{% trans 'No messages yet!' %}</em>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% include 'paginator.html' %}

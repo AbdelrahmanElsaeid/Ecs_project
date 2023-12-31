@@ -1,0 +1,14 @@
+{% extends 'msg_core.txt' %}
+{% load core %}
+
+{% block content %}
+Antwort auf {{ notification }} ({{ ABSOLUTE_URL_PREFIX }}{% url 'notifications:view_notification' notification_pk=notification.pk %})
+
+{% for sf in notification.submission_forms.all %}   - {{ sf.submission }}: {{ ABSOLUTE_URL_PREFIX }}{% url 'core:view_submission' submission_pk=sf.submission.pk %}
+{% endfor %}
+vom {{ notification.timestamp|date:'d.m.Y' }}.
+
+Eingereicht von: {{ notification.user }}
+
+{{ answer.text }}
+{% endblock %}

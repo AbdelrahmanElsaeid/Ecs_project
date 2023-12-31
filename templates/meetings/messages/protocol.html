@@ -1,0 +1,17 @@
+{% load core i18n %}
+<html>
+<body>
+{% block content %}
+    <p>
+{% if recipient.profile.gender == 'f' %}{% blocktrans with recipient as recipient %}Dear(f) {{ recipient }}{% endblocktrans %}{% else %}{% blocktrans with recipient as recipient %}Dear(m) {{ recipient }}{% endblocktrans %}{% endif %}<br />
+<br />
+<br />
+Anbei senden wir Ihnen das Protokoll der Sitzung vom {{ meeting.start|date:'d.m.Y' }}.<br />
+<br />
+<br />
+{% db_setting 'signature_block' as signature_block %}
+{{ signature_block|linebreaksbr }}
+    </p>
+{% endblock %}
+</body>
+</html>

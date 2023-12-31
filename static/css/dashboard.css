@@ -1,0 +1,15 @@
+.dashboard_widget {
+  padding: 0 0.5em;
+  border-radius: 5px;
+}
+.dashboard_widget.half {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .dashboard_widget.half {
+    width: 50%;
+  }
+}
+
+/*# sourceMappingURL=dashboard.css.map */

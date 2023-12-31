@@ -1,0 +1,44 @@
+{% extends 'public.html' %}
+{% load i18n widget_tweaks %}
+
+{% block content %}
+
+    {{ block.super }}
+
+    <form action="{{ request.path }}" method="post">
+        {% csrf_token %}
+        <div class="form-group row mb-0">
+            <label class="col-sm-4 col-form-label"><strong>Anrede</strong></label>
+            <label class="col-sm-8 col-form-label">{% if data.gender == 'f' %}Frau{% else %}Herr{% endif %}</label>
+        </div>
+        <div class="form-group row mb-0">
+            <label class="col-sm-4 col-form-label"><strong>Vorname</strong></label>
+            <label class="col-sm-8 col-form-label">{{ data.first_name }}</label>
+        </div>
+        <div class="form-group row mb-0">
+            <label class="col-sm-4 col-form-label"><strong>Nachname</strong></label>
+            <label class="col-sm-8 col-form-label">{{ data.last_name }}</label>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label"><strong>E-Mail</strong></label>
+            <label class="col-sm-8 col-form-label">{{ data.email }}</label>
+        </div>
+        {% for element in form %}
+            <div class="form-group {% if element.errors %}has-danger{% endif %}">
+                <label for="{{ element.id_for_label }}" class="sr-only">{{ element.label }}</label>
+                {% if element.errors %}
+                    {% render_field element class+="form-control form-control-danger" placeholder=element.label %}
+                    <div class="form-control-feedback">
+                        {% for error in element.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {% render_field element class+="form-control" placeholder=element.label %}
+                {% endif %}
+            </div>
+        {% endfor %}
+        <input type="submit" class="btn btn-primary btn-block mt-3" value="Registrieren" />
+    </form>
+
+{% endblock %}

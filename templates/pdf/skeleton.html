@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>{% block title %}{% endblock %}</title>
+    {% block inline_css %}
+    <style type="text/css">
+        @page {
+            size: A4 portrait;
+            margin: 2cm;
+
+            @bottom-right {
+                content: 'Seite ' counter(page) '/' counter(pages);
+                font-family: "Source Sans Pro";
+                font-size: 10pt;
+            }
+        }
+
+        @font-face {
+            font-family: "Source Sans Pro";
+            src: url(static:3rd-party/source-sans-pro/OTF/SourceSansPro-ExtraLight.otf);
+            font-weight: 200;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: "Source Sans Pro";
+            src: url(static:3rd-party/source-sans-pro/OTF/SourceSansPro-ExtraLightIt.otf);
+            font-weight: 200;
+            font-style: italic;
+        }
+        @font-face {
+            font-family: "Source Sans Pro";
+            src: url(static:3rd-party/source-sans-pro/OTF/SourceSansPro-Light.otf);
+            font-weight: 300;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: "Source Sans Pro";
+            src: url(static:3rd-party/source-sans-pro/OTF/SourceSansPro-LightIt.otf);
+            font-weight: 300;
+            font-style: italic;
+        }
+        @font-face {
+            font-family: "Source Sans Pro";
+            src: url(static:3rd-party/source-sans-pro/OTF/SourceSansPro-Regular.otf);
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: "Source Sans Pro";
+            src: url(static:3rd-party/source-sans-pro/OTF/SourceSansPro-It.otf);
+            font-weight: 400;
+            font-style: italic;
+        }
+        @font-face {
+            font-family: "Source Sans Pro";
+            src: url(static:3rd-party/source-sans-pro/OTF/SourceSansPro-Semibold.otf);
+            font-weight: 600;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: "Source Sans Pro";
+            src: url(static:3rd-party/source-sans-pro/OTF/SourceSansPro-SemiboldIt.otf);
+            font-weight: 600;
+            font-style: italic;
+        }
+        @font-face {
+            font-family: "Source Sans Pro";
+            src: url(static:3rd-party/source-sans-pro/OTF/SourceSansPro-Bold.otf);
+            font-weight: 700;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: "Source Sans Pro";
+            src: url(static:3rd-party/source-sans-pro/OTF/SourceSansPro-BoldIt.otf);
+            font-weight: 700;
+            font-style: italic;
+        }
+        @font-face {
+            font-family: "Source Sans Pro";
+            src: url(static:3rd-party/source-sans-pro/OTF/SourceSansPro-Black.otf);
+            font-weight: 900;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: "Source Sans Pro";
+            src: url(static:3rd-party/source-sans-pro/OTF/SourceSansPro-BlackIt.otf);
+            font-weight: 900;
+            font-style: italic;
+        }
+
+        /* Reset CSS. http://yui.yahooapis.com/3.2.0/build/cssreset/reset-min.css  */
+        html{color:#000;background:#FFF;}
+        body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,
+        pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td
+        {margin:0;padding:0;}
+        table {border-collapse:collapse;border-spacing:0;}
+        fieldset,img{border:0;}
+        address,caption, cite,code,dfn,em,strong,th,var
+        {font-style:normal;font-weight:normal;}
+        li{list-style:none;}
+        caption,th {text-align:left;}
+        h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}
+        q:before,q:after{content:'';}
+        abbr,acronym{border:0;font-variant:normal;}
+        sup {vertical-align:text-top;}
+        sub {vertical-align:text-bottom;}
+        input,textarea, select
+        {font-family:inherit;font-size:inherit;font-weight:inherit;}
+        legend{color:#000;}
+
+        /* Your Base Foundation */
+        strong { font-weight:900 !important; }
+        hr     { border:0; margin:0; padding:0; height:1pt; color:#000; background-color:#000; }
+
+        /* Page Breaks */
+        .pb_before { page-break-before:always !important; }
+        .pb_after  { page-break-after:always !important; }
+        .pbi_avoid { page-break-inside:avoid !important; }
+
+        * {
+          line-height: 16pt;
+        }
+        body {
+            font-family: "Source Sans Pro";
+            font-size: 12pt;
+            width: 170mm;       /* = 210mm (A4) - 20mm margin on both sides */
+        }
+        p {
+            padding: 2pt 0;
+            margin-bottom: 0.2cm;
+        }
+        h1 {
+            font-size: 20pt;
+            line-height: 20pt;
+            text-align: center;
+            margin: 0 0 0.5cm 0;
+            padding: 0.1cm;
+        }
+        h2 {
+            font-size: 18pt;
+            line-height: 18pt;
+            margin-bottom: 0.4cm;
+        }
+        h3 {
+            display: block;
+            font-size: 16pt;
+            line-height: 16pt;
+            font-weight: bold;
+            margin: 0.2cm 0;
+            padding: 0.2cm 0;
+            border-top: 1px solid #000;
+        }
+        h4 {
+            font-size: 14pt;
+            font-weight: bold;
+            font-weight: normal;
+            margin-bottom: 0.2cm;
+            margin-top: 0.2cm;
+        }
+        small {
+            font-size: 80%;
+        }
+        table {
+            border: none;
+            margin-bottom: 0.2cm;
+        }
+        th, td {
+            text-align: left;
+            margin: 0;
+            vertical-align: top;
+        }
+        th {
+            font-weight: 900;
+        }
+        ol, ul {
+            margin-bottom: 0.5cm;
+        }
+        ol li {
+            list-style: decimal inside;
+        }
+        ul li {
+            list-style: disc inside;
+        }
+        .header {
+            display: block;
+            margin-bottom: 3mm;
+        }
+        .header:after {
+            content: " ";
+            display: block;
+            clear: both;
+        }
+        div.header .logo {
+            display: block;
+            width: 7cm;
+            height: auto;
+            float: left;
+        }
+        div.header .address {
+            display: block;
+            text-align: right;
+            float: right;
+        }
+        .spacer {
+            height: 1cm;
+        }
+        .value {
+            font-weight: bold;
+        }
+        .underline {
+            text-decoration: underline;
+        }
+        .italic_underline {
+            text-decoration: underline;
+            font-style: italic;
+        }
+        .small {
+            font-size: 10pt;
+        }
+        .big {
+            font-size: 14pt;
+            line-height: 18pt;
+        }
+        .bold {
+            font-weight: 900;
+        }
+        .center {
+            text-align: center;
+        }
+        .center_bold {
+            text-align: center;
+            font-weight: 900;
+            margin-bottom: 0.5cm;
+        }
+        .indented {
+            padding-left: 1cm;
+        }
+        .inline {
+            display: inline-block;
+        }
+        .checkbox {
+            font-size: 12pt;
+            border: 1pt solid #000;
+            font-weight: 900;
+            width: 0.25cm;
+            height: 0.24cm;
+            line-height: 0.25cm;
+            display: inline-block;
+            text-align: center;
+        }
+        table.full_width {
+            width: 100%;
+            table-layout: fixed;
+        }
+        table.full_width th,
+        table.full_width td {
+            padding: 0.1cm;
+            overflow-wrap: break-word;
+            box-sizing: border-box;
+        }
+        table.nopadding th,
+        table.nopadding td {
+            padding: 2pt;
+        }
+        table.nopadding td:first-child,
+        table.nopadding th:first-child {
+            padding-left: 0 !important;
+        }
+        table.withborders td,
+        table.withborders th {
+            border: 1pt solid #000000;
+        }
+        table.withborders th {
+            border-bottom: 2pt solid #000000;
+        }
+        table.withrowborders,
+        table.withrowborders tr {
+            border-top: 1pt solid #000000;
+        }
+        table.withrowborders tr td {
+            padding: 4pt 0;
+        }
+        .withrowborders td:first-child {
+            width: 1cm;
+        }
+        .infotext {
+            margin: 0.5cm;
+            text-align: center;
+        }
+        .title {
+            display: block;
+            padding: 0.2cm;
+            border: 1pt solid #000;
+            position: relative;
+        }
+        .title > .ec_number_right {
+            position: absolute;
+            right: 1rem;
+            font-weight: bold;
+        }
+        h2.main_part {
+            page-break-before: always;
+            margin: 0.5cm 0;
+            padding: 0;
+            display: block;
+            border: 1pt solid #000000;
+            text-align: center;
+            padding: 0.2cm;
+        }
+        .border_top {
+            padding-top: 0.1cm;
+            border-top: 1pt solid #000;
+        }
+        .border_bottom {
+            display: block;
+            padding-bottom: 0.1cm;
+            border-bottom: 1pt solid #000;
+        }
+        .two_columns {
+            display: block;
+            width: 100%;
+            margin-bottom: 1cm;
+        }
+        .two_columns:after {
+            content: " ";
+            display: block;
+            clear: both;
+        }
+        .two_columns > .column_left,
+        .two_columns > .column_right {
+            display: block;
+            width: 48%;
+            height: 4cm;
+            border: 1pt solid #000;
+            padding: 0.5%;
+            vertical-align: top;
+        }
+        .two_columns > .column_left {
+            float: left;
+        }
+        .two_columns > .column_right {
+            float: right;
+        }
+        .two_columns span.small {
+            font-size: 9pt;
+        }
+        .withborder {
+            border: 1pt solid #000;
+        }
+        .diff .field {
+            margin: 0 0 0.3cm 0.2cm;
+        }
+        .signature_date {
+            display: block;
+            padding: 2cm 0.2cm 1cm;
+            vertical-align: bottom;
+        }
+        .signature_date .line {
+            display: block;
+            float: left;
+            border-top: 1pt solid #000;
+            padding-top: 0.2cm;
+            width: 8cm;
+        }
+        .signature_date .line:last-child {
+            float: right;
+        }
+        .diff span{
+            display: block;
+        }
+        .diff span.inserted{
+            color: #006600;
+            font-weight: bold;
+        }
+        .diff span.deleted{
+            color: #660000;
+            text-decoration: line-through;
+        }
+        .metadata {     /* don't set display:none because the metadata wouldn't show up */
+            display: block;
+            overflow: hidden;
+            height: 1px;
+            width: 1px;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    {% endblock %}
+  </head>
+  <body>
+    {% block content %}{% endblock %}
+  </body>
+</html>

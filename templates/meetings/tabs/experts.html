@@ -1,0 +1,93 @@
+{% load core i18n widget_tweaks %}
+  
+{% if expert_formset.total_form_count %}
+    <form method="post">
+        {% csrf_token %}
+        {{ expert_formset.management_form }}
+        <ul class="list-group mb-3">
+        {% for form in expert_formset.forms %}
+            <li class="list-group-item d-block">
+                <div>
+                    <strong>{{ form.instance.category }}</strong>
+                </div>
+                <div class="mb-3">
+                    {% if meeting.started %}
+                        {{ form.instance.specialist|default:'<em>Niemand zugeteilt!</em>' }}
+                    {% else %}
+                        {{ form.id }}
+                        {% render_field form.specialist class+='form-control' %}
+                    {% endif %}
+                </div>
+
+                {% if form.submissions_in_progress %}
+                    <div>
+                        {% trans 'Submissions with board member review (in progress)' %}:
+                        <ul class="list-inline">
+                            {% for submission in form.submissions_in_progress %}
+                                <li class="list-inline-item">
+                                    <a href="{% url 'core:view_submission' submission_pk=submission.pk %}" title="{{ submission.project_title_display }}">
+                                        {{ submission.get_ec_number_display }}
+                                    </a>
+                                    {% if submission.biased %}
+                                        <span class="text-danger">
+                                            <span class="fa fa-exclamation"></span>
+                                            {% trans 'biased' %}
+                                        </span>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                {% if form.submissions_completed %}
+                    <div>
+                        {% trans 'Submissions with board member review (completed)' %}:
+                        <ul class="list-inline">
+                            {% for submission in form.submissions_completed %}
+                                <li class="list-inline-item">
+                                    <a href="{% url 'core:view_submission' submission_pk=submission.pk %}" title="{{ submission.project_title_display }}">
+                                        {{ submission.get_ec_number_display }}
+                                    </a>
+                                    {% if submission.biased %}
+                                        <span class="text-danger">
+                                            <span class="fa fa-exclamation"></span>
+                                            {% trans 'biased' %}
+                                        </span>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                {% if form.submissions_without_review %}
+                    <div>
+                        {% trans 'Submissions without board member review' %}:
+                        <ul class="list-inline">
+                            {% for submission in form.submissions_without_review %}
+                                <li class="list-inline-item">
+                                    <a href="{% url 'coreview_submission' submission_pk=submission.pk %}" title="{{ submission.project_title_display }}">
+                                        {{ submission.get_ec_number_display }}
+                                    </a>
+                                    {% if submission.biased %}
+                                        <span class="text-danger">
+                                            <span class="fa fa-exclamation"></span>
+                                            {% trans 'biased' %}
+                                        </span>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+        {% if not meeting.started %}
+            <input class="btn btn-primary" type="submit" value="{% trans 'save' %}" />
+        {% endif %}
+    </form>
+{% else %}
+    <em>{% trans 'no board member required' %}</em>
+{% endif %}

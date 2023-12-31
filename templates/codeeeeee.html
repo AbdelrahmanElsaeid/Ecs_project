@@ -1,0 +1,91 @@
+<script defer type="text/javascript">
+    $(document).ready(function() {
+        var selected = '{% block menuSelection %}dashboard{% endblock %}';
+        $('#usermenu .nav-link.' + selected).addClass('active');
+    
+        {% if request.task_management.form %}
+            ecs.init_task_form();
+        {% endif %}
+    
+        $('#userswitcher_input').select2;
+    
+        var scratchpad = $('#scratchpad');
+    
+        $(document).on('click', 'a.scratchpad', function(ev) {
+            ev.preventDefault();
+    
+            if (scratchpad.is(':visible')) {
+                var form = scratchpad.find('form');
+                if (form.length) {
+                    $.ajax({
+                        url: form.attr('action'),
+                        method: 'POST',
+                        data: form.serialize()
+                    });
+                }
+    
+                scratchpad.hide();
+                scratchpad.empty();
+                return;
+            }
+    
+            scratchpad.css('display', 'flex');
+            scratchpad.load($(this).attr('href'));
+        });
+    
+        $(window).on('beforeunload', function() {
+            if (scratchpad.is(':visible')) {
+                var form = scratchpad.find('form');
+                if (form.length) {
+                    $.ajax({
+                        url: form.attr('action'),
+                        method: 'POST',
+                        data: form.serialize(),
+                        async: false
+                    });
+                }
+            }
+        });
+    
+    });
+    {% comment %} var dashboard = 'dashboard'; // Initialize the variable here or retrieve its value from the template
+    $(document).ready(function () {
+        var selected = {% block menuSelection %}dashboard{% endblock %};
+        $('#usermenu .nav-link.' + selected).addClass('active');
+
+        {% if request.task_management.form %}
+            ecs.init_task_form();
+        {% endif %}
+        $('#userswitcher_input').select2;
+
+        var scratchpad = $('#scratchpad');
+
+        $(document).on('click', 'a.scratchpad', function(ev) {
+            ev.preventDefault();
+
+            if (scratchpad.is(':visible')) {
+                var form = scratchpad.find('form');
+                if (form.length)
+                    $.post(form.attr('action'), form.serialize());
+
+                scratchpad.hide();
+                scratchpad.html('');
+                return;
+            }
+
+            scratchpad.css('display', 'flex');
+            scratchpad.load($(this).attr('href'));
+        });
+
+        $(window).unload(function () {
+            if (scratchpad.is(':visible')) {
+                var form = scratchpad.find('form');
+                if (form.length)
+                    $.post(form.attr('action'), form.serialize());
+            }
+        });
+
+        $.fn.select2.defaults.set('placeholder', '\u2026');
+        $.fn.select2.defaults.set('dropdownAutoWidth', true);
+    }); {% endcomment %}
+</script>

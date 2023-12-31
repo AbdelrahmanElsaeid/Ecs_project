@@ -1,0 +1,6 @@
+{% extends 'msg_core.txt' %}
+{% load userutils %}
+
+{% block content %}
+Ein neuer Zeichnungberechtigter wurde hinzugefügt: {{ user|formal_name }}
+{% endblock %}

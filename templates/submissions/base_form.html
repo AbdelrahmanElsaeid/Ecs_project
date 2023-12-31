@@ -1,0 +1,283 @@
+{% extends "core.html" %}
+{% load core i18n widget_tweaks %}
+
+{% block headernav %}
+    <ul class="tab_header_groups nav nav-tabs flex-wrap hidden-xs-up">
+        {% block tab_header_groups %}
+            <li class="nav-item"><a class="nav-link" href="#tabs_submission">{% trans "Submission" %}</a></li>
+        {% endblock %}
+    </ul>
+
+    {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    {% block tab_headers %}
+        <div id="tabs_submission" class="collapse">
+            <ul class="nav nav-tabs flex-wrap tab_headers mb-3">
+                {% for tab in tabs %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#tabs-{{ forloop.counter }}">{{ tab }}</a>
+                    </li>
+                {% endfor %}
+                {% block submission_action_buttons %}
+                {% endblock %}
+            </ul>
+        </div>
+    {% endblock %}
+
+      <div class="form_main{% if readonly %} readonly{% endif %}">
+          {% block tabs %}
+            {% for tab in tabs %}
+                <div id="tabs-{{ forloop.counter }}" class="collapse {% if tab.slug != 'measures' %}container{% endif %}">
+                    
+                    {% if unacknowledged_forms %}
+                        <div class="alert alert-info text-center mb-3">
+                            <strong>
+                                {% if unacknowledged_forms == 1 %}
+                                    Es gibt eine neuere, unbestätigte Version.
+                                {% else %}
+                                    Es gibt {{ unacknowledged_forms }} neuere, unbestätigte Versionen.
+                                {% endif %}
+                            </strong>
+                            <div>
+                                Neue Versionen werden erst nach Bestätigung der EK angezeigt.
+                                Um Änderungen zu kontrollieren verwenden Sie bitte die
+                                Versionsgeschichte im Generell-Status Reiter.
+                            </div>
+                        </div>
+                        {% endif %}
+                                            
+                    {% if tab.slug == 'measures' %}
+
+                        {% block section_6_1 %}
+                            <h3 class="my-4">
+                                Ausschließlich studienbezogene Maßnahmen 
+                                <small class="text-muted">[6.1]</small>
+                            </h3>
+                            {% with measure_formset as formset %}
+                                {% include "forms/tables/inline_formset.html" %}
+                            {% endwith %}
+                        {% endblock %}
+
+                        <h3 class="my-4">
+                            Invasive/strahlenbelastende Maßnahmen im Rahmen der
+                            Routineversorgung während der Studiendauer
+                            <small class="text-muted">[6.2]</small>
+                        </h3>
+                        {% with routinemeasure_formset as formset %}
+                            {% include "forms/tables/inline_formset.html" %}
+                        {% endwith %}
+
+                        <h3 class="my-4">
+                            Im Rahmen der Studie verabreichte Medikamente, deren
+                            Wirksamkeit und/oder Sicherheit nicht Gegenstand der
+                            Prüfung sind
+                            <small class="text-muted">[3b]</small>
+                        </h3>
+                        {% with nontesteduseddrug_formset as formset %}
+                            {% include "forms/tables/inline_formset.html" %}
+                        {% endwith %}
+
+                    {% elif tab.slug == 'biometrics' and not readonly %}
+
+                        <div class="alert alert-info text-center mt-3">
+                            Hier nur Kurzinformationen in Stichworten,
+                            ausführlicher - wenn erforderlich - unter Punkt 7.15
+                            und 7.16.
+                        </div>
+
+                    {% elif tab.slug == 'insurance' and not readonly %}
+
+                        <div class="alert alert-info text-center mt-3">
+                            Diese Angaben müssen in der Patienten- /
+                            Probandeninformation enthalten sein!
+                        </div>
+
+                    {% elif tab.slug == 'documents' %}
+                    
+                        {% if not readonly %}
+                            {% if not protocol_uploaded %}
+                                <div class="alert alert-danger text-center">
+                                    {% trans "At least one protocol is required." %}
+                                </div>
+                            {% endif %}
+                            <div class="upload_container"></div>
+                        {% else %}
+                            {% include "documents/compact_list.html" %}
+                        {% endif %}
+                        
+                    {% elif tab.slug == 'centers' %}
+                    
+                        <h3 class="my-4">{% trans 'centers (subject)' %}</h3>
+
+                        {% if investigator_formset.non_form_errors %}
+                            <div class="alert alert-danger text-center pb-0">
+                                {% for error in investigator_formset.non_form_errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <ul class="investigator_list list-unstyled"></ul>
+
+                        {{ investigator_formset.management_form }}
+                        {{ investigatoremployee_formset.management_form }}
+
+                        {% for form in investigator_formset.forms %}
+                            {% with forloop.counter0 as investigator_index %}
+                            <div class="investigator {% if form.close_date %}closed{% endif %}" id="investigator{{ forloop.counter0 }}">
+                                {% if form.non_field_errors %}
+                                    <div class="errors">
+                                        <ul class="errorlist">
+                                            {% for error in form.non_field_errors %}
+                                                <li>{{ error }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                                <div class="field">
+                                    {% if form.close_date %}
+                                        <p class="text-center font-weight-bold">
+                                            <span class="fa fa-info text-info"></span>
+                                            Dieses Zentrum wurde am {{ form.close_date|date:'d.m.Y' }} geschlossen.
+                                        </p>
+                                    {% endif %}
+
+                                    <div class="investigator_form">
+                                        {% for hidden in form.hidden_fields %}
+                                            {{ hidden }}
+                                        {% endfor %}
+                                        <ul class="list-unstyled">
+                                            {% for field in form %}
+                                                {% if not field.is_hidden %}
+                                                    {% include "submissions/field.html" %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <h4 class="my-4">
+                                        Verantwortliche Mitarbeiter/innen an der klinischen Studie (an Ihrer Prüfstelle)
+                                    </h4>
+                                    {% if investigatoremployee_formset.non_form_errors %}
+                                        <div class="errors">
+                                            <ul class="errorlist">
+                                                {% for error in investigatoremployee_formset.non_form_errors %}
+                                                    <li>{{ error }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+
+                                    {# XXX: reuse forms/tables/inline_formset.html (FMD2) #}
+                                    <table class="table table-sm investigatoremployee_formset">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            {% for field in investigatoremployee_formset.empty_form %}
+                                                {% if not field.is_hidden and not field.html_name|endswith:'-DELETE' %}
+                                                    {% with field|get_field_info as field_info %}
+                                                    <th{% if field.field.required %} class="required"{% endif %}>
+                                                        {{ field_info.label|default:field.label }}
+                                                        {% if field_info.number %}
+                                                            <span class="text-muted">[{{ field_info.number }}]</span>
+                                                        {% endif %}
+                                                        {% if field_info.help_text %}
+                                                        <span class="text-muted">
+                                                            {{ field_info.help_text }}
+                                                        </span>
+                                                        {% endif %}
+                                                    </th>
+                                                    {% endwith %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% if not readonly and forloop.first %}
+                                        {% with investigatoremployee_formset.empty_form as form %}
+                                            <tr class="form template">
+                                                <td>
+                                                    {% for hidden in form.hidden_fields %}
+                                                        {{ hidden }}
+                                                    {% endfor %}
+                                                </td>
+                                                {% for field in form %}
+                                                    {% if not field.is_hidden and not field.html_name|endswith:'-DELETE' %}
+                                                        {% with field|get_field_info as field_info %}
+                                                        <td class="{{ field.field|type_name }}{% if field.field.required %} required{% endif %}">
+                                                            {% render_field field class+="form-control" %}
+                                                        </td>
+                                                        {% endwith %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                        {% endwith %}
+                                        {% endif %}
+                                        {% for form in investigatoremployee_formset.forms %}
+                                            {% if form|form_value:'investigator_index'|default:0|add:0 == investigator_index %}
+                                                <tr class="form">
+                                                    {% include "forms/tables/row.html" %}
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor%}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            {% endwith %}
+                        {% endfor%}
+                    {% endif %}
+
+                    {% for legend, fields in tab.fieldsets %}
+                        <div class="field fieldset_{{ forloop.counter }}">
+                            {% if legend %}
+                                <h3 class="my-4">{{ legend }}</h3>
+                            {% endif %}
+                            {% if fields.name == 'centers_abroad' %}
+                                {% with foreignparticipatingcenter_formset as formset %}
+                                    {% include "forms/tables/inline_formset.html" %}
+                                {% endwith %}
+                            {% endif %}
+                            {% if fields.name == 'centers_non_subject' %}
+                                {% with participatingcenternonsubject_formset as formset %}
+                                    {% include "forms/tables/inline_formset.html" %}
+                                {% endwith %}
+                            {% endif %}
+                            <ul class="list-unstyled">
+                                {% for field_name in fields %}
+                                    {% with form|getitem:field_name as field %}
+                                        {% include "submissions/field.html" %}
+                                    {% endwith %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+          {% endblock %}
+     </div>
+{% endblock %}
+
+{% block jsbottom %}
+    {{ block.super }}
+    <script type="text/javascript">
+        $(function() {
+            var input_reg_countries = $('#id_substance_registered_in_countries');
+            input_reg_countries.select2({
+                width: '100%',
+                dropdownParent: input_reg_countries.parent(),
+            });
+
+            var input_p_c_t_countries = $('#id_substance_p_c_t_countries');
+            input_p_c_t_countries.select2({
+                width: '100%',
+                dropdownParent: input_p_c_t_countries.parent(),
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block menuSelection %}submissions{% endblock %}

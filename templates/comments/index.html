@@ -1,0 +1,79 @@
+{% load i18n %}
+
+{% for comment in comments %}
+    <div class="card mb-2 comment">
+        <div class="card-header">
+            {{ comment.author }} {% trans 'on the' %}
+            {{ comment.timestamp|date:'d.m.Y H:i' }}
+
+            {% url 'core:edit' pk=comment.pk as edit_url %}
+            <a class="fa fa-pencil ml-2 edit" href="{{ edit_url }}"></a>
+
+            {% url 'core:delete' pk=comment.pk as delete_url %}
+            <a class="float-right delete" href="{{ delete_url }}">&times;</a>
+        </div>
+        <div class="card-block">
+            <p class="card-text">
+                {{ comment.text|linebreaksbr }}
+            </p>
+            {% if comment.attachment %}
+                <hr>
+                {% trans 'Attachment' %}:
+                {% url 'core:download_attachment' pk=comment.pk as download_url %}
+                <a href="{{ download_url }}">{{ comment.attachment.name }}</a>
+                {% if comment.attachment.mimetype == 'application/pdf' %}
+                    {% url 'core:view_attachment' pk=comment.pk as view_url %}
+                    | <a href="{{ view_url }}" target="_blank">{% trans 'View' %}</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}
+
+<div class="card mb-2 hidden-xs-up new-comment-form">
+    <div class="card-block text-center">
+        <span class="fa fa-2x fa-spinner fa-spin"></span>
+    </div>
+</div>
+
+{% url 'core.edit' submission_pk=submission.pk as create_url %}
+<a class="btn btn-primary add-comment" href="{{ create_url }}">
+    <span class="fa fa-plus"></span>
+    {% trans 'Add Comment' %}
+</a>
+
+<script type="text/javascript">
+    $('.card.comment a.edit').click(function(ev) {
+        ev.preventDefault();
+        var link = $(this);
+        var container = link.parents('.card');
+
+        link.replaceWith('<span class="fa fa-spinner fa-spin"></span>');
+        container.load(link.attr('href'));
+    });
+
+    $('.card.comment a.delete').click(function(ev) {
+        ev.preventDefault();
+        var link = $(this);
+        var widget = link.parents('.ecs-Widget').data('widget');
+
+        ecs.confirm({
+            question: '{% trans 'Do you want to delete the comment?' %}',
+            ok: '{{ _("Delete")|escapejs }}',
+            cancel: '{{ _("Don't Delete")|escapejs }}',
+            success: function() {
+                widget.load(link.attr('href'));
+            }
+        });
+    });
+
+    $('.add-comment').click(function(ev) {
+        ev.preventDefault();
+        var link = $(this);
+        var container = $('.new-comment-form');
+
+        link.remove();
+        container.removeClass('hidden-xs-up');
+        container.load(link.attr('href'));
+    });
+</script>

@@ -1,0 +1,129 @@
+{% extends 'pdf/skeleton.html' %}
+{% load core userutils %}
+
+{% block title %}{{ vote }}{% endblock %}
+
+{% block content %}
+{% include 'pdf/ec_head.html' %}
+
+<h1 class="metadata">{{ vote }}</h1>
+<center><p><b>
+{% if vote.top %}
+    Sitzung der Ethik-Kommission am {{ vote.top.meeting.start|date:'d.m.Y' }}, {{ vote.top }}:
+{% else %}
+    {% if vote.result == '1' or vote.result == '4' %}Votum{% else %}Mitteilung{% endif %}:
+{% endif %}
+</b></p></center>
+
+<h2 class="metadata">Studie</h2>
+<p>
+    <b>EK Nr:</b> <b>{{ vote.get_ec_number }}</b><br />
+    {%if form.eudract_number %}
+        <b>EudraCT Nr:</b> {{form.eudract_number}}<br />
+    {% endif %}
+    <b>Projekttitel:</b> {{ submission.project_title_display }}<br />
+    <b>Antragsteller/in:</b> {{ form.submitter }}<br />
+    <b>Institution:</b> {{ form.submitter_organisation }}<br />
+    <b>Sponsor:</b> {{ form.sponsor_name }}<br />
+<p>
+
+<h2 class="metadata">Zentren</h2>
+<p>
+    Teilnehmende Prüfzentren:
+    <table class="full_width withborders">
+        <thead>
+            <tr>
+                <th style="width: 33.33%;">Ethik-Kommission</th>
+                <th style="width: 33.33%;">Prüfzentrum</th>
+                <th style="width: 33.33%;">Prüfärztin/arzt</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for investigator in form.investigators.all %}
+                <tr>
+                    <td>{{ investigator.ethics_commission }}</td>
+                    <td>{{ investigator.organisation }}</td>
+                    <td>{{ investigator.contact.full_name }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4"><em>(kein Prüfzentrum)</em></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</p>
+
+<h2 class="metadata">Dokumente</h2>
+<p>
+    Die Stellungnahme der Ethik-Kommission erfolgt aufgrund folgender eingereichter Unterlagen:
+    {% include 'pdf/documents.html' %}
+</p>
+
+<h2 class="metadata">Beschluss</h2>
+<b>Die Kommission fasst folgenden Beschluss (mit X markiert):</b><br />
+
+<table class="full_width withborders">
+    <tbody>
+        <tr>
+            <td style="width: 5%;">
+                <span class="checkbox">X</span>
+            </td>
+            <td style="width: 95%;">
+                {% include 'votes/pdf/vote_result.html' with result=vote.result %}
+            </td>
+        </tr>
+    </tbody>
+</table> 
+
+<h2 class="metadata">Ergänzende Kommentare</h2>
+{% if past_votes %}
+    {% for vote in past_votes %}
+        <b>Ergänzende Kommentare {% if vote.top %} der Sitzung am {{ vote.top.meeting.start|date:'d.m.Y' }}{% endif %}:</b><br>
+        <p>{{ vote.text|linebreaksbr }}</p>
+    {% endfor %}
+{% endif %}
+
+{% if vote.text %}
+  <b>Ergänzende Kommentare{% if vote.top %} der Sitzung am {{ vote.top.meeting.start|date:'d.m.Y' }}{% endif %}:</b><br />
+  <p>
+    {{ vote.text|linebreaksbr }}
+  </p>
+{% endif %}
+
+
+{% if submission.current_submission_form.is_amg %}
+    {% if vote.result == '2' or vote.result == '3b' %}
+        <p>"CLOCKSTOP": Die in §41a AMG genannte Frist wird ab dem Sitzungstag bis zum Einlangen der in dieser Mitteilung geforderten Informationen gehemmt.</p>
+    {% endif %}
+{% endif %}
+
+{% if submission.current_submission_form.is_amg or submission.current_submission_form.is_mpg %}
+  <p>
+    Die Ethik-Kommission geht - rechtlich unverbindlich - davon aus, dass es sich um eine klinische Prüfung gemäß {% if submission.current_submission_form.is_amg %}AMG{% endif %}{% if submission.current_submission_form.is_amg and submission.current_submission_form.is_mpg %}/{% endif %}{% if submission.current_submission_form.is_mpg %}MPG{% endif %} handelt.
+  </p>
+{% endif %}
+
+<p>
+    {% db_setting 'member_list_url' as url %}
+    Die aktuelle Mitgliederliste der Ethik-Kommission ist unter folgender Adresse abrufbar:<br>
+    <a href="{{ url }}">{{ url }}</a>
+</p>
+
+<p>
+    Mitglieder der Ethik-Kommission, die für diesen Tagesordnungspunkt als befangen anzusehen waren und daher laut Geschäftsordnung an der Entscheidungsfindung/Abstimmung nicht teilgenommen haben: {% for bef in submission.biased_board_members.all %}{{ bef }}{% if not forloop.last %}, {% endif %}{% empty %}<strong>keine</strong>{% endfor %}
+</p>
+
+{% db_setting 'vote_pdf_extra' as extra %}
+{% if extra %}<p>{{ extra }}</p>{% endif %}
+
+<h2 class="metadata">Download</h2>
+<p>
+    Dieses Dokument ist für berechtigte Benutzer/innen in digitaler Form unter folgender Adresse abrufbar:<br>
+    <a href="{{ ABSOLUTE_URL_PREFIX }}{% url 'votes:download_vote' vote_pk=vote.pk %}">{{ ABSOLUTE_URL_PREFIX }}{% url 'votes:download_vote' vote_pk=vote.pk %}</a>
+</p>
+
+{% if not vote.needs_signature and vote.published_by %}
+    <p>Freigegeben von: <b>{{ vote.published_by|full_name }}</b>.</p>
+{% endif %}
+{% endblock %}

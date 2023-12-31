@@ -1,0 +1,9 @@
+{% extends 'msg_core.txt' %}
+{% load core %}
+
+{% block content %}
+Zur Studie {{ submission|ec_number }} "{{ submission.project_title_display }}" ist noch keine Nachreichung erfolgt.
+
+Die Ethik-Kommission macht darauf aufmerksam, dass für diese Studie kein endgültig positives Votum vorliegt und das Projekt daher nicht begonnen werden darf.
+Bitte stellen Sie sicher, dass Sie alle notwendigen Dokumente an die Ethik-Kommission übermittelt haben.
+{% endblock %}

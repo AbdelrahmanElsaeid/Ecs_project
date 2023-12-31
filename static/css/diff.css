@@ -1,0 +1,58 @@
+.field_history .change {
+  padding: 5px;
+}
+.field_history .change .diff .inserted, .field_history .change .diff .deleted {
+  display: inline;
+}
+
+ul.diff {
+  list-style: none;
+}
+ul.diff li {
+  margin-bottom: 10px;
+}
+
+.diff .deleted, .diff .inserted {
+  display: block;
+}
+.diff .deleted {
+  color: #d50000;
+  text-decoration: line-through;
+}
+.diff .inserted {
+  color: #00a400;
+  font-weight: bold;
+}
+.diff .indent {
+  margin-left: 20px;
+}
+.diff .elem {
+  border: 1px solid;
+  padding: 10px;
+  margin: 10px;
+}
+.diff .field {
+  display: block;
+  margin-bottom: 10px;
+}
+.diff .item {
+  margin: 5px 10px 0;
+  padding: 5px;
+  border: 1px dotted #cdcdcd;
+}
+.diff .item .title {
+  display: inline-block;
+  font-size: 16px;
+  padding-bottom: 5px;
+}
+.diff .item .item .title {
+  font-size: 14px;
+}
+.diff .atomic {
+  margin: 5px 10px 0;
+}
+.diff .atomic > div {
+  display: inline;
+}
+
+/*# sourceMappingURL=diff.css.map */

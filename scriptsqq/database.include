@@ -1,0 +1,162 @@
+#!/bin/bash
+
+get_dumpfilename(){
+    # returns first existing file in order
+    local i
+    if test -f "${ECS_DUMP_FILENAME:-/invalid}"; then
+        echo "${ECS_DUMP_FILENAME}"
+    else
+        for i in . ecs-pgdump ecs-pgdump-iso ecs-pgdump-fallback; do
+            if test -e $HOME/$i/ecs.pgdump.gz; then
+                echo "$HOME/$i/ecs.pgdump.gz"
+                break
+            elif test -e $HOME/$i/ecs.pgdump; then
+                echo "$HOME/$i/ecs.pgdump"
+                break
+            fi
+        done
+    fi
+}
+
+dump_database(){
+    local dbdump
+    dbdump=$HOME/ecs.pgdump.gz
+    if test "$1" != ""; then
+        dbdump=$1
+    fi
+    echo "create a database dump at $dbdump, this might take some time"
+    (set -o pipefail && pg_dump --encoding='utf-8' --format=custom -Z0 -d ecs | \
+        /bin/gzip --rsyncable > ${dbdump}.new)
+    if test "$?" -eq 0; then
+        mv ${dbdump}.new ${dbdump}
+    else
+        echo "Error: could not create dump $dbdump"
+    fi
+}
+
+recreate_database() {
+    echo "wipe out ecs-ca on database restore"
+    if test -e $HOME/ecs-ca; then rm -rf $HOME/ecs-ca; fi
+    echo "create user app and database ecs"
+    sudo -u postgres createuser app
+    sudo -u postgres createdb ecs -T template0 -O app -l de_DE.utf8
+    sudo -u postgres psql ecs -c "CREATE extension pg_stat_statements;"
+}
+
+fresh_database() {
+    # to be called with: activated environment, CWD=rootdir of sourcecode
+    local dbdump=$HOME/ecs-pgdump-fallback/ecs.pgdump.gz
+    echo "destroying and recreating empty/fresh database"
+    sudo -u postgres dropdb ecs
+    recreate_database
+    prepare_database
+    dump_database $dbdump
+}
+
+prepare_database() {
+    # to be called with: activated environment, CWD=rootdir of sourcecode
+    # optional parameter: $1= "--restore-dump"
+    echo "prepare database"
+    # :0 = Django migrations found
+    # :1 = south migrations found
+    # :2 = empty database
+    # :8 = could not connect to database (not existing?)
+    # :9 >= could not connect to database server
+    # :127 >= bash command error, eg. command not found
+    local err dumpfilename firstrun
+    firstrun="false"
+    scripts/checkdb.py module ecs.settings && err=$? || err=$?
+    if test $err -ge 127; then
+        echo "Fatal Error: could not execute scripts/checkdb.py, please call prepare_database from the root of the ecs source directory with activated environment" >&2
+        exit 1
+    fi
+    if test $err -ge 9; then
+        echo "Fatal Error: ecs.settings, parameter or database connection error ($err)" >&2
+        exit 1
+    fi
+
+    if test "${ECS_RECOVER_FROM_DUMP:-false}" = "true" -o "$1" = "--restore-dump"; then
+        dumpfilename=$(get_dumpfilename)
+        if test "$dumpfilename" = "" -o ! -e "$dumpfilename"; then
+            echo "Fatal Error: restore from dump; could not find any dump: $dumpfilename" >&2
+            exit 1
+        fi
+        if test $err -eq 0 -o $err -eq 1; then
+            echo "drop current database"
+            sudo -u postgres dropdb ecs
+        fi
+        recreate_database
+        echo "restore from dump (this might take some time): $dumpfilename"
+        if test "$(file -N -b --mime-type $dumpfilename)" = "application/gzip"; then
+            echo "found gzipped dump"
+            (set -o pipefail && cat $dumpfilename | gzip -d | \
+                pg_restore -1 --format=custom --schema=public --no-owner --dbname=ecs)
+        else
+            echo "found normal dump"
+            pg_restore --format=custom --schema=public --no-owner --dbname=ecs --jobs="$(nproc)" $dumpfilename
+        fi
+    else
+        if test $err -eq 8; then
+            firstrun="true"
+            echo "Warning: database does not exist, trying to recreate it on local machine"
+            recreate_database
+        elif test $err -eq 2; then
+            firstrun="true"
+            echo "Info: using empty existing database"
+        fi
+    fi
+
+    scripts/checkdb.py module ecs.settings && err=$? || err=$?
+    if test $err -ge 8; then
+        echo "Fatal Error: could not connect to database or parameter error ($err)" >&2
+        exit 1
+    fi
+
+    if test $err -eq 1; then
+        echo "Warning: old south migrations found, migrating up to django_migrations"
+        legacy_migrate
+    fi
+
+    echo "./manage.py migrate --noinput"
+    ./manage.py migrate --noinput || exit 1
+
+    echo "./manage.py bootstrap"
+    ./manage.py bootstrap || exit 1
+}
+
+legacy_migrate() {
+    local app p f
+    echo "Initial migration from old 1.2 django database, expect errors in log, this is normal up to 'NO exceptions are expected from this point on' is displayed"
+
+    # fake-apply to current data structure (from old south migrations)
+    for app in auth contenttypes sessions sites boilerplate docstash \
+        documents meetings notifications pki scratchpad users votes workflow; do
+            ./manage.py migrate --noinput --fake $app 0001_initial || true
+    done
+
+    # For fake-applying the initial migration of the reversion app,
+    # we first have to move the squashed migration aside,
+    # in order for the (intermediate) target migration to show up.
+    p="$(python -c 'import sys; print(sys.path[-1])')"
+    f="$p/reversion/migrations/0001_squashed_0004_auto_20160611_1202.py"
+    mv "$f" "$f.disabled"
+    ./manage.py migrate --noinput --fake reversion 0001_initial || true
+    mv "$f.disabled" "$f"
+
+    ./manage.py migrate --noinput --fake billing 0002_auto_20151217_1249 || true
+    ./manage.py migrate --noinput --fake checklists 0002_auto_20151217_1249 || true
+    ./manage.py migrate --noinput --fake communication 0003_auto_20151217_1249 || true
+    ./manage.py migrate --noinput --fake core 0003_auto_20151217_1249 || true
+    ./manage.py migrate --noinput --fake tasks 0002_auto_20151217_1249 || true
+
+    echo "Migration to bring the legacy database up to date. This might take a couple of minutes."
+    ./manage.py migrate --noinput core 0006_production_compat3 || true
+
+    echo "Info: NO exceptions are expected from this point on"
+    echo "Run remaining migrations, delete stale content types"
+    yes yes | ./manage.py migrate
+    if test $? -ne 0; then
+        echo "Error: Legacy Import: ./manage.py migrate failed" >&2
+        exit 1
+    fi
+}

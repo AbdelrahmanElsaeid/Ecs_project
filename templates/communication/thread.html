@@ -1,0 +1,123 @@
+{% extends "core.html" %}
+{% load i18n core communication humanize widget_tweaks %}
+
+{% block menuSelection %}communication{% endblock %}
+
+{% block htmltitle %}{{ thread|remote:user }} - "{{ thread.subject }}" | {{ block.super }}{% endblock %}
+{% block headertitle %}
+    {% if thread|starred_by:user %}
+        {% url 'communication:unstar' thread_pk=thread.pk as unstar_url %}
+        <a class="fa fa-star text-warning" title="{% trans "Remove star" %}" href="{{ unstar_url }}?next={{ request.path|urlencode }}"></a>
+    {% else %}
+        {% url 'communication:star' thread_pk=thread.pk as star_url %}
+        <a class="fa fa-star-o text-muted" title="{% trans "Add star" %}" href="{{ star_url }}?next={{ request.path|urlencode }}"></a>
+    {% endif %}
+    {{ thread|remote:user }} -
+    {% if thread.submission %}
+        {{ thread.submission|ec_number }} -
+    {% endif %}
+    {{ thread.subject }}
+{% endblock %}
+
+{% block content %}
+<div class="communication_thread container">
+
+{% if thread.submission %}
+    <div class="mb-3">
+        <a href="{% url 'core:view_submission' submission_pk=thread.submission.pk %}#communication_tab">
+            <span class="fa fa-backward"></span>
+            {% trans "To the Study" %}
+        </a>
+    </div>
+{% endif %}
+
+{% for message in thread.message_list %}
+    <div class="card mb-2 message">
+        <div class="card-header">
+            <span class="sender">
+                {% if message.sender == user %}
+                    {% trans 'Me' %}
+                {% else %}
+                    {{ message.sender }}
+                {% endif %}
+            </span>
+            <span class="preview text-muted" hidden>{{ message|preview:80 }}</span>
+            <span class="text-muted float-right">
+                {{ message.timestamp|naturalday:'d.m.Y' }} {{ message.timestamp|date:'H:i' }} Uhr
+            </span>
+        </div>
+        <div class="card-block">
+            <pre class="card-text">{{ message.text|urlize }}</pre>
+        </div>
+    </div>
+{% endfor %}
+
+<div class="mt-3 ml-3">
+    <a href="" class="collapse_all">{% trans "Collapse all" %}</a>
+    <a href="" class="expand_all ml-3">{% trans "Expand all" %}</a>
+</div>
+
+<div class="related_thread mt-3">
+{% if thread.related_thread %}
+{% if user == thread.related_thread.sender or user == thread.related_thread.receiver %}
+    Den betreffenden Nachrichtenstrang finden Sie
+    <a href="{% url 'communication:read_thread' thread_pk=thread.related_thread.pk %}" target="_blank">hier</a>.
+{% endif %}
+{% endif %}
+</div>
+
+<hr>
+
+<form action="{{ request.path }}" method="post">
+    {% csrf_token %}
+    {% if form.to %}
+        {% include 'bootstrap/form_field.html' with field=form.to inline=True %}
+    {% endif %}
+
+    {% include 'bootstrap/form_field.html' with field=form.text %}
+
+    {% if form.non_field_errors %}
+        <div class="alert alert-danger mt-3 mb-0" role="alert">
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <input type="submit" class="btn btn-primary" value="{% trans "Send" %}">
+</form>
+
+</div>
+{% endblock %}
+
+{% block jsbottom %}
+    {{ block.super }}
+    <script type="text/javascript">
+        $(function(){
+            var thread = $('.communication_thread');
+            ecs.communication.init_thread(thread);
+
+            var last_message = thread.find('.message').last();
+            last_message.offsetParent().scrollTop(last_message.position().top);
+
+            var textarea = $('#{{ form.text.id_for_label }}');
+            new ecs.textarea.TextArea(textarea, [
+                {% if user.profile.is_internal %}
+                    ecs.textarea.toolbarItems.boilerplate(
+                        "{{ _('Insert Boilerplate')|escapejs }}",
+                        "{% url 'boilerplate:select_boilerplate' %}"
+                    )
+                {% endif %}
+            ]);
+
+            var input = $('#{{ form.to.id_for_label }}');
+            input.select2({
+                width: '100%',
+                dropdownParent: input.parent(),
+            });
+
+            textarea.focus();
+        });
+    </script>
+{% endblock %}
+

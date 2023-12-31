@@ -1,0 +1,13 @@
+{% extends 'public.html' %}
+{% load i18n %}
+
+{% block content %}
+
+    {{ block.super }}
+    <div class="alert alert-danger">
+        <h3 class="alert-heading">Passwort zurücksetzen fehlgeschlagen</h3>
+        Die Gültigkeitsdauer Ihres Passwort Rücksetzungs-Link ist abgelaufen. Beachten Sie, dass der Link innerhalb von einer Stunde verwendet werden muß.
+        <p><a href="{% url 'users:request_password_reset' %}" class="alert-link">Beantragen Sie dieses Service erneut</a> wenn Sie ihr Passwort zurücksetzen wollen.</p>
+    </div>
+
+{% endblock %}

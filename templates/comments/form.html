@@ -1,0 +1,55 @@
+{% load i18n widget_tweaks %}
+
+<form action="{{ request.path }}" method="POST" class="card-block open-in-widget">
+    {% csrf_token %}
+    <div class="form-group">
+        {{ form.text|add_class:'form-control' }}
+    </div>
+    <div class="form-group">
+        {% if form.instance.attachment_id %}
+            <div class="text-danger">
+                {% blocktrans trimmed %}
+                    Comments can only contain one attachment. If you select a
+                    file here it will replace the current attachment.
+                {% endblocktrans %}
+            </div>
+        {% endif %}
+        <div class="input-group">
+            <span class="input-group-addon">{% trans 'Attachment' %}</span>
+            {{ form.file|add_class:'form-control' }}
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">{% trans 'save' %}</button>
+</form>
+
+<script type="text/javascript">
+    var textarea = $('#{{ form.text.id_for_label }}');
+    var button = textarea.parents('form').find('button[type="submit"]');
+
+    var len = textarea.val().length;
+    textarea.focus();
+    textarea.get(0).setSelectionRange(len, len);
+
+    new ecs.textarea.TextArea(textarea, [
+        ecs.textarea.toolbarItems.boilerplate(
+            "{{ _('Insert Boilerplate')|escapejs }}",
+            "{% url 'boilerplate:select_boilerplate' %}"
+        )
+    ]);
+
+    function check_empty() {
+        var empty = !textarea.val();
+        button.prop('disabled', empty);
+        textarea.parents('.form-group').toggleClass('has-danger', empty);
+    }
+    textarea.on('input', check_empty);
+    check_empty();
+
+    button.click(function(ev) {
+        ev.preventDefault();
+        textarea.off('input', check_empty);
+        button.prop('disabled', true);
+        button.html('<span class="fa fa-spinner fa-spin"></span>');
+        button.closest('form').submit();
+    });
+</script>

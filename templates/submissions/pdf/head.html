@@ -1,0 +1,53 @@
+{% load core corepdf %}
+
+<div class="title">
+  <div class="ec_number_right">
+      EK Nr: {{ submission_form.submission|ec_number }} Version {{ submission_form.version }}
+  </div>
+  <h1>Antrag</h1>
+  <p>Version 6.4 vom 12.06.2012</p>
+</div>
+
+<div class="infotext">
+    Dieses Formular soll für Einreichungen bei &ouml;sterreichischen Ethikkommissionen verwendet werden. <br/>
+    Es setzt sich aus einem allgemeinen <span class="underline">Teil A</span> - Angaben zur Studie und zum Sponsor - <br/>
+    und aus einem speziellen <span class="underline">Teil B</span> - Angaben zu der/den einzelnen Pr&uuml;fstelle(n) - zusammen. <br/>
+    Bei Einreichungen für mehrere Zentren (Pr&uuml;fer) muss nur der Teil B an das jeweilige Zentrum angepasst werden.
+</div>
+
+<div class="two_columns">
+  
+    <div class="column_left">
+      <span class="small">Adresse der Ethikkommission (optional)</span>
+    </div>
+    
+    <div class="column_right">
+       <span class="small">Raum für Eingangsstempel, EK-Nummer, etc. Bitte freilassen!</span>
+        {% tcwrap plain %}
+           
+        {% endtcwrap %}
+        
+    </div>
+  
+</div>
+ 
+<center><h2>ANTRAG AUF BEURTEILUNG EINES KLINISCHEN FORSCHUNGSPROJEKTES</h2></center>
+
+<div class="infotext big">
+    für folgende Prüfer bei folgenden österreichischen Ethikkommissionen:
+</div>
+
+<table class="full_width withborders">
+    <tr>
+        <th style="width: 33.33%;">Zuständige Ethikkommission</th>
+        <th style="width: 33.33%;">Zentrum</th>
+        <th style="width: 33.33%;">Prüfer (lokale Studienleitung)</th>
+    </tr>
+    {% for inv in submission_form.investigators.all %}
+        <tr>
+            <td>{{ inv.ethics_commission.name }}</td>
+            <td>{{ inv.organisation }}</td>
+            <td>{{ inv.contact }}</td>
+        </tr>
+    {% endfor %}
+</table>

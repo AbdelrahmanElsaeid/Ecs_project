@@ -1,0 +1,121 @@
+{% extends 'core.html' %}
+{% load core i18n userutils %}
+
+{% block headernav %}
+    <ul class="nav nav-tabs flex-wrap tab_header_groups">
+        <li class="nav-item">
+            <a class="nav-link" href="#tabs_overview">{% trans "Overview" %}</a>
+        </li>
+        {% if user|is_member_of:"EC-Office" and not meeting.ended %}
+            <li class="nav-item">
+                <a class="nav-link" href="#tabs_planning">{% trans "Planning" %}</a>
+            </li>
+        {% endif %}
+    </ul>
+
+    {{ block.super }}
+{% endblock %}
+
+{% block htmltitle %}{{ meeting.title|default:"<em>Unbenannte Sitzung</em>" }} | {{ block.super }}{% endblock %}
+{% block headertitle %}{{ meeting.start|date:'d.m.Y, H:i' }} Uhr: {{ meeting.title|default:"<em>Unbenannt</em>" }}{% endblock %}
+
+{% block content %}
+    <div class="collapse" id="tabs_overview">
+        <ul class="nav nav-tabs flex-wrap mb-3 tab_headers">
+            <li class="nav-item">
+                <a class="nav-link" href="#status_tab">{% trans "Status" %}</a>
+            </li>
+            {% if user.profile.is_internal %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#open_tasks_tab">{% trans "Open Tasks" %}</a>
+                </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="#submissions_tab">{% trans "Submissions" %}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#notifications_tab">{% trans "Notifications" %}</a>
+            </li>
+            {% if user|is_member_of:'EC-Office' and meeting.ended and not meeting.protocol_sent_at %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#protocol_tab">{% trans 'Protocol' %}</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+    {% if user|is_member_of:"EC-Office" and not meeting.ended %}
+        <div class="collapse" id="tabs_planning">
+            <ul class="nav nav-tabs flex-wrap mb-3 tab_headers">
+                <li class="nav-item">
+                    <a class="nav-link" href="#experts_tab"{% if active == 'experts' %} class="active"{% endif %}>{% trans "Spezialistenzuordnung" %}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#timetable_tab"{% if active == 'timetable' %} class="active"{% endif %}>{% trans "Timetable" %}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#assistant_tab"{% if active == 'assistant' %} class="active"{% endif %}>{% trans "Sitzungsassistent" %}</a>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
+
+<div id="tabs" class="my-3">
+    <div id="status_tab" class="collapse">
+        {% include 'meetings/tabs/status.html' %}
+    </div>
+    {% if user.profile.is_internal %}
+        <div id="open_tasks_tab" class="collapse">
+            <div data-widget-url="{% url 'meetings:open_tasks' meeting_pk=meeting.pk %}"></div>
+        </div>
+    {% endif %}
+    <div id="submissions_tab" class="container collapse">
+        <div data-widget-url="{% url 'meetings:submission_list' meeting_pk=meeting.pk %}"{% if not meeting.ended %} data-widget-reload-interval="10"{% endif %}></div>
+    </div>
+    <div id="notifications_tab" class="container collapse">
+        <div data-widget-url="{% url 'meetings:notification_list' meeting_pk=meeting.pk %}"></div>
+    </div>
+    {% if user|is_member_of:'EC-Office' and meeting.ended and not meeting.protocol_sent_at %}
+        <div id="protocol_tab" class="collapse">
+            <div data-widget-url="{% url 'meetings:edit_protocol' meeting_pk=meeting.pk %}"></div>
+        </div>
+    {% endif %}
+
+    {% if user|is_member_of:"EC-Office" and not meeting.ended %}
+        <div id="experts_tab" class="container collapse">
+            {% include 'meetings/tabs/experts.html' %}
+        </div>
+        <div id="timetable_tab" class="container collapse">
+            <div data-widget-url="{% url 'meetings:timetable_editor' meeting_pk=meeting.pk %}"></div>
+        </div>
+        <div id="assistant_tab" class="collapse">
+            <div data-widget-url="{% url 'meetings:meeting_assistant' meeting_pk=meeting.pk %}"></div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block menuSelection %}meetings{% endblock %}
+
+{% block jsbottom %}
+  {{ block.super }}
+
+    <script type="text/javascript">
+        $(function(){
+            new ecs.TabController('.tab_header_groups a');
+            ecs.setupWidgets();
+
+            $('#content').on('click', 'a.send_emails', function(ev) {
+                ev.preventDefault();
+                var href = $(this).attr('href');
+                ecs.confirm({
+                    question: '{% trans 'Do you want to send the E-mails?' %}',
+                    ok: '{{ _("Send")|escapejs }}',
+                    cancel: '{{ _("Don't Send")|escapejs }}',
+                    success: function() {
+                        window.location.href = href;
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

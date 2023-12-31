@@ -1,0 +1,114 @@
+{% load core i18n %}
+
+<div id="meeting_assistant">
+    <div class="meeting_assistant_nav">
+        {% with meeting.open_tops.count as open_top_count %}
+            {% if not meeting.started %}
+                <a class="btn btn-block btn-primary start_meeting" href="{% url 'meetings:meeting_assistant_start' meeting_pk=meeting.pk %}">
+                    Sitzung starten
+                </a>
+            {% else %}
+                {% if not meeting.ended and open_top_count == 0 %}
+                    <a class="btn btn-block btn-primary stop_meeting" href="{% url 'meetings:meeting_assistant_stop' meeting_pk=meeting.pk %}">
+                        Sitzung beenden
+                    </a>
+                {% endif %}
+                <a class="btn btn-block btn-outline-primary open-in-widget" href="{% url 'meetings:meeting_assistant_comments' meeting_pk=meeting.pk %}">
+                    {% trans 'Comments' %}
+                </a>
+                {% if not meeting.ended %}
+                {% if meeting.retrospective_thesis_entries.exists or meeting.expedited_entries.exists or meeting.localec_entries.exists or meeting.amendments.exists %}
+                    <a class="btn btn-block btn-outline-primary open-in-widget" href="{% url 'meetings:meeting_assistant_other_tops' meeting_pk=meeting.pk %}">
+                        {% trans 'Other TOPs' %}
+                    </a>
+                {% endif %}
+                {% endif %}
+            {% endif %}
+            <ol class="info">
+                <li>TOPs: {{ meeting|length }}</li>
+                <li>Offene TOPs: {{ open_top_count }}</li>
+                <li>Offene TOPs mit Votum: {{ meeting.open_tops_with_vote.count }}</li>
+                <li>Diplomarbeiten: {{ meeting.retrospective_thesis_entries.count }}</li>
+                <li>Expedited: {{ meeting.expedited_entries.count }}</li>
+                <li>Lokale EK: {{ meeting.localec_entries.count }}</li>
+                <li>Amendments: {{ meeting.amendments.count }}</li>
+                <li>&nbsp;</li>
+                <li>
+                    {% if meeting.started %}
+                        Beginn: {{ meeting.started|date:'H:i' }} Uhr
+                    {% else %}
+                        Noch nicht begonnen.
+                    {% endif%}
+                </li>
+                <li>Geplanter Beginn: {{ meeting.start|date:'H:i' }} Uhr
+                </li>
+                <li>Geplantes Ende: {{ meeting.end|date:'H:i' }} Uhr
+                </li>
+                {% if meeting.ended %}
+                    <li>Ende: {{ meeting.ended|date:'H:i' }} Uhr</li>
+                {% endif %}
+            </ol>
+            <div class="navigation">
+              <h4>Wechsle nach:</h4>
+                {% if meeting.started %}
+                    {% block meeting_assistant_navigation %}
+                        {% if last_top %}
+                            {% url 'meetings:meeting_assistant_top' meeting_pk=meeting.pk top_pk=last_top.pk as last_top_url %}
+                            <a class="btn btn-block btn-secondary open-in-widget" href="{{ last_top_url }}">
+                                Letztbesprochenes TOP ({{ last_top }})
+                            </a>
+                        {% endif %}
+
+                        {% url 'meetings:meeting_assistant_quickjump' meeting_pk=meeting.pk as quickjump_url%}
+                        <form action="{{ quickjump_url }}" method="POST" class="open-in-widget mt-3">
+                            {% csrf_token %}
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" name="q" placeholder="Suche" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-secondary" type="submit"><span class="fa fa-search"></span></button>
+                                </span>
+                            </div>
+                        </form>
+                    {% endblock %}
+                {% endif %}
+            </div>
+        {% endwith %}
+    </div>
+    <div id="meeting_assistant_body" class="p-4">
+        {% block meeting_assistant_body %}{% endblock %}
+        {% block meeting_assistant_sidebar %}{% endblock %}
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        $('a.start_meeting').click(function(ev) {
+            ev.preventDefault();
+            var href = $(this).attr('href');
+            if (ev.altKey)
+                href += '?nocheck=nocheck';
+            var widget = $(this).parents('.ecs-Widget').data('widget');
+            ecs.confirm({
+                question: '{{ _('Do you want to start the meeting?')|escapejs }}',
+                ok: '{{ _("Start (meeting)")|escapejs }}',
+                cancel: '{{ _("Don't Start")|escapejs }}',
+                success: function() {
+                    widget.load(href);
+                }
+            });
+        });
+        $('a.stop_meeting').click(function(ev) {
+            ev.preventDefault();
+            var href = $(this).attr('href');
+            var widget = $(this).parents('.ecs-Widget').data('widget');
+            ecs.confirm({
+                question: '{{ _('Do you want to stop the meeting?')|escapejs }}',
+                ok: '{{ _("Stop (meeting)")|escapejs }}',
+                cancel: '{{ _("Don't Stop")|escapejs }}',
+                success: function() {
+                    widget.load(href);
+                }
+            });
+        });
+    });
+</script>

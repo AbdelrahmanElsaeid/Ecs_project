@@ -1,0 +1,48 @@
+{% extends 'administration/detail.html' %}
+{% load i18n %}
+
+{% block htmltitle %}Login History | {{ block.super }}{% endblock %}
+{% block headertitle %}Login History{% endblock %}
+
+{% block administration_detail %}
+
+    <form id="event_selection_form" action="{{ request.path }}" method="POST">
+        {% csrf_token %}
+        {% for field in form.visible_fields %}
+            {% include 'bootstrap/form_field.html' with inline=True %}
+        {% endfor %}
+        {{ form.page }}
+        <input class="btn btn-primary" type="submit" value="{% trans "Send" %}">
+    </form>
+
+    {% include 'paginator.html' %}
+
+    <ul>
+    {% for event in page.object_list %}
+        <li>
+            {{ event.timestamp|date:"d.m.Y H:i" }} -
+            {{ event.ip }} -
+            {{ event.get_type_display|upper }} -
+            {{ event.user }}
+        </li>
+    {% endfor %}
+    </ul>
+
+    {% include 'paginator.html' %}
+
+{% endblock %}
+
+{% block jsbottom %}
+    {{ block.super }}
+    <script type="text/javascript">
+        $(function(){
+            var form = $('#event_selection_form');
+            var page_input = form.find('input[name="page"]');
+            $('.paginator a').click(function(ev) {
+                ev.preventDefault();
+                page_input.val($(this).data('page'));
+                form.submit();
+            });
+        });
+    </script>
+{% endblock %}

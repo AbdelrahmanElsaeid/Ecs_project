@@ -1,0 +1,3222 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-02-17 17:30+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+msgid "All studies except multicentre drug studies"
+msgstr "Alle Studien außer multizentrische Arzneimittelstudien"
+
+msgid "Multicentre drug trials for controlling ethics committees"
+msgstr "Multizentrische Arzneimittelstudien für Leit-Ethikkommissionen"
+
+msgid "Multicentre drug trials for locally responsible ethics committees"
+msgstr ""
+"Multizentrische Arzneimittelstudien für lokal zuständige Ethikkommissionen"
+
+msgid "fee exemption"
+msgstr "gebührenbefreit"
+
+msgid "External Reviewer"
+msgstr "Gutachter"
+
+msgid "fees note - remission"
+msgstr "Gebührennoten - Gebührenbefreit"
+
+msgid "fees note - controlling-EC multicentric"
+msgstr "Gebührennoten - Leit-EK multizentrisch"
+
+msgid "fees note - local EC"
+msgstr "Gebührennoten - lokale EK"
+
+msgid "fees note - other"
+msgstr "Gebührennoten - sonstige"
+
+msgid "statistical result"
+msgstr "Statistikergebnis"
+
+msgid "amt."
+msgstr "Anz."
+
+msgid "EC-Number"
+msgstr "EK-Nummer"
+
+msgid "company"
+msgstr "Firma"
+
+msgid "UID-Nr."
+msgstr "UID-Nr."
+
+msgid "EudraCT-Nr."
+msgstr "EudraCT-Nr."
+
+msgid "applicant"
+msgstr "Antragsteller"
+
+msgid "clinic"
+msgstr "Klinik"
+
+msgid "sum"
+msgstr "Summe"
+
+msgid "fee-exempted submissions"
+msgstr "Gebührenbefreite Einreichungen"
+
+msgid "reviewer"
+msgstr "Gutachter"
+
+msgid "EC-Nr."
+msgstr "EK-Nr"
+
+msgid "IBAN"
+msgstr "IBAN"
+
+msgid "SWIFT-BIC"
+msgstr "SWIFT-BIC"
+
+msgid "Shorthand Symbol"
+msgstr "Kürzel"
+
+#, fuzzy
+msgid "Thesis Review"
+msgstr "Formale Prüfung Diplomarbeit"
+
+msgid "Expedited Review"
+msgstr "Expedited Empfehlung"
+
+#, fuzzy
+msgid "Local-EC Review"
+msgstr "GCP Review"
+
+msgid "Statistical Review"
+msgstr "Statistische Bewertung"
+
+msgid "Legal and Patient Review"
+msgstr "Patienteninformationsbewertung"
+
+msgid "Insurance Review"
+msgstr "Versicherungsbewertung"
+
+msgid "GCP Review"
+msgstr "GCP Bewertung"
+
+msgid "Specialist Review"
+msgstr "Spezialistenbewertung"
+
+msgid "External Review"
+msgstr "Gutachten"
+
+msgid "Start"
+msgstr "Start"
+
+msgid "External Review Review"
+msgstr "Gutachten Überprüfung"
+
+msgid "comment/reasoning"
+msgstr "Kommentar/Begründung"
+
+msgid "Task Type"
+msgstr "Aufgabenart"
+
+msgid "Notify me when the task has been completed"
+msgstr "Erinnerung wenn die Aufgabe abgeschlossen wurde"
+
+msgid "No"
+msgstr "Nein"
+
+msgid "After one day"
+msgstr "Nach einem Tag"
+
+msgid "After two days"
+msgstr "Nach zwei Tagen"
+
+msgid "After one week"
+msgstr "Nach einer Woche"
+
+msgid "After two weeks"
+msgstr "Nach zwei Wochen"
+
+msgid "Remember me when the task hasn't been done"
+msgstr "Erinnerung wenn die Aufgabe nicht abgeschlossen wurde"
+
+msgid "Assign to"
+msgstr "Zuteilen an"
+
+msgid "<group>"
+msgstr "<Gruppe>"
+
+msgid "This user is biased."
+msgstr "Dieses Sitzungsmitglied ist befangen."
+
+msgid "New"
+msgstr "Neu"
+
+msgid "Completed"
+msgstr "Abgeschlossen"
+
+msgid "Review OK"
+msgstr "Überprüfung OK"
+
+msgid "Review Failed"
+msgstr "Überprüfung fehlgeschlagen"
+
+msgid "Dropped"
+msgstr "Fallengelassen"
+
+msgid "Anonymous"
+msgstr "Anonym"
+
+msgid "This task does already exist"
+msgstr "Diese Aufgabe existiert bereits."
+
+msgid "There is an external review review in progress"
+msgstr "Das letzte Gutachten wurde noch nicht überprüft"
+
+msgid "Finish"
+msgstr "Fertig"
+
+msgid "Request for review"
+msgstr "Bitte um Begutachtung"
+
+msgid "Publish"
+msgstr "Veröffentlichen"
+
+msgid "Send back to external Reviewer"
+msgstr "Zurück zum Gutachter"
+
+msgid "Drop"
+msgstr "Fallen lassen"
+
+msgid "Query regarding review"
+msgstr "Rückfrage zum Gutachten"
+
+msgid "Subject"
+msgstr "Betreff"
+
+msgid "Ethics Commission"
+msgstr "Ethik-Kommission"
+
+msgid "Involved Party"
+msgstr "Beteiligte Personen"
+
+msgid "Person"
+msgstr "Person"
+
+msgid "Answer"
+msgstr "Antwort"
+
+msgid "Delegate to"
+msgstr "Abgeben an"
+
+msgid "Search"
+msgstr "Suchen"
+
+#, python-brace-format
+msgid "[ECS{ec_number}] {subject}."
+msgstr ""
+
+#, python-brace-format
+msgid "Bzgl.: {0}"
+msgstr ""
+
+msgid "Resubmission"
+msgstr "Neueinreichung"
+
+msgid "B2 Resubmission"
+msgstr "B2 Änderung"
+
+msgid "Office B2 Resubmission Review"
+msgstr "B2 Änderungsbewertung Office"
+
+msgid "Executive B2 Resubmission Review"
+msgstr "B2 Änderungsbewertung Exekutiv"
+
+msgid "Initial Review"
+msgstr "Einreichung Formale Prüfung"
+
+msgid "Categorization"
+msgstr "Einstufung"
+
+msgid "Categorization Review"
+msgstr "Einstufung Überprüfung"
+
+msgid "Paper Submission Review"
+msgstr "Unterschrift Prüfung"
+
+msgid "Initial Thesis Review"
+msgstr "Diplomarbeit Formale Prüfung"
+
+msgid "Thesis Recommendation"
+msgstr "Thesis Empfehlung"
+
+#, fuzzy
+msgid "Expedited Recommendation Split"
+msgstr "Expedited Empfehlung"
+
+msgid "Expedited Recommendation"
+msgstr "Expedited Empfehlung"
+
+msgid "Local EC Recommendation"
+msgstr "Begleitende EK Empfehlung"
+
+msgid "Vote Preparation"
+msgstr "Votumsvorbereitung"
+
+msgid "Executive Vote Finalization"
+msgstr "Votum Bearbeitung Exekutiv"
+
+msgid "Insurance Amendment Review"
+msgstr "Amendment Bewertung Versicherung"
+
+msgid "Insurance B2 Resubmission Review"
+msgstr "B2 Änderungsbewertung Versicherung"
+
+msgid "Office Vote Review (legacy)"
+msgstr "Votum Bewertung Office (obsolet)"
+
+msgid "Thesis Recommendation Review"
+msgstr "Thesis Empfehlung Überprüfung"
+
+msgid "No Information"
+msgstr "Keine Angaben"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "invoice recipient"
+msgstr "Rechnungsempfänger"
+
+msgid "sponsor"
+msgstr "Sponsor"
+
+msgid "centers (non subject)"
+msgstr "Zentren im Inland, die nicht Gegenstand der Einreichung sind"
+
+msgid "centers abroad"
+msgstr "Auslandszentren"
+
+msgid "centers (subject)"
+msgstr "Zentren im Inland, die Gegenstand der Einreichung sind"
+
+msgid "Studienbezogen/Routinemäßig durchzuführende Therapie und Diagnostik"
+msgstr ""
+
+msgid ""
+"Im Rahmen der Studie verabreichte Medikamente, deren Wirksamkeit und/oder "
+"Sicherheit nicht Gegenstand der Prüfung sind"
+msgstr ""
+
+#, fuzzy
+#| msgid "Document"
+msgid "Dokumente"
+msgstr "Unterlage"
+
+msgid "Mitarbeiter"
+msgstr ""
+
+msgid "Please enter a date in the format dd.mm.yyyy."
+msgstr "Bitte geben Sie ein Datum im Format TT.MM.JJJJ ein."
+
+msgid "Please enter a date in dd.mm.yyyy format and time in format HH:MM."
+msgstr ""
+"Bitte geben Sie ein Datum im Format TT.MM.JJJJ und eine Uhrzeit im Format HH:"
+"MM ein."
+
+msgid "Please enter a time in the format HH: MM."
+msgstr "Bitte geben Sie eine Uhrzeit im Format HH:MM ein."
+
+msgid "Yes, also childbearing"
+msgstr "Ja, auch gebärfähige Frauen"
+
+msgid "Yes, but no childbearing"
+msgstr "Ja, aber keine gebärfähigen Frauen"
+
+msgid "Yes, but only childbearing"
+msgstr "Ja, aber nur gebärfähige Frauen"
+
+msgid "The account beneficiary is not the sponsor"
+msgstr "Der Sponsor ist nicht der Rechnungsempfänger"
+
+msgid "No information given"
+msgstr "Keine Angaben"
+
+msgid "Please enter a valid e-mail address"
+msgstr "Bitte geben Sie eine gültige E-mail Adresse an"
+
+msgid "Presenter"
+msgstr "Einreicher"
+
+msgid "Susar Presenter"
+msgstr "Sicherheitsmeldungsersteller"
+
+msgid "At least one centre is required."
+msgstr "Zumindest ein Zentrum ist verpflichtend anzugeben."
+
+msgid "Please select exactly one primary investigator."
+msgstr "Bitte wählen Sie genau eine/n koordinierende/n Prüfärztin/arzt."
+
+msgid "Past Meetings"
+msgstr "Vergangene Sitzungen"
+
+msgid "Next Meeting"
+msgstr "Nächste Sitzung"
+
+msgid "Upcoming Meetings"
+msgstr "Kommende Sitzungen"
+
+msgid "No Meeting"
+msgstr "Keine Sitzung"
+
+msgid "AMG"
+msgstr "AMG"
+
+msgid "MPG"
+msgstr "MPG"
+
+msgid "Other"
+msgstr "Andere"
+
+msgid "Not Categorized"
+msgstr "Nicht Eingestuft"
+
+msgid "board"
+msgstr "Standard"
+
+msgid "Thesis"
+msgstr "Diplomarbeit"
+
+msgid "Expedited"
+msgstr "Expedited"
+
+msgid "Local EC"
+msgstr "Lokale EK"
+
+msgid "B2 Votes"
+msgstr "B2 Voten"
+
+msgid "B3 Votes"
+msgstr "B3 Voten"
+
+msgid "Other Votes"
+msgstr "Andere Voten"
+
+msgid "No Votes"
+msgstr "Keine Voten"
+
+msgid "Mine"
+msgstr "Meine"
+
+msgid "Assigned"
+msgstr "Übernommen"
+
+msgid "Other Studies"
+msgstr "Andere Studien"
+
+msgid "Tags"
+msgstr "Tags"
+
+msgid "file"
+msgstr "Datei"
+
+msgid "This file is not a valid ECX archive."
+msgstr "Diese Datei ist kein gültiges ECX-Archiv."
+
+msgid "End"
+msgstr "Ende"
+
+msgid "User"
+msgstr "Benutzer"
+
+msgid "Default Contact"
+msgstr "Standard-Empfänger"
+
+msgid "Change Logo File"
+msgstr "Logo Ändern"
+
+msgid "Change Print Logo File"
+msgstr "Druck-Logo Ändern"
+
+msgid "The file must be a gif, jpeg, png or svg file."
+msgstr ""
+
+msgid "Display Notifications in Protocol"
+msgstr "Meldungen im Protokoll anzeigen"
+
+msgid "Display biased board member in amendment answer PDF"
+msgstr "Befangene in der Amendment-Antwort anzeigen"
+
+msgid "Require internal vote review"
+msgstr "Interne Votum-Prüfung erforderlich"
+
+msgid "address"
+msgstr "Adresse"
+
+msgid "Meeting Address"
+msgstr "Sitzungsadresse"
+
+msgid "Contact Email"
+msgstr "Kontakt E-Mail"
+
+msgid "Contact URL"
+msgstr "Kontakt URL"
+
+msgid "Member List URL"
+msgstr "Liste der Mitglieder URL"
+
+msgid "Signature Block"
+msgstr "Nachrichten-Signatur"
+
+msgid "Vote Result 1 Extra Text"
+msgstr "Beschluss 1 Zusatztext"
+
+msgid "Vote Result 2 Extra Text"
+msgstr "Beschluss 2 Zusatztext"
+
+msgid "Vote Result 3a Extra Text"
+msgstr "Beschluss 3a Zusatztext"
+
+msgid "Vote Result 3b Extra Text"
+msgstr "Beschluss 3b Zusatztext"
+
+msgid "Vote Result 4 Extra Text"
+msgstr "Beschluss 4 Zusatztext"
+
+msgid "Vote Result 5 Extra Text"
+msgstr "Beschluss 5 Zusatztext"
+
+msgid "Vote PDF Extra Text"
+msgstr "Votums-PDF Zusatztext"
+
+msgid "Key data"
+msgstr "Eckdaten"
+
+msgid "type of project"
+msgstr "Art des Projekts"
+
+msgid "participant"
+msgstr "Teilnehmer"
+
+msgid "test participant"
+msgstr "Prüfungsteilnehmer"
+
+msgid "outline"
+msgstr "Kurzfassung"
+
+msgid "drug trial"
+msgstr "Arzneimittelstudie"
+
+msgid "Medical Device Study"
+msgstr "Medizinproduktestudie"
+
+msgid "measures"
+msgstr "Maßnahmen"
+
+msgid "biometrics"
+msgstr "Biometrie"
+
+msgid "study plan"
+msgstr "Studienplanung"
+
+msgid "planned statistical analysis"
+msgstr "Geplante statistische Analyse"
+
+msgid "documentation form / data management"
+msgstr "Dokumentationsbögen / Datenmanagement"
+
+msgid "persons in charge"
+msgstr "Verantwortliche und Qualifikation"
+
+msgid "information privacy"
+msgstr "Datenschutz"
+
+msgid "insurance"
+msgstr "Versicherung"
+
+msgid "documents"
+msgstr "Unterlagen"
+
+msgid "centres"
+msgstr "Zentren"
+
+msgid "General information"
+msgstr "Allgemeine Angaben"
+
+msgid "Made Changes"
+msgstr "Vorgenommene Änderungen"
+
+msgid "Study status"
+msgstr "Studienstatus"
+
+msgid "participants"
+msgstr "Teilnehmer/innen"
+
+msgid "SAE / SUSAR"
+msgstr "SAE / SUSAR"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "workflow lane"
+msgstr "Arbeitsablauf"
+
+msgid "medical_categories"
+msgstr "Medizinische Kategorien"
+
+msgid "remission"
+msgstr "Gebührenbefreit"
+
+msgid "invite_primary_investigator_to_meeting"
+msgstr "Hauptprüfer einladen"
+
+msgid "monocentric"
+msgstr "monozentrisch"
+
+msgid "multicentric, main ethics commission"
+msgstr "multizentrisch, Leit-Ethikkommission"
+
+msgid "multicentric, local ethics commission"
+msgstr "multizentrisch, lokale Ethikkommission"
+
+msgid "individual-related"
+msgstr "personenbezogen"
+
+msgid "implicit individual-related"
+msgstr "indirekt personenbezogen"
+
+msgid "completely anonymous"
+msgstr "vollständig anonymisiert"
+
+msgid "expedited"
+msgstr "Expedited"
+
+msgid "retrospective thesis"
+msgstr "Retr. Diplomarbeiten/Diss."
+
+msgid "Ms"
+msgstr "Frau"
+
+msgid "Mr"
+msgstr "Herr"
+
+msgid "Finished"
+msgstr "Beendet"
+
+msgid "Unknown (local EC)"
+msgstr "Unbekannt (lokale EK)"
+
+msgid "Expired"
+msgstr "Abgelaufen"
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Acknowledged"
+msgstr "Bestätigt"
+
+msgid "open"
+msgstr "offen"
+
+msgid "blind"
+msgstr "blind"
+
+msgid "double-blind"
+msgstr "doppelblind"
+
+msgid "not applicable"
+msgstr "nicht zutreffend"
+
+msgid "single-sided"
+msgstr "einseitig"
+
+msgid "double-sided"
+msgstr "zweiseitig"
+
+msgid "minors"
+msgstr "Minderjährige"
+
+msgid "Investigator invited"
+msgstr "Prüfer eingeladen"
+
+msgid "NIS"
+msgstr ""
+
+msgid "only study-related"
+msgstr "ausschließlich studienbezogen"
+
+msgid "for routine purposes"
+msgstr "zu Routinezwecken"
+
+msgid "studies"
+msgstr "Studien"
+
+msgid "Statement/Conclusion/Notice"
+msgstr "Begründung / Stellungnahme / Mitteilung"
+
+msgid "Type"
+msgstr "Typ"
+
+msgid "The study has been started"
+msgstr "Die Studie wurde begonnen"
+
+msgid "please add additional details to the field \"comments\""
+msgstr ""
+"Ergänzende Angaben beschreiben Sie bitte im Feld \"Begründung/Stellungnahme/"
+"Mitteilung\""
+
+msgid "Why hasn't the study been started?"
+msgstr "Warum wurde die Studie nicht begonnen?"
+
+msgid "Number of recruited patients / subjects"
+msgstr "Zahl der rekrutierten Patient/inn/en / Proband/inn/en"
+
+msgid "Number of patients / subjects who completed the study"
+msgstr "Zahl der Patient/inn/en / Proband/inn/en, die die Studie beendet haben"
+
+msgid "Number of study discontinuations"
+msgstr "Zahl der Studienabbrüche"
+
+msgid "Number of SAEs"
+msgstr "Zahl der SAEs"
+
+msgid "Number of SUSARs"
+msgstr "Zahl der SUSARs"
+
+msgid "The study was aborted"
+msgstr "Die Studie wurde abgebrochen"
+
+msgid "Date of completion"
+msgstr "Datum der Beendigung"
+
+msgid "Estimated end date"
+msgstr "Voraussichtliches Enddatum"
+
+msgid "Closed center"
+msgstr "Geschlossenes Zentrum"
+
+msgid "Close date"
+msgstr "Schließungsdatum"
+
+msgid "PDF-file"
+msgstr "PDF-Datei"
+
+msgid "file name"
+msgstr "Dateiname"
+
+msgid "version"
+msgstr "Version"
+
+msgid "date of document creation"
+msgstr "Datum der Dokumenterstellung"
+
+msgid "type"
+msgstr "Typ"
+
+msgid "replace document"
+msgstr "Ersetze Dokument"
+
+msgid "name"
+msgstr "Name"
+
+msgid "investigator"
+msgstr "Prüfarzt"
+
+msgid "ethics commission"
+msgstr "Ethik-Kommission"
+
+msgid "study reference"
+msgstr "Studienbezug"
+
+msgid "number/dose"
+msgstr "Anzahl/Dosis"
+
+msgid "period"
+msgstr "Zeitraum"
+
+msgid "total"
+msgstr "Insgesamt"
+
+msgid "Generic Name"
+msgstr "Generic Name"
+
+msgid "dosage Form"
+msgstr "Darreichungsform"
+
+msgid "dosage"
+msgstr "Dosis"
+
+msgid "project title"
+msgstr "Projekttitel"
+
+msgid "project title (english)"
+msgstr "Projekttitel (englisch)"
+
+msgid "date of protocol"
+msgstr "Datum des Protokolls"
+
+msgid "ISRCTN-Nr."
+msgstr "ISRCTN-Nr."
+
+msgid "sponsor name"
+msgstr "Firma/Organisation"
+
+msgid "sex of contact person"
+msgstr "Anrede der Kontaktperson"
+
+msgid "title of contact person"
+msgstr "Titel der Kontaktperson"
+
+msgid "first name of contact person"
+msgstr "Vorname der Kontaktperson"
+
+msgid "last name of contact person"
+msgstr "Nachname der Kontaktperson"
+
+msgid "postal code"
+msgstr "Postleitzahl"
+
+msgid "city"
+msgstr "Stadt"
+
+msgid "telephone"
+msgstr "Telefon"
+
+msgid "fax"
+msgstr "FAX"
+
+msgid "e-mail"
+msgstr "E-Mail"
+
+msgid "UID-Number"
+msgstr "UID-Nummer"
+
+msgid "invoice name"
+msgstr "Firma/Organisation"
+
+msgid "Clinical trial of an unregistered drug"
+msgstr "Klinische Prüfung eines nicht registrierten Arzneimittels"
+
+msgid "Clinical testing of a registered product"
+msgstr "Klinische Prüfung eines registrierten Arzneimittels"
+
+msgid "according to the indication"
+msgstr "gemäß der Indikation"
+
+msgid "not according to the indication"
+msgstr "nicht gemäß der Indikation"
+
+msgid "Clinical testing of a new medical method"
+msgstr "Klinische Prüfung einer neuen medizinischen Methode"
+
+msgid "Clinical investigation of medical devices"
+msgstr "Klinische Prüfung eines Medizinproduktes"
+
+msgid "with CE-marking"
+msgstr "mit CE-Kennzeichnung"
+
+msgid "without CE-marking"
+msgstr "ohne CE-Kennzeichnung"
+
+msgid "Performance evaluation (in-vitro diagnostics)"
+msgstr "Leistungsbewertungsprüfung (In-vitro-Diagnostika)"
+
+msgid ""
+"Non-therapeutic biomedical research involving human subjects (basic research)"
+msgstr ""
+"Nicht-therapeutische biomedizinische Forschung am Menschen "
+"(Grundlagenforschung)"
+
+msgid "Genetic survey"
+msgstr "Genetische Untersuchung"
+
+msgid "Other, please specify"
+msgstr "Sonstige Kategorien"
+
+msgid "e.g. Dietetics, epidemiology, etc."
+msgstr ""
+"z.B.: immunologische Untersuchung, Epidemiologische Untersuchung, Diätetik, "
+"etc."
+
+msgid "Dissertation / Thesis"
+msgstr "Diplomarbeit / Dissertation"
+
+msgid "Register"
+msgstr ""
+
+msgid "Biobank"
+msgstr ""
+
+msgid "Retrospective data analysis"
+msgstr "Retrospektive Datenauswertung"
+
+msgid "Questionnaire investigation"
+msgstr "Fragebogen Untersuchung"
+
+msgid "Psychological study"
+msgstr "Psychologische Studie"
+
+msgid "Nursing Scientific Study"
+msgstr "Pflegewissenschaftliche Studie"
+
+msgid "Non-interventional Study (NIS)"
+msgstr "Nicht-interventionelle Studie (NIS) nur gem. § 2a Abs. 3 AMG"
+
+msgid "Gender medicine"
+msgstr "Gendermedizin"
+
+msgid "special field"
+msgstr "Fachgebiet"
+
+msgid "Test substances"
+msgstr "Prüfsubstanz(en)"
+
+msgid "Reference substance"
+msgstr "Referenzsubstanz"
+
+msgid "Test products(e)"
+msgstr "Prüfprodukt/e"
+
+msgid "reference product"
+msgstr "Referenzprodukt"
+
+msgid "Clinical Phase"
+msgstr "Klinische Phase"
+
+msgid ""
+"Necessarily indicate, in case of an AMG-study the clinical phase, in case of "
+"medical devices the most appropriate phase."
+msgstr ""
+"Bei AMG-Prüfung unbedingt angeben, bei MPG die am ehesten zutreffende Phase."
+
+msgid "There are already votes of other ethics commissions."
+msgstr "Es liegen bereits Voten anderer Ethikkommissionen vor."
+
+msgid "If so, upload the votes on the documents tab"
+msgstr "Falls ja, laden Sie die Voten über den Reiter \"Unterlagen\" hoch"
+
+msgid "Planned number of trial participants total"
+msgstr "Geplante Anzahl der Prüfungsteilnehmer/innen gesamt"
+
+msgid "all participating centers"
+msgstr ""
+"Geplante Gesamtanzahl der Prüfungsteilnehmer/innen in allen weltweit "
+"teilnehmenden Zentren."
+
+msgid "minimum age"
+msgstr "Mindestalter"
+
+msgid "maximum age"
+msgstr "Höchstalter"
+
+msgid "male participants"
+msgstr "männliche Teilnehmer"
+
+msgid "female participants"
+msgstr "weibliche Teilnehmerinnen"
+
+msgid "women of childbearing age"
+msgstr "gebärfähige Frauen"
+
+msgid "non competent participants"
+msgstr "Nicht-persönlich-Einwilligungsfähige"
+
+msgid "non competents explanation"
+msgstr ""
+"z.B. Bewusstlose, Besachwaltete, aber NICHT Minderjährige, retrospektive "
+"Beobachtungen oder Proben"
+
+msgid ""
+"Duration of participation of the individual test participants in the study"
+msgstr ""
+"Dauer der Teilnahme der einzelnen Prüfungsteilnehmer/innen an der Studie"
+
+msgid "active phase"
+msgstr "Aktive Phase"
+
+msgid "Follow-up inspections"
+msgstr "Nachkontrollen"
+
+msgid "Expected total duration of the study"
+msgstr "Voraussichtliche Gesamtdauer der Studie"
+
+msgid "Submit as"
+msgstr "Einreichen als"
+
+msgid "Registration in other states?"
+msgstr "Registrierung in anderen Staaten?"
+
+msgid "Are there already results of clinical trials for the tested drug?"
+msgstr ""
+"Liegen über das zu prüfende Arzneimittel bereits aussagekräftige Ergebnisse "
+"von klinischen Prüfungen vor?"
+
+msgid "3.2.1 Countries in which the tests were conducted"
+msgstr "In welchen Staaten wurden die Prüfungen durchgeführt?"
+
+msgid "Phase"
+msgstr "Phase"
+
+msgid "If studies are cited in several phases, indicate the highest stage."
+msgstr ""
+"Wenn Studien in mehreren Phasen angeführt sind, die höchste Phase angeben"
+
+msgid "application type(s)"
+msgstr "Anwendungsart(en)"
+
+msgid "Were the clinical tests made according to GCP guidelines"
+msgstr ""
+"Wurde(n), die klinische(n) Prüfung(en) gemäß GCP-Richtlinien durchgeführt?"
+
+msgid "Does a final report exist?"
+msgstr "Liegt ein Abschlussbericht vor?"
+
+msgid ""
+"If yes, upload the investigator's brochure, relevant data or a report of the "
+"Pharmaceutical Advisory Council using the upload tab"
+msgstr ""
+"Falls ja, laden Sie die Investigator's Brochure, relevante Daten oder ein "
+"Gutachten des Arzneimittelbeirates über den Reiter \"Unterlagen\" hoch"
+
+msgid "Name of the product"
+msgstr "Bezeichnung des Produktes"
+
+msgid "Manufacturer"
+msgstr "Hersteller"
+
+msgid "Certified for this indication"
+msgstr "Zertifiziert für diese Indikation"
+
+msgid "Certified, but for another indication"
+msgstr "Zertifiziert, aber für eine andere Indikation"
+
+msgid "The medical product carries a CE mark"
+msgstr "Das Medizinprodukt trägt ein CE-Zeichen"
+
+msgid "The product brochure is included."
+msgstr "Die Produktbroschüre liegt bei."
+
+msgid ""
+"What rules or standards have been used for the construction and testing of "
+"the medical product (technical safety)"
+msgstr ""
+"Welche Bestimmungen bzw. Normen sind für die Konstruktion und Prüfung des "
+"Medizinproduktes herangezogen worden (Technische Sicherheit)"
+
+msgid "Any deviations from the above provisions (standards)"
+msgstr "Allfällige Abweichungen von den o.a. Bestimmungen (Normen)"
+
+msgid "No insurance is required"
+msgstr "Eine Versicherung ist nicht erforderlich"
+
+msgid "insurance company"
+msgstr "Versicherungsgesellschaft"
+
+msgid "phone"
+msgstr "Telefon"
+
+msgid "policy number"
+msgstr "Polizzennummer"
+
+msgid "validity"
+msgstr "Gültigkeitsdauer"
+
+msgid ""
+"Additional information on study-related activities and any necessary "
+"deviations from the routine treatment"
+msgstr ""
+"Ergänzende Informationen zu studienbezogenen Maßnahmen und alle "
+"erforderlichen Abweichungen von der Routinebehandlung"
+
+msgid ""
+"If original project title is not in German: German translation of the title"
+msgstr ""
+"Wenn Original-Projekttitel nicht in Deutsch: Deutsche Übersetzung des Titels"
+
+msgid "project title (kraut-speak)"
+msgstr "Projekttitel (deutsch)"
+
+msgid "project summary"
+msgstr "Zusammenfassung des Projektes"
+
+msgid "Justification, relevance, design, measures and procedure"
+msgstr "Rechtfertigung, Relevanz, Design, Maßnahmen und Vorgehensweise"
+
+msgid ""
+"Results of pre-clinical tests or justification for the waiving of pre-"
+"clinical tests"
+msgstr ""
+"Ergebnisse der präklinischen Tests oder Begründung für den Verzicht auf "
+"präklinische Tests"
+
+msgid "Primary hypothesis of the study"
+msgstr "Primäre Hypothese der Studie"
+
+msgid "if relevant, secondary hypotheses"
+msgstr "wenn relevant auch sekundäre Hypothesen"
+
+msgid "Relevant in- and exclusion criteria"
+msgstr "Relevante Ein- und Ausschlusskriterien"
+
+msgid "ethical considerations"
+msgstr "Ethische Überlegungen"
+
+msgid "Justification for the inclusion of persons from protected groups"
+msgstr "Begründung für den Einschluss von Personen aus geschützten Gruppen"
+
+msgid "e.g. Minor, temporary or permanent non-competent person, if applicable"
+msgstr ""
+"z.B. Minderjährige, temporär oder permanent nicht-einwilligungsfähige "
+"Personen; wenn zutreffend"
+
+msgid "Description of the recruitment process"
+msgstr "Beschreibung des Rekrutierungsverfahrens"
+
+msgid ""
+"Approach at test center(s), for informing and  obtaining an informed consent "
+"of candidates"
+msgstr ""
+"Vorgehensweise an der Prüfstelle, zur Erlangung der informierten Einwilligung"
+
+msgid "Risk assessment"
+msgstr "Risikoabschätzung"
+
+msgid "Expected benefits for the included test participants"
+msgstr ""
+"Voraussichtliche Vorteile für die eingeschlossenen Prüfungsteilnehmer/innen"
+
+msgid "Relation between subject and investigator"
+msgstr "Relation zwischen Prüfungsteilnehmer/in und Prüfer/in"
+
+msgid "e.g. Patient - doctor, student - teacher, employee - employer, etc."
+msgstr ""
+"z.B. Patient/in - Ärztin/Arzt, Student/in - Lehrer/in, Dienstnehmer/in - "
+"Dienstgeber/in, etc."
+
+msgid ""
+"Procedures on the site, to determine whether a person at a time to be "
+"included in another study, participate or whether a required period of time "
+"has elapsed since a participation in another study"
+msgstr ""
+"Verfahren an der/den Prüfstelle/n, zur Feststellung, ob eine "
+"einzuschließende Person gleichzeitig an einer anderen Studie teilnimmt oder "
+"ob eine erforderliche Zeitspanne seit einer Teilnahme an einer anderen "
+"Studie verstrichen ist"
+
+msgid ""
+"Of particular importance when healthy volunteers are included in "
+"pharmacological studies."
+msgstr ""
+"von besonderer Bedeutung, wenn gesunde Proband/inn/en in pharmakologische "
+"Studien eingeschlossen werden"
+
+msgid "Methods to identify, record, and report undesirable effects"
+msgstr ""
+"Methoden, um unerwünschte Effekte ausfindig zu machen, sie aufzuzeichnen und "
+"zu berichten"
+
+msgid ""
+"Describe when, by whom and how, for example \"free\" interviews and/or "
+"interviews using lists"
+msgstr ""
+"Beschreiben Sie wann, von wem und wie, z.B. freies Befragen und/oder an Hand "
+"von Listen"
+
+msgid ""
+"Statistical considerations and reasons for the number of people who should "
+"be included in the study"
+msgstr ""
+"Statistische Überlegungen und Gründe für die Anzahl der Personen, die in die "
+"Studie eingeschlossen werden sollen"
+
+msgid "additional information on section 8, if necessary"
+msgstr "ergänzende Informationen zu Punkt 8, wenn erforderlich"
+
+msgid ""
+"Methods used to protect the confidentiality of the data collected, the "
+"source documents and the samples"
+msgstr ""
+"Verwendete Verfahren zum Schutz der Vertraulichkeit der erhobenen Daten, der "
+"Quelldokumente und von Proben"
+
+msgid ""
+"Plan for treatment or care after the person has completed their "
+"participation in the study"
+msgstr ""
+"Plan zur Behandlung oder Versorgung nachdem die Personen ihre Teilnahme an "
+"der Studie beendet haben"
+
+msgid ""
+"Amount and method of compensation or remuneration to the test participants"
+msgstr ""
+"Betrag und Verfahren der Entschädigung oder Vergütung an die "
+"Prüfungsteilnehmer/innen"
+
+msgid ""
+"Description of the amount to be paid during the exam take and what, for "
+"example, Travel expenses, lost income, pain and discomfort, etc."
+msgstr ""
+"Beschreibung des Betrages, der während der Prüfungsteilnahme bezahlt wird "
+"und wofür, z.B. Fahrtspesen, Einkommensverlust, Schmerzen und "
+"Unannehmlichkeiten, etc."
+
+msgid ""
+"Rules for the suspension or premature termination of the study at the test "
+"center, at the Member State or the entire study"
+msgstr ""
+"Regeln für das Aussetzen oder vorzeitige Beenden der Studie an der/den "
+"Prüfstelle(n), in diesem Mitgliedstaat oder der gesamten Studie"
+
+msgid ""
+"Agreement on access of the examiner(s) to data, publication guidelines, etc"
+msgstr ""
+"Vereinbarung über den Zugriff der Prüferin/des Prüfers/der Prüfer auf Daten, "
+"Publikationsrichtlinien, etc."
+
+msgid ""
+"Financing of the study and information on financial or other interests of "
+"the examiner"
+msgstr ""
+"Finanzierung der Studie und Informationen über finanzielle oder andere "
+"Interessen der Prüferin/des Prüfers/der Prüfer"
+
+msgid "additional information"
+msgstr "Weitere Informationen"
+
+msgid "Open / Blind / Double-blind"
+msgstr "Offen / Blind / Doppelblind"
+
+msgid "randomized"
+msgstr "randomisiert"
+
+msgid "parallel groups"
+msgstr "Parallelgruppen"
+
+msgid "controlled"
+msgstr "kontrolliert"
+
+msgid "cross-over"
+msgstr "cross-over"
+
+msgid "multicentric"
+msgstr "multizentrisch"
+
+msgid "placebo"
+msgstr "Placebo"
+
+msgid "factorized"
+msgstr "faktoriell"
+
+msgid "pilot project"
+msgstr "Pilotprojekt"
+
+msgid "observer-blinded"
+msgstr "observer-blinded"
+
+msgid "equivalence testing"
+msgstr "Äquivalenzprüfung"
+
+msgid "misc"
+msgstr "Sonstiges"
+
+msgid "number of groups"
+msgstr "Anzahl der Gruppen"
+
+msgid "stratification"
+msgstr "Stratifizierung"
+
+msgid "sample frequency"
+msgstr "Messwiederholungen"
+
+msgid "primary objectives"
+msgstr "Hauptzielgröße"
+
+msgid "null hypothesis"
+msgstr "Nullhypothese(n)"
+
+msgid "alternative hypothesis"
+msgstr "Alternativhypothese(n)"
+
+msgid "secondary objectives"
+msgstr "Nebenzielgrößen"
+
+msgid "Alpha"
+msgstr "Alpha"
+
+msgid "first order error"
+msgstr "Fehler 1. Art"
+
+msgid "Power"
+msgstr "Power"
+
+msgid "1 - Beta = 1 - second order error"
+msgstr "1 - Beta = 1 - Fehler 2. Art"
+
+msgid "statistical algorithm"
+msgstr "Stat.Verfahren"
+
+msgid "multiple testing"
+msgstr "Multiples Testen"
+
+msgid "correctionalgorithm"
+msgstr "Korrekturverfahren"
+
+msgid "Expected number of study dropouts(Drop-out-Quota)"
+msgstr "Erwartete Anzahl von Studienabbrecher/inne/n (Drop-out-Quote)"
+
+msgid "Intention-to-treat"
+msgstr "Intention-to-treat"
+
+#, fuzzy
+msgid "Per Protocol"
+msgstr "Per Protocol"
+
+msgid "Interim evaluation"
+msgstr "Zwischenauswertung"
+
+msgid "Termination criteria"
+msgstr "Abbruchkriterien"
+
+msgid "Planned use of statistical methods"
+msgstr "Geplante statistische Verfahren"
+
+msgid "Information on the data quality audit"
+msgstr "Angaben zur Datenqualitätsprüfung"
+
+msgid "Information on data management"
+msgstr "Angaben zum Datenmanagement"
+
+msgid "Who did the biometric planning (if applicable, proof of qualification)?"
+msgstr ""
+"Wer führte die biometrische Planung durch (ggf. Nachweis der Qualifikation)?"
+
+msgid ""
+"Who will conduct the statistical analysis (if applicable, proof of "
+"qualification)?"
+msgstr ""
+"Wer wird die statistische Auswertung durchführen (ggf. Nachweis der "
+"Qualifikation)?"
+
+msgid "Information privacy"
+msgstr "Die Datenverarbeitung erfolgt"
+
+msgid "Justification"
+msgstr "Begründung"
+
+msgid "DPR-Nr."
+msgstr "DVR-Nummer"
+
+msgid "How is the anonymization done?"
+msgstr "Wie erfolgt die Anonymisierung?"
+
+msgid "salutation"
+msgstr "Anrede"
+
+msgid "title"
+msgstr "Titel"
+
+msgid "first name"
+msgstr "Vorname"
+
+msgid "last name"
+msgstr "Nachname"
+
+msgid "Institution / Company"
+msgstr "Institution/ Firma"
+
+msgid "position"
+msgstr "Position"
+
+msgid "The submitter is a coordinating examiner (multicentric study)"
+msgstr ""
+"Antragsteller/in ist koordinierende/r Prüfer/in (multizentrische Studie)"
+
+msgid "The submitter is a principal investigator (monocentric study)"
+msgstr "Antragsteller/in ist Hauptprüfer/in (monozentrische Studie)"
+
+msgid "The submitter is a sponsor / representative of the sponsor"
+msgstr "Antragsteller/in ist Sponsor bzw. Vertreter/in des Sponsors"
+
+msgid "The submitter is a person/organization authorized by the sponsor"
+msgstr "Antragsteller/in ist eine vom Sponsor autorisierte Person/Organisation"
+
+msgid "study site"
+msgstr "Prüfzentrum"
+
+msgid "principal investigator"
+msgstr "Koordinierende/r Prüfärztin/arzt"
+
+msgid "salutation of the Investigator"
+msgstr "Anrede des Prüfarztes"
+
+msgid "title of the Investigator"
+msgstr "Titel des Prüfarztes"
+
+msgid "first name of the Investigator"
+msgstr "Vorname des Prüfarztes"
+
+msgid "last name of the Investigator"
+msgstr "Nachname des Prüfarztes"
+
+msgid "mobile"
+msgstr "\"Pieps\"/Mobil"
+
+msgid "FAX"
+msgstr "FAX"
+
+msgid "Jus practicandi"
+msgstr ""
+
+msgid "specialist for"
+msgstr "Facharzt für"
+
+msgid "certified"
+msgstr "Prüfärztekurs"
+
+msgid "number of participants"
+msgstr "Anzahl Teilnehmer/innen"
+
+msgid "Ms/Mr"
+msgstr "Fr/Hr"
+
+msgid "Institution"
+msgstr "Institution"
+
+msgid "Submitter"
+msgstr "Antragsteller"
+
+msgid "Sponsor"
+msgstr ""
+
+msgid "Primary Investigator"
+msgstr "Koordinierende/r Prüfärztin/arzt"
+
+msgid "Temporary Authorization"
+msgstr "Befristete Autorisierung"
+
+msgid "Submissions"
+msgstr "Einreichungen"
+
+msgid "Medical Categories"
+msgstr "Medizinische Kategorien"
+
+msgid "Vote"
+msgstr "Votum"
+
+msgid "valid until"
+msgstr "gültig bis"
+
+msgid "first acknowledged form"
+msgstr "Datum der Erstbestätigung"
+
+msgid "Organisation"
+msgstr "Organisation"
+
+msgid "email"
+msgstr "E-Mail"
+
+msgid "contact person"
+msgstr "Kontaktperson"
+
+msgid "same as sponsor"
+msgstr "wie Sponsor"
+
+msgid "XLS-Export done"
+msgstr "XLS-Export fertig"
+
+msgid "yes"
+msgstr "Ja"
+
+msgid "no"
+msgstr "Nein"
+
+msgid "Unknown"
+msgstr ""
+
+#, python-brace-format
+msgid "Submission of study EC-Nr. {ec_number}"
+msgstr "Einreichung der Studie EK-Nr. {ec_number}"
+
+#, python-brace-format
+msgid "Studie {ec_number}"
+msgstr "Studie {ec_number}"
+
+msgid "Acknowledgement of Receipt"
+msgstr "Eingangsbestätigung"
+
+#, python-brace-format
+msgid "Changes to study EC-Nr. {ec_number}"
+msgstr "Änderungen an Studie EK-Nr. {ec_number}"
+
+msgid "Submission not accepted"
+msgstr "Einreichung nicht akzeptiert"
+
+msgid "Comment"
+msgstr "Kommentar"
+
+msgid "Text"
+msgstr "Text"
+
+#, python-brace-format
+msgid "{task} reopened"
+msgstr "{task} neu geöffnet"
+
+msgid "This form can't be submitted at the moment."
+msgstr "Dieses Formular kann im Moment nicht eingereicht werden."
+
+msgid ""
+"The XLS export has been started. You will get a message when the file is "
+"ready."
+msgstr ""
+"Der XLS-Export wurde gestartet. Sie erhalten eine Nachricht sobald die Datei "
+"bereitsteht."
+
+msgid "All Studies"
+msgstr "Alle Studien"
+
+msgid "This document is an old version."
+msgstr "Das Dokument liegt in einer veralteten Form vor."
+
+msgid "Study Search"
+msgstr "Studien-Suche"
+
+msgid "Assigned Studies"
+msgstr "Mir zugeordnete Studien"
+
+msgid "My Studies"
+msgstr "Meine Studien"
+
+msgid "Acknowledge"
+msgstr "Bestätigen"
+
+msgid "Reject"
+msgstr "Ablehnen"
+
+msgid "Executive Review"
+msgstr "Begutachtung Executive"
+
+msgid "Close"
+msgstr "Schließen"
+
+msgid "Reopen"
+msgstr "Neu öffnen"
+
+msgid "Covering Letter"
+msgstr "Covering Letter"
+
+msgid "patient information"
+msgstr "Patienteninformation"
+
+msgid "insurancecertificate"
+msgstr "Versicherungsbestätigung"
+
+msgid "study protocol"
+msgstr "Studienprotokoll (Prüfplan)"
+
+msgid "Investigator's Brochure"
+msgstr "Prüferinformation (Investigator's Brochure)"
+
+msgid "Amendment"
+msgstr "Amendment"
+
+msgid "Curriculum Vitae (CV)"
+msgstr "Lebenslauf (CV)"
+
+msgid "Conflict of Interest"
+msgstr "Conflict of Interest"
+
+msgid "Case Report Form (CRF)"
+msgstr "Fallbericht-Formular (CRF)"
+
+msgid "EudraCT Form"
+msgstr "EudraCT-Formular"
+
+msgid "adverse reaction report"
+msgstr "Nebenwirkungsbericht"
+
+msgid "Statement on a review"
+msgstr "Stellungnahme zum Gutachten"
+
+msgid "Questionnaire"
+msgstr "Fragebogen"
+
+msgid "Signed Page"
+msgstr "Unterschriftenseite"
+
+msgid "Manual"
+msgstr "Gebrauchsanweisung"
+
+msgid "Declaration of conformity"
+msgstr "Konformitätserklärung"
+
+msgid "other"
+msgstr "Sonstige"
+
+msgid "Submission Form"
+msgstr "Einreichformular"
+
+#, fuzzy
+msgid "Checklist"
+msgstr "Formale Prüfung Diplomarbeit"
+
+msgid "vote"
+msgstr "Votum"
+
+msgid "Notification"
+msgstr "Meldungen"
+
+msgid "Notification Answer"
+msgstr "Meldungsantwort"
+
+msgid "Invoice"
+msgstr "Rechnung"
+
+#, fuzzy
+msgid "Checklist Payment"
+msgstr "Es gibt noch keine Checkliste."
+
+msgid "Meeting Protocol"
+msgstr "Sitzungsprotokoll"
+
+#, fuzzy
+#| msgid "Meetings"
+msgid "Meeting ZIP"
+msgstr "Sitzungen"
+
+msgid "no file"
+msgstr "keine Datei"
+
+msgid "This file is not a PDF document."
+msgstr "Diese Datei ist kein PDF-Dokument."
+
+msgid ""
+"The PDF-File seems to broken. For more Information click on the question "
+"mark in the sidebar."
+msgstr ""
+"Die PDF-Datei scheint beschädigt zu sein. Für mehr Information klicken Sie "
+"auf das Fragezeichen-Symbol im Seitenmenü."
+
+#, python-brace-format
+msgid "Large number of downloads by {user}"
+msgstr "Große Anzahl an Downloads von {user}"
+
+msgid "date and time"
+msgstr "Datum und Uhrzeit"
+
+msgid "deadline"
+msgstr "Letzter Einreichtermin"
+
+msgid "deadline thesis"
+msgstr "Letzter Einreichtermin für Diplomarbeiten / Dissertationen"
+
+msgid "duration"
+msgstr "Dauer"
+
+msgid "break"
+msgstr "Pause"
+
+msgid "ideal start time (time)"
+msgstr "Ideale Startzeit (Uhrzeit)"
+
+msgid "Position"
+msgstr "Position"
+
+msgid "Automatic"
+msgstr "Automatisch"
+
+msgid "Last"
+msgstr "Letzte"
+
+msgid "First"
+msgstr "Erste"
+
+msgid "from (time)"
+msgstr "Von (Uhrzeit)"
+
+msgid "to (time)"
+msgstr "Bis (Uhrzeit)"
+
+msgid "weighting"
+msgstr "Gewichtung"
+
+msgid "From meeting"
+msgstr "Von Sitzung"
+
+msgid "To meeting"
+msgstr "Nach Sitzung"
+
+msgid "%B Meeting %Y (automatically generated)"
+msgstr "%B Sitzung %Y (automatisch generiert)"
+
+msgid "impossible"
+msgstr "unmöglich"
+
+msgid "unfavorable"
+msgstr "ungünstig"
+
+msgid "Meetings"
+msgstr "Sitzungen"
+
+msgid "only tops without associated submission can be deleted"
+msgstr ""
+
+msgid ""
+"The constraints have been saved. The constraints will be taken into account "
+"when optimizing the timetable."
+msgstr ""
+"Die Einschränkungen wurden gespeichert. Sie werden bei der Optimierung der "
+"Zeitplanung berücksichtigt werden."
+
+msgid "This meeting has ended."
+msgstr "Diese Sitzung wurde beendet."
+
+msgid "No TOPs are assigned to this meeting."
+msgstr "Dieser Sitzung sind keine TOPs zugeordnet."
+
+msgid "This meeting has not yet started."
+msgstr "Diese Sitzung wurde noch nicht begonnen."
+
+msgid ""
+"There are open recommendations. You can start the meeting assistant when all "
+"recommendations are done."
+msgstr ""
+"Es sind noch nicht alle Empfehlungen fertig abgegeben. Sie können die "
+"Sitzung erst nach dem erfolgten Abschluss der Empfehlungen starten."
+
+msgid ""
+"There are open vote preparations. You can start the meeting assistant when "
+"all vote preparations are done."
+msgstr ""
+"Es sind noch nicht alle Votumsvorbereitungen fertig. Sie können die Sitzung "
+"erst nach dem erfolgten Abschluss der Votumsvorbereitungen starten."
+
+msgid "unfinished meetings cannot be stopped"
+msgstr "nicht abgeschlossene Sitzungen können nicht beendet werden"
+
+msgid "agenda"
+msgstr "Tagesordnung"
+
+msgid "time slot"
+msgstr "Zeitfenster"
+
+msgid "EC Meeting {}"
+msgstr "EK Sitzung {}"
+
+msgid "Expedited Review at {}"
+msgstr "Expedited Review am {}"
+
+msgid ""
+"The expert assignment has been saved. The experts will be invited to the "
+"meeting when you send the agenda to the board."
+msgstr ""
+"Die Spezialistenzuordnung wurde gespeichert. Die Spezialisten werden zu der "
+"Sitzung eingeladen, wenn Sie die Tagesordnung an die Sitzungsmitglieder "
+"versenden."
+
+msgid "Safety Review"
+msgstr "Sicherheitsmeldung"
+
+msgid "Distribute Notification Answer"
+msgstr "Meldungsantwort Verteilen"
+
+msgid "Office Notification Review"
+msgstr "Meldungsbewertung Office"
+
+msgid "Executive Notification Review"
+msgstr "Meldungsbewertung Exekutiv"
+
+msgid "Initial Amendment Review"
+msgstr "Amendment Formale Prüfung"
+
+msgid "Amendment Review"
+msgstr "Amendment Bewertung"
+
+msgid "Amendment Answer Signing"
+msgstr "Amendment-Antwort Signierung"
+
+msgid "SUSAR"
+msgstr "SUSAR"
+
+msgid "SAE"
+msgstr "SAE"
+
+msgid "Annual Safety Report"
+msgstr "Jährlicher Sicherheitsbericht"
+
+msgid "Other Safety Report"
+msgstr "Andere Sicherheitsmeldung"
+
+msgid "Substantial"
+msgstr "Substantiell"
+
+msgid "Needs signature"
+msgstr "Unterschrift notwendig"
+
+msgid ""
+"Aus der Sicht des Sponsors ergeben sich derzeit keine Veränderungen des "
+"Nutzen/Risikoverhältnisses."
+msgstr ""
+
+msgid "Study"
+msgstr "Studie"
+
+msgid "Proofread"
+msgstr "Korrektur gelesen"
+
+msgid "rate negative"
+msgstr "Negativ beurteilt"
+
+msgid "New Notification Answer"
+msgstr "Neue Meldungsantwort"
+
+msgid "Open Notifications"
+msgstr "Offene Meldungen"
+
+msgid "save successful"
+msgstr "speichern erflogreich"
+
+msgid "Ready"
+msgstr "Fertig"
+
+msgid "Needs further review"
+msgstr "Weitere Begutachtung erforderlich"
+
+msgid "A certificate with this CN already exists."
+msgstr ""
+
+msgid "Your Client Certificate"
+msgstr "Ihr Client-Zertifikat"
+
+msgid "See Attachment."
+msgstr "Siehe Anhang."
+
+msgid "German"
+msgstr "Deutsch"
+
+msgid "Total"
+msgstr "Insgesamt"
+
+msgid "Comercially sponsored"
+msgstr "Kommerziell gesponsert"
+
+msgid "Multicentric"
+msgstr "Multizentrisch"
+
+msgid "In accord with AMG"
+msgstr "Studien nach AMG"
+
+msgid "In accord with MPG"
+msgstr "Studien nach MPG"
+
+msgid "B1 on first vote"
+msgstr "B1 als erstes Votum"
+
+msgid "B2 on first vote"
+msgstr "B2 als erstes Votum"
+
+msgid "B3 on first vote"
+msgstr "B3 als erstes Votum"
+
+msgid "Negative overall"
+msgstr "Insgesamt abgelehnt oder zurückgezogen"
+
+msgid "Main Ethics Commission"
+msgstr "Leitethikkommission"
+
+msgid "Local Ethics Commission"
+msgstr "Lokal zuständige Ethikkommission"
+
+msgid "Monocentric AMG studies"
+msgstr "Monozentrische AMG Studien"
+
+msgid "CE certified for exact indications"
+msgstr "Mit CE Kennzeichen innerhalb der Zweckbestimmung"
+
+msgid "CE certified for other indications"
+msgstr "Mit CE Kennzeichen ausserhalb der Zweckbestimmung"
+
+msgid "Without CE marking"
+msgstr "Ohne CE-Kennzeichnung"
+
+msgid "Studies in accord with AMG and MPG"
+msgstr "Kombinierte AMG/MPG Studien"
+
+msgid "Color"
+msgstr "Farbe"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "This tag is still used and can't be deleted."
+msgstr "Dieses Tag wird noch benutzt und kann daher nicht gelöscht werden."
+
+msgid "delegate"
+msgstr "abgeben"
+
+#, fuzzy
+#| msgid "New Message"
+msgid "message"
+msgstr "Neue Nachricht"
+
+#, fuzzy
+#| msgid "Completed"
+msgid "complete"
+msgstr "Abgeschlossen"
+
+msgid "You must select a user."
+msgstr "Sie müssen einen Benutzer auswählen."
+
+msgid "Fill out the form completely to complete the task."
+msgstr "Füllen Sie das Formular vollständig aus um die Aufgabe abzuschliessen."
+
+#, python-brace-format
+msgid "{task} completed"
+msgstr "{task} abgeschlossen"
+
+#, python-brace-format
+msgid "{task} deleted"
+msgstr "{task} gelöscht"
+
+#, python-brace-format
+msgid "{task} still open"
+msgstr "{task} noch nicht abgeschlossen"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Password"
+msgstr "Passwort"
+
+msgid "gender"
+msgstr "Geschlecht"
+
+msgid "First name"
+msgstr "Vorname"
+
+msgid "Last name"
+msgstr "Nachname"
+
+msgid "Password (again)"
+msgstr "Passwort wiederholen"
+
+msgid "The two password fields didn't match."
+msgstr "Die Passwörter stimmen nicht überein."
+
+msgid "First Name"
+msgstr "Vorname"
+
+msgid "Last Name"
+msgstr "Nachname"
+
+msgid "Never"
+msgstr "nie"
+
+msgid "after 5 minutes"
+msgstr "nach fünf Minuten"
+
+#, python-brace-format
+msgid "after {0} hours"
+msgstr "nach {0} Stunden"
+
+msgid "Forwarding of unread messages"
+msgstr "Weiterleitung von ungelesenen Nachrichten"
+
+msgid "Gender"
+msgstr "Geschlecht"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Job Title"
+msgstr "Berufsbezeichnung"
+
+msgid "Address/Home Address if external reviewer"
+msgstr "Adresse/Privatadresse falls Gutachter"
+
+msgid "Additional Address Information"
+msgstr "Zusätzliche Adressinformationen"
+
+msgid "ZIP-Code"
+msgstr "Postleitzahl"
+
+msgid "City"
+msgstr "Ort"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Signature Environment"
+msgstr "Signaturumgebung"
+
+msgid "localbku"
+msgstr "lokale BKU"
+
+msgid "onlinebku"
+msgstr "online BKU (veraltet)"
+
+msgid "mobilebku"
+msgstr "Handysignatur"
+
+msgid "Both"
+msgstr "Beide"
+
+msgid "active"
+msgstr "aktiv"
+
+msgid "inactive"
+msgstr "inaktiv"
+
+msgid "Activity"
+msgstr "Tätigkeit"
+
+msgid "Groups"
+msgstr "Gruppen"
+
+msgid "Task Types"
+msgstr "Aufgabenarten"
+
+msgid "Name/Email"
+msgstr "Name/Email"
+
+msgid "{} is a specialist in following meetings: {}"
+msgstr "{} ist als Spezialist in folgenden Sitzungen zugeteilt: {}"
+
+msgid "{} requires group {}, but it is not selected"
+msgstr "{} erfordert die {} Gruppe, die aber nicht ausgewählt ist"
+
+msgid "Invitation Text"
+msgstr "Einladungstext"
+
+msgid "There is already a user with this email address."
+msgstr "Es ist bereits ein Benutzer mit dieser Email-Adresse registriert."
+
+msgid "is_indisposed"
+msgstr "Verhindert"
+
+msgid "communication_proxy"
+msgstr "Nachrichtenvertretung"
+
+msgid "Circular Proxy Chain: {}"
+msgstr "Zirkuläre Vertretungs-Kette"
+
+msgid "New password"
+msgstr "Neues Passwort"
+
+msgid "New password confirmation"
+msgstr "Passwort bestätigen"
+
+msgid "Start must be before end."
+msgstr ""
+
+msgid "login"
+msgstr ""
+
+msgid "logout"
+msgstr ""
+
+msgid "Ms."
+msgstr "Frau"
+
+msgid "Mr."
+msgstr "Herr"
+
+msgid "ECS - Registration"
+msgstr "ECS - Anmeldung"
+
+msgid "ECS - Password Reset"
+msgstr "ECS - Passwort zurücksetzen"
+
+#, python-brace-format
+msgid "{user} indisposed"
+msgstr "{user} verhindert"
+
+#, python-brace-format
+msgid "Division of work with {user}"
+msgstr "Arbeitsteilung mit {user}"
+
+msgid "New Signing User"
+msgstr "Neuer Zeichnungsberechtigter"
+
+msgid "The change of the user has been saved."
+msgstr "Die Änderungen an dem Benutzer wurden gespeichert."
+
+msgid "Executive Vote Review"
+msgstr "Votum Überprüfung Exekutiv"
+
+msgid "Internal Vote Review"
+msgstr "Votum Prüfung Intern"
+
+msgid "Office Vote Finalization"
+msgstr "Votum Bearbeitung Office"
+
+msgid "Office Vote Review"
+msgstr "Votum Bewertung Office"
+
+msgid "Vote Signing"
+msgstr "Votum Signierung"
+
+msgid "1 positive"
+msgstr "1 Positiv"
+
+msgid "2 positive under reserve"
+msgstr "2 Vorbehaltlich positiv"
+
+msgid "3b recessed (examined)"
+msgstr "3b Vertagt (behandelt)"
+
+msgid "3a recessed (not examined)"
+msgstr "3a Vertagt (nicht behandelt)"
+
+msgid "4 negative"
+msgstr "4 Negativ"
+
+msgid "5 withdrawn (applicant)"
+msgstr "5 Zurückgezogen (Antragsteller)"
+
+msgid "Proofread and valid"
+msgstr "Korrektur gelesen und gültig"
+
+msgid "comment"
+msgstr "Kommentar"
+
+msgid "No Result"
+msgstr ""
+
+#, python-brace-format
+msgid "Vote for Submission {ec_number} has expired"
+msgstr "Das Votum für die Studie EK-Nr. {ec_number} ist abgelaufen"
+
+#, python-brace-format
+msgid "Vote for Submission {ec_number} will expire in three weeks"
+msgstr "Das Votum für die Studie EK-Nr. {ec_number} läuft in drei Wochen ab"
+
+#, python-brace-format
+msgid "Vote for Submission {ec_number} will expire in one week"
+msgstr "Das Votum für die Studie EK-Nr. {ec_number} läuft in einer Woche ab"
+
+#, python-brace-format
+msgid "Temporary vote for Submission {ec_number}"
+msgstr "Mitteilung für Studie EK-Nr. {ec_number}"
+
+#, python-brace-format
+msgid "Vote {ec_number}"
+msgstr "Votum {ec_number}"
+
+msgid "Advanced Settings"
+msgstr "Erweiterte Einstellungen"
+
+msgid "Customization"
+msgstr "Anpassungen"
+
+msgid "Votes"
+msgstr "Voten"
+
+msgid "Vote Receivers"
+msgstr "Votenempfänger"
+
+msgid "Save"
+msgstr "Speichern"
+
+msgid "Administration"
+msgstr "Verwaltung"
+
+msgid "User Administration"
+msgstr "Benutzerverwaltung"
+
+msgid "Invite User"
+msgstr "Benutzer einladen"
+
+msgid "Login History"
+msgstr ""
+
+msgid "Old Payments"
+msgstr "Alte Zahlungen"
+
+#, python-format
+msgid "Payment of %(date)s"
+msgstr "Zahlung vom %(date)s"
+
+msgid "1 Review"
+msgstr "1 Gutachten"
+
+#, python-format
+msgid "%(count)s Reviews"
+msgstr "%(count)s Gutachten"
+
+msgid "No payment yet."
+msgstr "Es gibt noch keine Zahlung."
+
+msgid "Unbilled Reviews"
+msgstr "Unverechnete Gutachten"
+
+msgid "Create settlement"
+msgstr "Abrechnung erstellen"
+
+msgid "No review yet."
+msgstr "Es gibt noch kein Gutachten."
+
+msgid "Download payment as xls file"
+msgstr "Zahlung als xls-Datei herunterladen"
+
+msgid "Reviewer"
+msgstr "Gutachter"
+
+msgid "Old Invoices"
+msgstr "Alte Rechnungen"
+
+#, python-format
+msgid "Invoice of %(date)s"
+msgstr "Rechnung vom %(date)s"
+
+msgid "1 Submission"
+msgstr "1 Einreichung"
+
+#, python-format
+msgid "%(count)s Submissions"
+msgstr "%(count)s Einreichungen"
+
+msgid "No invoice yet."
+msgstr "Es gibt noch keine Rechnung."
+
+msgid "Download Invoice as xls file"
+msgstr "Rechnung als xls-Datei herunterladen"
+
+msgid "Unbilled Submissions"
+msgstr "Unverechnete Einreichungen"
+
+msgid "No submission yet."
+msgstr "Es gibt noch keine Einreichung."
+
+msgid "New Boilerplate"
+msgstr "Neuer Textbaustein"
+
+msgid "Boilerplates"
+msgstr "Textbausteine"
+
+msgid "edit"
+msgstr "Bearbeiten"
+
+msgid "Delete"
+msgstr "Löschen"
+
+msgid "No boilerplate yet!"
+msgstr "Es gibt noch keinen Textbaustein!"
+
+msgid "Request Review"
+msgstr "Begutachtung anfordern"
+
+msgid "Closed"
+msgstr "Erledigt"
+
+msgid "Started"
+msgstr "Gestartet"
+
+msgid ""
+"Comments can only contain one attachment. If you select a file here it will "
+"replace the current attachment."
+msgstr ""
+"Kommentare können nur einen Anhang beinhalten. Wenn Sie hier eine Datei "
+"auswählen wir der derzeitige Anhang ersetzt."
+
+msgid "Attachment"
+msgstr "Anhang"
+
+msgid "save"
+msgstr "Speichern"
+
+msgid "Insert Boilerplate"
+msgstr "Textbaustein einfügen"
+
+msgid "on the"
+msgstr "am"
+
+msgid "View"
+msgstr "Ansicht"
+
+msgid "Add Comment"
+msgstr "Kommentar hinzufügen"
+
+msgid "Do you want to delete the comment?"
+msgstr "Wollen Sie den Kommentar löschen?"
+
+msgid "Don't Delete"
+msgstr "Nicht Löschen"
+
+msgid "Me"
+msgstr "Ich"
+
+msgid "No messages yet!"
+msgstr "Es gibt noch keine Nachrichten!"
+
+msgid "System messages are shown."
+msgstr "Systemnachrichten werden angezeigt."
+
+msgid "Hide system messages"
+msgstr "Systemnachrichten verstecken"
+
+msgid "System messages are hidden."
+msgstr "Systemnachrichten werden nicht angezeigt."
+
+msgid "Show system messages"
+msgstr "Systemnachrichten anzeigen"
+
+msgid "New Message"
+msgstr "Neue Nachricht"
+
+msgid "Back to the communication overview"
+msgstr "Zurück zur Nachrichtenübersicht"
+
+msgid "Back to the Study"
+msgstr "Zurück zur Studie"
+
+msgid "Remove star"
+msgstr "Stern entfernen"
+
+msgid "Add star"
+msgstr "Stern hinzufügen"
+
+msgid "To the Study"
+msgstr "Zur Studie"
+
+msgid "Collapse all"
+msgstr "Alle einklappen"
+
+msgid "Expand all"
+msgstr "Alle ausklappen"
+
+msgid "Send"
+msgstr "Abschicken"
+
+msgid "Incoming"
+msgstr "Einkommend"
+
+msgid "Outgoing"
+msgstr "Ausgehend"
+
+msgid "Starred"
+msgstr "Mit Stern"
+
+msgid "Not Starred"
+msgstr "Ohne Stern"
+
+msgid "Read"
+msgstr "Gelesen"
+
+msgid "Unread"
+msgstr "Ungelesen"
+
+msgid "Von/An"
+msgstr "Von/An"
+
+msgid "Submission"
+msgstr "Einreichung"
+
+msgid "Date"
+msgstr "Datum"
+
+msgid "an"
+msgstr "an"
+
+msgid "von"
+msgstr "von"
+
+msgid "Mark as read"
+msgstr "Als gelesen markieren"
+
+msgid "Communication"
+msgstr "Nachrichten"
+
+#, python-format
+msgid ""
+"To write a message, open the read-only view of a study and change to the "
+"communication tab. For general Questions write an email to <a href=\"mailto:"
+"%(contact_email)s\">%(contact_email)s</a>."
+msgstr ""
+"Um eine neue Nachricht zu erstellen, wechseln Sie in die betreffende Studie "
+"in den Reiter Nachrichten. Beachten Sie das sämtliche Korrespondenz über das"
+" ECS als studienrelevante Information gespeichert und für den Fall eines"
+" Audits einsichtig sein muss. Für allgemeine Fragen schreiben Sie eine "
+"E-Mail an <a href=\"mailto:%(contact_email)s\">%(contact_email)s</a>."
+
+msgid "Dashboard"
+msgstr "Übersicht"
+
+msgid "Tasks"
+msgstr "Aufgaben"
+
+msgid "Studies"
+msgstr "Studien"
+
+msgid "New Submission"
+msgstr "Neuer Antrag"
+
+msgid "Import"
+msgstr "Import"
+
+msgid "New Notification"
+msgstr "Neue Meldung"
+
+msgid "New Meeting"
+msgstr "Neue Sitzung"
+
+msgid "Click here to get help."
+msgstr "Klicken Sie hier, um zur Online-Hilfe zu gelangen."
+
+#, python-format
+msgid "Show my scratchpad for submission %(ec_number)s"
+msgstr "Notizblock für die Studie %(ec_number)s aufschlagen"
+
+msgid "Show my scratchpad"
+msgstr "Notizblock aufschlagen"
+
+msgid "Accounting of fees"
+msgstr "Gebührenabrechnung"
+
+msgid "Statistics"
+msgstr "Statistik"
+
+msgid "PKI"
+msgstr ""
+
+#, python-format
+msgid ""
+"You are currently marked indisposed. To reclaim your tasks, please visit "
+"your <a href=\"%(profile_url)s\">profile</a>."
+msgstr ""
+"Sie sind derzeit als abwesend markiert. Um Ihre Aufgaben zurückzuholen "
+"besuchen Sie Ihr <a href=\"%(profile_url)s\">Profil</a>."
+
+msgid "Download"
+msgstr "Download"
+
+msgid "Replace"
+msgstr "Ersetzen"
+
+msgid "Replaces document"
+msgstr "Ersetzt Dokument"
+
+msgid "New Document"
+msgstr "Neues Dokument"
+
+msgid "Upload"
+msgstr "Hochladen"
+
+msgid "Please be patient, the file is being uploaded and processed"
+msgstr ""
+"Bitte um etwas Geduld, die Datei wird gerade hochgeladen und von uns "
+"weiterverarbeitet"
+
+msgid "Versions"
+msgstr "Versionen"
+
+msgid "No text"
+msgstr "Kein Text"
+
+msgid "This field is required."
+msgstr "Dieses Feld ist erforderlich"
+
+msgid "Comments"
+msgstr "Kommentare"
+
+msgid "Other TOPs"
+msgstr "Weitere TOPs"
+
+msgid "Do you want to start the meeting?"
+msgstr "Wollen Sie die Sitzung starten?"
+
+msgid "Start (meeting)"
+msgstr "Starten"
+
+msgid "Don't Start"
+msgstr "Nicht Starten"
+
+msgid "Do you want to stop the meeting?"
+msgstr "Wollen Sie die Sitzung beenden?"
+
+msgid "Stop (meeting)"
+msgstr "Beenden"
+
+msgid "Don't Stop"
+msgstr "Nicht Beenden"
+
+msgid "Prepared Vote"
+msgstr "Vorbereitetes Votum"
+
+msgid "No vote!"
+msgstr "Kein Votum!"
+
+msgid "Retrospective Thesis Submissions"
+msgstr "Retrospektive Diplomarbeiten / Dissertationen"
+
+msgid "Approved"
+msgstr "Bestätigt"
+
+msgid "Not Approved"
+msgstr "Nicht Bestätigt"
+
+msgid "Expedited Submissions"
+msgstr "Expedited"
+
+msgid "Local-EC Submissions"
+msgstr "Lokale EK"
+
+msgid "Amendments"
+msgstr "Amendments"
+
+msgid "Approve"
+msgstr "Bestätigen"
+
+msgid "Recessed"
+msgstr "Vertagt"
+
+msgid "not examined"
+msgstr "nicht behandelt"
+
+msgid "examined"
+msgstr "behandelt"
+
+msgid "copy positive"
+msgstr "Pos. kopieren"
+
+msgid "copy negative"
+msgstr "Neg. kopieren"
+
+msgid "History"
+msgstr ""
+
+msgid "Overview"
+msgstr "Übersicht"
+
+msgid "Planning"
+msgstr "Planung"
+
+msgid "Open Tasks"
+msgstr "Offene Aufgaben"
+
+msgid "TOPs"
+msgstr ""
+
+msgid "Notifications"
+msgstr "Meldungen"
+
+msgid "Protocol"
+msgstr "Protokoll"
+
+msgid "Spezialistenzuordnung"
+msgstr ""
+
+msgid "Timetable"
+msgstr "Zeitplanung"
+
+msgid "Sitzungsassistent"
+msgstr ""
+
+msgid "Do you want to send the E-mails?"
+msgstr "Wollen Sie die E-mails abschicken?"
+
+msgid "Don't Send"
+msgstr "Nicht Abschicken"
+
+msgid "Send Invitations"
+msgstr "Einladungen verschicken"
+
+msgid "new meeting"
+msgstr "Neue Sitzung"
+
+msgid "edit meeting"
+msgstr "Sitzung bearbeiten"
+
+msgid "Deadline for Thesis Submission"
+msgstr "Letzter Einreichtermin für Diplomarbeiten/Dissertationen"
+
+msgid "Deadline for Submission"
+msgstr "Letzter Einreichtermin"
+
+msgid "Scheduled for"
+msgstr "Geplant für"
+
+#, python-format
+msgid "Dear(f) %(recipient)s"
+msgstr "Sehr geehrte %(recipient)s!"
+
+#, python-format
+msgid "Dear(m) %(recipient)s"
+msgstr "Sehr geehrter %(recipient)s!"
+
+msgid "Investigator Organisation"
+msgstr "Prüfzentrum"
+
+msgid "Investigator contact"
+msgstr "Prüfarzt"
+
+#, python-format
+msgid "<span class=\"bold\">rejected</span> on the %(publish_date)s"
+msgstr "<span class=\"bold\">abgelehnt</span> am %(publish_date)s"
+
+#, python-format
+msgid "<span class=\"bold\">acknowledged</span> on the %(publish_date)s"
+msgstr "<span class=\"bold\">bestätigt</span> am %(publish_date)s"
+
+msgid "Reschedule Submission"
+msgstr "Sitzung verlegen"
+
+msgid "Save and return to study"
+msgstr "Speichern und zurück zur Studie"
+
+msgid "Submissions with board member review (in progress)"
+msgstr "Einreichungen mit Spezialistenbewertung (in Arbeit)"
+
+msgid "biased"
+msgstr "befangen"
+
+msgid "Submissions with board member review (completed)"
+msgstr "Einreichungen mit Spezialistenbewertung (abgeschlossen)"
+
+msgid "Submissions without board member review"
+msgstr "Einreichungen ohne Spezialistenbewertung"
+
+msgid "no board member required"
+msgstr "kein Sitzungsmitglied erforderlich"
+
+msgid "Sponsor/CRO"
+msgstr "Sponsor/CRO"
+
+msgid "Submitter Organisation"
+msgstr "Einreichendes Institut"
+
+#, python-format
+msgid "<span class=\"text-danger\">rejected</span> on the %(publish_date)s"
+msgstr "<span class=\"text-danger\">abgelehnt</span> am %(publish_date)s"
+
+#, python-format
+msgid ""
+"<span class=\"text-success\">acknowledged</span> on the %(publish_date)s"
+msgstr "<span class=\"text-success\">bestätigt</span> am %(publish_date)s"
+
+msgid "Created At"
+msgstr "Erstellt"
+
+msgid "Group"
+msgstr "Gruppe"
+
+msgid "Assigend At"
+msgstr "Zugeteilt"
+
+msgid "Assigend To"
+msgstr "Person"
+
+msgid "assigned"
+msgstr "zugeteilt"
+
+msgid "Ended"
+msgstr "Beendet"
+
+msgid "Started at"
+msgstr "Gestartet um"
+
+msgid "Ended at"
+msgstr "Beendet um"
+
+msgid "Expedited Reviewer Invitations"
+msgstr "Expedited Review bis"
+
+msgid "Agenda"
+msgstr "Tagesordnung"
+
+msgid "Agenda PDF"
+msgstr "Tagesordnung PDF"
+
+msgid "Send agenda"
+msgstr "Agenda versenden"
+
+msgid "Last sent"
+msgstr "Zuletzt versendet"
+
+msgid "Timetable PDF"
+msgstr "Zeitplan-PDF"
+
+msgid "Download PDF"
+msgstr "Als PDF herunterladen"
+
+msgid "PDF is being rendered"
+msgstr "PDF wird erstellt"
+
+msgid "Render PDF"
+msgstr "PDF erstellen"
+
+msgid "Sent at"
+msgstr "Versendet am"
+
+msgid "Discard and rerender PDF"
+msgstr "Verwerfen und neu erstellen"
+
+msgid "Send protocol"
+msgstr "Protokoll versenden"
+
+msgid "AMG/MPG"
+msgstr ""
+
+#, fuzzy
+msgid "Andere"
+msgstr "Geschlecht"
+
+#, fuzzy
+msgid "Retro. Thesis"
+msgstr "Letzter Einreichtermin für Diplomarbeiten / Dissertationen"
+
+#, fuzzy
+msgid "Dissertation"
+msgstr "Diplomarbeit / Dissertation"
+
+msgid "Diploma Thesis"
+msgstr "Diplomarbeit"
+
+msgid "Multicentric, Main EC"
+msgstr "Leitethikkommission"
+
+msgid "Billable"
+msgstr "Gebührenpflichtig"
+
+msgid "B3 (examined)"
+msgstr "B3 (behandelt)"
+
+msgid "B3 (not examined)"
+msgstr "B3 (nicht behandelt)"
+
+msgid "Substantial amendments"
+msgstr "Substantielle Amendments"
+
+msgid "Download all documents for this meeting (zip)"
+msgstr "Alle Dokumente der Sitzung herunterladen (zip)"
+
+#, python-format
+msgid "Created on %(date)s at %(time)s"
+msgstr "Erstellt am %(date)s um %(time)s"
+
+msgid "Not available yet!"
+msgstr "Noch nicht verfügbar!"
+
+msgid "Download documents (zip)"
+msgstr "Herunterladen(zip)"
+
+msgid "Next TOPs"
+msgstr "Nächste TOPs"
+
+msgid "Scratchpad"
+msgstr "Notizblock"
+
+msgid "Open TOPs"
+msgstr "Offene TOPs"
+
+msgid "No board member."
+msgstr ""
+
+msgid "Finished TOPs"
+msgstr "Abgeschlossene TOPs"
+
+msgid "No Vote yet!"
+msgstr "Es gibt noch kein Votum!"
+
+msgid "before"
+msgstr "Vorher Anwesende"
+
+msgid "waiting"
+msgstr "Wartende"
+
+msgid "after"
+msgstr "Anschließend Anwesende"
+
+#, python-format
+msgid "Dear(f) %(receiver)s"
+msgstr "Sehr geehrte %(receiver)s!"
+
+#, python-format
+msgid "Dear(m) %(receiver)s"
+msgstr "Sehr geehrter %(receiver)s!"
+
+msgid "Submit"
+msgstr "Einreichen"
+
+msgid "old"
+msgstr "alt"
+
+msgid "new"
+msgstr "neu"
+
+msgid "all"
+msgstr "alle"
+
+msgid "No changes."
+msgstr "Keine Änderungen."
+
+msgid "There are no notifications yet."
+msgstr "Es existieren derzeit keine Studienmeldungen."
+
+#, fuzzy
+#| msgid "Do you want to delete the submission draft?"
+msgid "Do you want to delete the notification draft?"
+msgstr "Wollen Sie den Einreichungsentwurf löschen?"
+
+#, python-format
+msgid "Last Change: %(modified_at)s"
+msgstr "Letzte Änderung: %(modified_at)s"
+
+msgid "Changes"
+msgstr "Änderungen"
+
+msgid "Meeting"
+msgstr "Sitzung"
+
+msgid "Has the study been started?"
+msgstr "Wurde die Studie begonnen?"
+
+msgid "Reason for not started"
+msgstr "Warum wurde die Studie nicht begonnen?"
+
+msgid "Recruited subjects"
+msgstr "Rekrutierte Teilnehmer"
+
+msgid "Finished subjects"
+msgstr "Teilnehmer abgeschlossen"
+
+msgid "Aborted subjects"
+msgstr "Studienabbrüche"
+
+msgid "SAE count"
+msgstr "Anzahl SAE"
+
+msgid "SUSAR count"
+msgstr "Anzahl SUSAR"
+
+msgid "Back to open notifications"
+msgstr "Zurück zu den offenen Meldungen"
+
+msgid "Page"
+msgstr "Seite"
+
+msgid "of"
+msgstr "von"
+
+msgid "Back to the certificate list"
+msgstr "Zurück zur Zertifikat-Liste"
+
+#, python-format
+msgid ""
+"The client certificate for %(user)s has been created. It has been sent to "
+"%(email)s per email. The passphrase is as follows. Please make sure to "
+"transmit the passphrase via a secure channel Do not send it via email!"
+msgstr ""
+"Das Zertifikat für %(user)s wurde angelegt. Es wurde per E-Mail an %(email)s "
+"gesendet. Die Passphrase lautet wie folgt. Bitte übertragen Sie Passphrase "
+"über einen sicheren Kanal. Senden Sie diese nicht per E-Mail!"
+
+msgid "Revoke"
+msgstr "Widerrufen"
+
+msgid "Create new certificate"
+msgstr "Neues Zertifikat erstellen"
+
+msgid "Create Certificate"
+msgstr "Zertifikat Erstellen"
+
+msgid "List of scratchpads"
+msgstr "Liste der Notizblöcke"
+
+#, python-format
+msgid "Scratchpad for submission %(ec_number)s"
+msgstr "Notizblock für die Studie %(ec_number)s"
+
+msgid "Global scratchpad"
+msgstr "Allgemeiner Notizblock"
+
+msgid "No scratchpad"
+msgstr "Kein Notizblock"
+
+msgid "Show all my scratchpads"
+msgstr "Zur Liste der Notizblöcke"
+
+msgid "Save and close"
+msgstr "Speichern und schließen"
+
+msgid "Your browser does not support iframes."
+msgstr ""
+
+msgid "Batch Signature"
+msgstr "Stapelsignatur"
+
+msgid "Skip"
+msgstr "Überspringen"
+
+msgid "Push back"
+msgstr "Zurückwerfen"
+
+msgid "Cancel"
+msgstr "Abbrechen"
+
+msgid "Try again"
+msgstr "Nochmal versuchen"
+
+#, python-format
+msgid "Statistics %(current_year)s"
+msgstr "Statistik %(current_year)s"
+
+#, python-format
+msgid "Statistics for the year of %(current_year)s"
+msgstr "Statistik für das Jahr %(current_year)s"
+
+msgid "At least one protocol is required."
+msgstr "Es ist mindestens ein Protokoll erforderlich."
+
+msgid "Organization"
+msgstr "Organisation"
+
+msgid "E-Mail"
+msgstr "E-Mail"
+
+msgid "Assigned Tasks"
+msgstr "Zugeteilte Aufgaben"
+
+msgid "Send Message"
+msgstr "Nachricht senden"
+
+msgid "No board members selected."
+msgstr "Kein Sitzungsmitglied ausgewählt."
+
+msgid "Add"
+msgstr "Hinzufügen"
+
+msgid "Catalog of Approved Studies"
+msgstr "Register der befürworteten Studien"
+
+msgid "Years"
+msgstr ""
+
+#, python-format
+msgid "and one other study site"
+msgid_plural "and %(other_ec_count)s other study sites"
+msgstr[0] "und ein weiteres Prüfzentrum"
+msgstr[1] "und %(other_ec_count)s weitere Prüfzentren"
+
+msgid "Change Presenter"
+msgstr "Einreicher Ändern"
+
+msgid "Change Susar Presenter"
+msgstr "Sicherheitsmeldungsersteller Ändern"
+
+msgid "No Checklist with unexpected answers or unexpected comments yet."
+msgstr ""
+"Es gibt noch keine Checkliste mit unerwarteten Antworten oder einem nicht "
+"verpflichtenden Kommentar zu einer erwarteten Antwort."
+
+#, fuzzy
+msgid "finished"
+msgstr "Abgeschlossene TOPs"
+
+msgid "Export"
+msgstr "Export"
+
+msgid "Just Save"
+msgstr "Nur Speichern"
+
+msgid "Submit Amendment"
+msgstr "Änderungen absenden"
+
+msgid "Resubmit"
+msgstr "Neu Einreichen"
+
+msgid ""
+"You filled out the form correctly. Do you want to create a notification now?"
+msgstr ""
+"Sie haben das Formular korrekt ausgefüllt. Wollen Sie nun eine Meldung "
+"erstellen?"
+
+msgid "You filled out the form correctly. Do want to submit the study?"
+msgstr ""
+"Sie haben das Formular korrekt ausgefüllt. Wollen Sie die Studie einreichen?"
+
+msgid "Create Notification"
+msgstr "Meldung Erstellen"
+
+msgid "Don't Submit"
+msgstr "Nicht Einreichen"
+
+msgid "Your are being redirected to the notification form"
+msgstr "Sie werden zum Meldungsformular weitergeleitet"
+
+msgid "Your study is being submitted"
+msgstr "Ihre Studie wird eingereicht"
+
+msgid "Categories"
+msgstr "Fachgebiete"
+
+msgid ""
+"Die Studie wurde in der eingereichten Form von der Ethik-Kommission "
+"abgelehnt. Sie können die Studie neu einreichen."
+msgstr ""
+
+msgid "Die Studie hat ein B2 Votum erhalten."
+msgstr ""
+
+msgid "Document"
+msgstr "Unterlage"
+
+msgid "No Submissions."
+msgstr "Keine Einreichung."
+
+msgid "Do you want to delete the submission draft?"
+msgstr "Wollen Sie den Einreichungsentwurf löschen?"
+
+msgid "See Section 9.Documents"
+msgstr "Siehe Punkt 9.Unterlagen"
+
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#, python-format
+msgid "New %(notification_type_name)s"
+msgstr "Neues %(notification_type_name)s"
+
+msgid "General"
+msgstr "Generell"
+
+msgid "Evaluations"
+msgstr "Beurteilungen"
+
+msgid "Workflow"
+msgstr "Arbeitsablauf"
+
+msgid "Involved Parties"
+msgstr "Beteiligte Parteien"
+
+msgid "Checklist Summary"
+msgstr "Übersicht"
+
+msgid "Published Votes"
+msgstr "Veröffentlichte Voten"
+
+msgid "Pending Notifications"
+msgstr "Ausstehende Meldungen"
+
+msgid "Answered Notifications"
+msgstr "Beantwortete Meldungen"
+
+msgid "My Communication"
+msgstr "Meine Nachrichten"
+
+msgid "Communication Overview"
+msgstr "Nachrichten Überblick"
+
+#, python-format
+msgid "Send Message to %(user)s"
+msgstr "Nachricht an %(user)s senden"
+
+msgid "There are no open notifications."
+msgstr "Es existieren derzeit keine offenen Meldungen."
+
+msgid "Create a new notification"
+msgstr "Eine neue Meldung erstellen"
+
+msgid "rejected"
+msgstr "abgelehnt"
+
+msgid "There are no answered notifications."
+msgstr "Ex existieren derzeit keine beantworteten Meldungen."
+
+msgid "Changed after voting"
+msgstr "Nach der Abstimmung geändert"
+
+msgid "There are no published votes."
+msgstr "Es existieren derzeit keine veröffentlichten Voten."
+
+msgid "Download unpublished Version as PDF"
+msgstr "Unveröffentlichte Version als PDF herunterladen"
+
+msgid "Write a new message"
+msgstr "Neue Nachricht"
+
+msgid "Involvement"
+msgstr "Beteiligung"
+
+msgid "Timeframe"
+msgstr "Zeitraum"
+
+msgid "No temporary authorizations yet."
+msgstr "Keine befristete Autorisierung vorhanden."
+
+msgid "Authorize"
+msgstr "Autorisieren"
+
+msgid "Biased Parties"
+msgstr "Befangene Parteien"
+
+msgid "This form has not been submitted yet."
+msgstr "Dieses Formular wurde noch nicht eingereicht."
+
+msgid "Delete Changes"
+msgstr "Änderungen verwerfen"
+
+msgid "Not submitted yet."
+msgstr "Noch nicht eingereicht."
+
+msgid "change"
+msgstr "ändern"
+
+msgid "No Primary Investigator"
+msgstr "Kein/e koordinierende/r Prüfärztin/arzt"
+
+msgid "New/Undecided"
+msgstr "Neu/Unentschieden"
+
+msgid "Reschedule"
+msgstr "Neu planen"
+
+msgid "drop"
+msgstr "fallen lassen"
+
+msgid "No tags yet."
+msgstr "Es gibt noch keine Tags."
+
+msgid "Back to the tag list"
+msgstr "Zurück zur Tag-Liste"
+
+msgid "delete"
+msgstr "Löschen"
+
+msgid "New Tag"
+msgstr "Neues Tag"
+
+msgid "Closed At"
+msgstr "Abgeschlossen am"
+
+msgid "Closed tasks are grayed out. Deleted tasks are crossed out."
+msgstr ""
+"Abgeschlossene Aufgaben sind ausgegraut, gelöschte Aufgaben sind "
+"durchgestrichen"
+
+msgid "Task"
+msgstr "Aufgabe"
+
+msgid "Delegate"
+msgstr "Abgeben"
+
+msgid "My Tasks"
+msgstr "Meine Aufgaben"
+
+msgid "Decline"
+msgstr "Ablehnen"
+
+msgid "There are no tasks for you."
+msgstr "Keine Aufgaben."
+
+msgid "Proxy Tasks"
+msgstr "Vertretungsaufgaben"
+
+msgid "Accept all"
+msgstr "Alle annehmen"
+
+msgid "Preview"
+msgstr "Vorschau"
+
+msgid "Bookmark"
+msgstr "Lesezeichen"
+
+msgid "Drag the bookmark link to your bookmark bar to save it."
+msgstr ""
+"Ziehen Sie den Lesezeichen-Link auf Ihre Lesezeichen-Leiste um ihn zu "
+"speichern."
+
+msgid "List of Users"
+msgstr "Liste der Benutzer"
+
+msgid "phantom"
+msgstr "phantom"
+
+msgid "Indisposed"
+msgstr "Verhindert"
+
+msgid "Inactive"
+msgstr "Inaktiv"
+
+msgid "Edit Details"
+msgstr "Details ändern"
+
+msgid "Unmark Indisposed"
+msgstr "als Anwesend markieren"
+
+msgid "Mark Indisposed"
+msgstr "als Verhindert markieren"
+
+msgid "Deactivate"
+msgstr "Deaktivieren"
+
+msgid "Activate"
+msgstr "Aktivieren"
+
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+msgid "Back to the List of Users"
+msgstr "Zurück zur Benutzer-Liste"
+
+#, python-format
+msgid "The assignment of task types for %(user)s has changed."
+msgstr "Die Zuordnung der Aufgaben für %(user)s hat sich geändert."
+
+msgid "Added task types"
+msgstr "Hinzugefügte Aufgabenarten"
+
+msgid "Removed task types"
+msgstr "Entfernte Aufgabenarten"
+
+msgid "Indisposition"
+msgstr "Abwesenheit"
+
+msgid "Invite"
+msgstr "Einladen"
+
+msgid "Set Password"
+msgstr "Passwort setzen"
+
+msgid "Public Catalog"
+msgstr "Öffentliches Register"
+
+msgid "Online Help Pages"
+msgstr "Hilfe"
+
+msgid "Edit Profile"
+msgstr "Profil bearbeiten"
+
+msgid "Change Password"
+msgstr "Passwort ändern"
+
+#, python-format
+msgid "Profile of %(user)s"
+msgstr "Profil von %(user)s"
+
+msgid "Personal details"
+msgstr "Angaben zur Person"
+
+msgid ""
+"If you work for the ethics commission as an external reviewer, you have to "
+"fill out the following fields"
+msgstr ""
+"Wenn sie als Gutachter für die Ethikkommission arbeiten, benötigen wir die "
+"folgenden Daten für Zahlungen an Sie"
+
+msgid "Settings"
+msgstr "Einstellungen"

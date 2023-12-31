@@ -1,0 +1,52 @@
+{% load humanize core communication i18n %}
+
+{% for thread in threads %}
+<div class="communication_thread my-3">
+    <h4>{{ thread.subject }} ({{ thread.sender }} &lt;-&gt; {{ thread.receiver }})</h4>
+
+    {% for message in thread.message_list %}
+        <div class="card mb-2 message">
+            <div class="card-header">
+                <span class="sender">
+                    {% if message.sender == user %}
+                        {% trans 'Me' %}
+                    {% else %}
+                        {{ message.sender }}
+                    {% endif %}
+                </span>
+                <span class="preview text-muted">{{ message|preview:80 }}</span>
+                <span class="text-muted float-right">
+                    {{ message.timestamp|naturalday:'d.m.Y' }} {{ message.timestamp|date:'H:i' }} Uhr
+                </span>
+            </div>
+            <div class="card-block" hidden>
+                <pre class="card-text">{{ message.text|urlize }}</pre>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% empty %}
+<div class="m-4 text-center">
+    <em>{% trans 'No messages yet!' %}</em>
+</div>
+{% endfor %}
+
+<div class="mb-3">
+    <span class="fa fa-info text-info"></span>
+    {% if show_system_messages %}
+        {% trans 'System messages are shown.' %}
+        <a href="{{ request.path }}" class="open-in-widget">{% trans 'Hide system messages' %}</a>
+    {% else %}
+        {% trans 'System messages are hidden.' %}
+        <a href="{{ request.path }}?show_system_messages=show_system_messages" class="open-in-widget">{% trans 'Show system messages' %}</a>
+    {% endif %}
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        $('.communication_thread').each(function(){
+            new ecs.communication.init_thread(this);
+        });
+    });
+</script>
+

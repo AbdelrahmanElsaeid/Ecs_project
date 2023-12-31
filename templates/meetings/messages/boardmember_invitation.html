@@ -1,0 +1,32 @@
+{% load core i18n meetingutils %}
+<html>
+<body>
+{% block content %}
+    <p>
+{% if recipient.profile.gender == 'f' %}{% blocktrans with recipient as recipient %}Dear(f) {{ recipient }}{% endblocktrans %}{% else %}{% blocktrans with recipient as recipient %}Dear(m) {{ recipient }}{% endblocktrans %}{% endif %}<br />
+<br />
+<br />
+Ihre Anwesenheit für die Sitzung der Ethikkommission am {{ meeting.start|date:'d.m.Y, H:i' }} Uhr s.t. ist erforderlich.<br />
+<br />
+Ihr geschätztes Zeitfenster ist von {{ start|date:'H:i' }}-{{ end|date:'H:i' }} Uhr.<br />
+<br />
+Kommen Sie bitte mindestens eine halbe Stunde früher und rechnen Sie damit, dass das Zeitfenster überschritten werden kann.<br />
+<br />
+Das voraussichtliche Ende ist {{ meeting.end|datetimeround:30|date:'d.m.Y, H:i' }} Uhr.<br />
+<br />
+Ort der Sitzung:<br />
+{% db_setting 'meeting_address' as address %}
+{{ address|linebreaksbr }}<br />
+<br />
+Bitte bestätigen Sie unbedingt Ihre Teilnahme (auch wenn Sie sich zu einem früheren Zeitpunkt bereits gemeldet haben).<br />
+<br />
+{% db_setting 'contact_email' as email %}
+Sie können auf diese Nachricht mit der Antwortfunktion ihres Emailprogrammes antworten, diese gehen an <a href="mailto:{{ email }}">"{{ email }}"</a>.<br />
+<br />
+<br />
+{% db_setting 'signature_block' as signature_block %}
+{{ signature_block|linebreaksbr }}
+    </p>
+{% endblock %}
+</body>
+</html>

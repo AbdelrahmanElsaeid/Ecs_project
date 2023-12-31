@@ -1,0 +1,121 @@
+{% comment %} {% load communication %}  {% endcomment %}
+{% load  i18n core communication %}
+<div class="card mb-2">
+    <div class="card-block">
+        <ul class="pagination pagination-sm my-0 float-right">
+            {% if page.has_previous %}
+                <li class="page-item">
+                    <a class="page-link open-in-widget" href="{{ request.path }}?p=1">
+                        <span class="fa fa-fast-backward"></span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link open-in-widget" href="{{ request.path }}?p={{ page.previous_page_number }}">
+                        <span class="fa fa-backward"></span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">
+                        <span class="fa fa-fast-backward"></span>
+                    </span>
+                </li>
+                <li class="page-item disabled">
+                    <span class="page-link">
+                        <span class="fa fa-backward"></span>
+                    </span>
+                </li>
+            {% endif %}
+            <li class="page-item">
+                <span class="page-link text-muted">
+                    {{ page.number }} / {{ page.paginator.num_pages }}
+                </span>
+            </li>
+            {% if page.has_next %}
+                <li class="page-item">
+                    <a class="page-link open-in-widget" href="{{ request.path }}?p={{ page.next_page_number }}">
+                        <span class="fa fa-forward"></span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link open-in-widget" href="{{ request.path }}?p={{ page.paginator.num_pages }}">
+                        <span class="fa fa-fast-forward"></span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">
+                        <span class="fa fa-forward"></span>
+                    </span>
+                </li>
+                <li class="page-item disabled">
+                    <span class="page-link">
+                        <span class="fa fa-fast-forward"></span>
+                    </span>
+                </li>
+            {% endif %}
+        </ul>
+
+        <h3 class="card-title mb-0">
+            {% trans "Communication" %}
+            {% comment %} {% unread_msg_count as unread %} {% endcomment %}
+            {% if unread_msg_count %}({{ unread_msg_count }}){% endif %}
+        </h3>
+    </div>
+
+    <ul class="list-group list-group-flush">
+    {% for thread in page.object_list %}
+        <li class="list-group-item d-block {% if thread.last_message.unread and thread.last_message.receiver_id == user.id %}font-weight-bold{% endif %}">
+            <div class="row align-items-center">
+                <div class="col col-auto">
+                    {% if thread|starred_by:user %}
+                        {% url 'communication:unstar' thread_pk=thread.pk as unstar_url %}
+                        <a class="open-in-widget" href="{{ unstar_url }}?next={{ request.path|urlencode }}">
+                            <span class="fa fa-2x fa-star text-warning" title="{% trans "Remove star" %}"></span>
+                        </a>
+                    {% else %}
+                        {% url 'communication:star' thread_pk=thread.pk as star_url %}
+                        <a class="open-in-widget" href="{{ star_url }}?next={{ request.path|urlencode }}">
+                            <span class="fa fa-2x fa-star-o text-muted" title="{% trans "Add star" %}"></span>
+                        </a>
+                    {% endif %}
+                </div>
+                <div class="col">
+                    {% if thread.last_message.sender == user %}
+                        <span class="fa fa-paper-plane-o"></span>
+                        {% trans 'an' %} {{ thread.last_message.receiver }}
+                    {% else %}
+                        <span class="fa fa-envelope-o"></span>
+                        {% trans 'von' %} {{ thread.last_message.sender }}
+                    {% endif %}
+                    <span class="float-right">
+                        {% comment %} {{ thread.last_message.timestamp|naturalday:'d.m.Y' }}, {% endcomment %}
+                        {{ thread.last_message.timestamp|date:"d.m.Y" }}
+
+                        {{ thread.last_message.timestamp|date:'H:i'}}
+                    </span>
+                    <br>
+                    {% url 'communication:read_thread' thread_pk=thread.pk as read_url %}
+                    {% comment %} {% if thread.submission %}{{ thread.submission|ec_number }} - {% endif %} {% endcomment %}
+                    <a href="{{ read_url }}" title="{{ thread.last_message|preview:1000 }}">
+                        {{ thread.subject|truncatewords:10 }}
+                    </a>
+                </div>
+                <div class="col col-auto">
+                    {% if thread.last_message.unread and thread.last_message.receiver_id == user.id %}
+                        {% url 'communication:mark_read' thread_pk=thread.pk as mark_read_url %}
+                        <a class="open-in-widget" href="{{ mark_read_url }}?next={{ request.path|urlencode }}">
+                            <span class="fa fa-2x fa-check fa-fw text-primary" title="{% trans "Mark as read" %}"></span>
+                        </a>
+                    {% else %}
+                        <span class="fa fa-2x fa-fw"></span>
+                    {% endif %}
+                </div>
+            </div>
+        </li>
+    {% empty %}
+        <li class="list-group-item d-block text-center text-muted">
+            <em>{% trans 'No messages yet!' %}</em>
+        </li>
+    {% endfor %}
+    </ul>

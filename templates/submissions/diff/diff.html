@@ -1,0 +1,64 @@
+{% extends "core.html" %}
+{% load core i18n %}
+
+{% block htmltitle %}{{ submission|ec_number }} | {{ block.super }}{% endblock %}
+
+{% block headertitle %}
+    <a href="{% url 'core:view_submission' submission_pk=submission.pk %}" target="_blank">
+        {{ submission|ec_number }}
+    </a>
+    <small title="{{ submission.project_title_display }}">
+        {{ submission.project_title_display }}
+        {% if submission.is_finished %}
+            ({% trans 'finished' %})
+        {% endif %}
+    </small>
+{% endblock %}
+
+{% block content %}
+
+    {% if diff %}
+        <div class="my-3">
+            <div class="btn-group diff-toggles">
+                <button class="btn btn-outline-danger" data-toggle-value="old">
+                    {% trans "old" %} (-)
+                </button>
+                <button class="btn btn-outline-success" data-toggle-value="new">
+                    {% trans "new" %} (+)
+                </button>
+                <button class="btn btn-outline-info active" data-toggle-value="all">
+                    {% trans "all" %} (-/+)
+                </button>
+            </div>
+        </div>
+        
+        <div class="diff">
+            {{ diff.html|safe }}
+        </div>
+    {% else %}
+        <div class="diff"><em>{% trans 'No changes.' %}</em></div>
+    {% endif %}
+
+{% endblock %}
+
+{% block menuSelection %}submissions{% endblock %}
+
+{% block jsbottom %}
+    {{ block.super }}
+    <script type="text/javascript">
+        $(function(){
+            $('.diff-toggles button').click(function(ev) {
+                ev.preventDefault();
+
+                var btn = $(this);
+                btn.siblings('button').removeClass('active');
+                btn.addClass('active');
+
+                var val = btn.data('toggleValue');
+                $('.diff .deleted').toggle(['old', 'all'].indexOf(val) > -1);
+                $('.diff .inserted').toggle(['new', 'all'].indexOf(val) > -1);
+            });
+        });
+    </script>
+{% endblock %}
+

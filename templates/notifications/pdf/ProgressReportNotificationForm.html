@@ -1,0 +1,14 @@
+{% extends 'notifications/pdf/ReportNotificationForm.html' %}
+{% load i18n %}
+
+{% block formname %}Formular für Zwischenberichte / Verlängerung des Votums{% endblock %}
+{% block typeoptions %}<h1>1. Verlängerung der Studie / Zwischenbericht</h1>{% endblock %}
+
+{% block study_status %}
+    Die Studie läuft voraussichtlich bis {{ notification.progressreportnotification.runs_till|date:'d.m.Y' }}
+{% endblock %}
+
+{% block comments %}
+    {{ block.super }}<br />
+    Ich beantrage die Verlängerung der Gültigkeit des Votums.
+{% endblock %}

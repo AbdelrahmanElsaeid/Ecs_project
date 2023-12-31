@@ -1,0 +1,33 @@
+{% extends 'core.html' %}
+{% load core i18n %}
+
+{% block htmltitle %}{{ meeting.title }} | {{ block.super }}{% endblock %}
+
+{% block headertitle %}
+    Einschränken für {{ participant }} für die Sitzung am {{ meeting.start|date:'d.m.Y' }} ({{ meeting.title }})
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div>
+        <a href="{% url 'meetings:meeting_details' meeting_pk=meeting.pk %}#timetable_tab">Zurück zur Zeitplanung für dieses Meeting</a>
+    </div>
+    <form action="{{ request.path }}" method="post" class="mt-4">
+        {% csrf_token %}
+        {% include "forms/tables/inline_formset.html" %}
+        <input class="btn btn-primary" type="submit" value="{% trans "Save" %}" name="submit"/>
+    </form>
+</div>
+{% endblock %}
+
+{% block jsbottom %}
+    {{ block.super }}
+    <script type="text/javascript">
+        $(function(){
+            new ecs.InlineFormSet('#constraint_formset', {
+                prefix: '{{ formset.prefix }}',
+                canDelete: true
+            });
+        });
+    </script>
+{% endblock %}

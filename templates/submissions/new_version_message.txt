@@ -1,0 +1,6 @@
+{% extends 'msg_core.txt' %}
+{% load core %}
+
+{% block content %}
+Eine neue Version der Studie {{ submission|ec_number }} "{{ submission.project_title_display }}" wurde eingereicht.
+{% endblock %}

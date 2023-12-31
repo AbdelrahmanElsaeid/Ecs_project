@@ -1,0 +1,22 @@
+{% extends "core.html" %}
+
+{% load i18n %}
+
+{% block htmltitle %}{% trans 'New Boilerplate' %} | {{ block.super }}{% endblock %}
+{% block headertitle %}{% trans 'New Boilerplate' %}{% endblock %}
+{% block menuSelection %}administration{% endblock %}
+
+{% block content %}
+<div id="boilerplate" class="container">
+  <form action="" method="post">
+      {% csrf_token %}
+      {% for field in form %}
+          {% include "bootstrap/form_field.html" with inline=True %}
+      {% endfor %}
+      <button class="btn btn-primary" type="submit">{% trans 'Save' %}</button>
+  </form>
+</div>
+{% endblock %}
+
+
+

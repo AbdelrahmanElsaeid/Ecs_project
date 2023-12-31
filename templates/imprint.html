@@ -1,0 +1,27 @@
+{% load core %}
+{% load i18n %}
+
+<div id="imprint" class="my-3 row w-100">
+    <div class="col-12 text-center">
+       {% comment %} {% ec_name %}  {% endcomment %}
+    </div>
+
+    <div class="col-md-6 text-center text-md-right">
+        {% db_setting 'address' as address %}
+        {{ address|linebreaksbr }}<br>
+    </div>
+    <div class="col-md-6 text-center text-md-left">
+        <span class="fa fa-th-list"></span>
+        <a href="{% url 'core:catalog' %}">
+            {% trans 'Public Catalog' %}
+        </a><br>
+
+        {% db_setting 'contact_email' as email %}
+        <span class="fa fa-envelope"></span>
+        <a href="mailto:{{ email }}">{{ email }}</a><br>
+
+        {% db_setting 'contact_url' as url %}
+        <span class="fa fa-globe"></span>
+        <a href="{{ url }}">{{ url }}</a>
+    </div>
+</div>

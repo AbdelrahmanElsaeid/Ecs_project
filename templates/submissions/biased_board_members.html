@@ -1,0 +1,67 @@
+{% load i18n %}
+
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th>{% trans 'Name' %}</th>
+            <th>{% trans 'Organization' %}</th>
+            <th>{% trans 'E-Mail' %}</th>
+            <th>{% trans 'Assigned Tasks' %}</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in biased_users %}
+            <tr>
+                <td>{{ user }}</td>
+                <td>{{ user.profile.organisation }}</td>
+                <td>{{ user.email|default:'' }}</td>
+                <td>
+                    <ul class="list-unstyled text-danger">
+                        {% for task in user.assigned_tasks %}
+                            <li>{{ task.task_type }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <a href="{% url 'communication:new_thread' submission_pk=submission.pk to_user_pk=user.pk %}" target="_blank">
+                        <span class="fa fa-envelope-o"></span>
+                        {% trans "Send Message" %}
+                    </a>
+                </td>
+                <td>
+                    <a class="fa fa-ban text-danger open-in-widget" href="{% url 'core:remove_biased_board_member' submission_pk=submission.pk user_pk=user.pk %}"></a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr class="text-center text-muted">
+                <td colspan="6">
+                    <em>{% trans 'No board members selected.' %}</em>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<form action="{{ request.path }}" method="POST" class="container open-in-widget">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-10">
+            {{ form.biased_board_member }}
+        </div>
+        <div class="col-md-2">
+            <input type="submit" class="btn btn-primary btn-block submit-in-widget" value="{% trans 'Add' %}"/>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    (function() {
+        var input = $('#{{ form.biased_board_member.id_for_label }}');
+        input.select2({
+            width: '100%',
+            dropdownParent: input.parent(),
+        });
+    })();
+</script>

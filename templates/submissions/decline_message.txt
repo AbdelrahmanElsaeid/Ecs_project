@@ -1,0 +1,7 @@
+{% extends 'msg_core.txt' %}
+{% load core %}
+
+{% block content %}
+Ihre Einreichung {{ submission|ec_number }} "{{ submission.project_title_display }}" kann in der vorliegenden Form nicht angenommen werden.
+Kontrollieren Sie Ihren Nachrichteneingang für nähere Angaben. Sie können die Studie im System durch einen Klick auf "Bearbeiten" ändern und danach neu einreichen.
+{% endblock %}

@@ -1,0 +1,64 @@
+{% load core widget_tweaks %}
+
+{% with field|get_field_info as field_info %}
+    <div class="form-group row{% if field.errors %} has-danger{% endif %}">
+        {% if field.field|type_name == "BooleanField" %}
+            <div class="form-check col-md-9 push-md-3">
+                <label class="form-check-label">
+                    {% render_field field class+="form-check-input" %}
+                    <span class="pl-3">
+                        {{ field_info.label|default:field.label }}
+                        {% if field_info.number %}
+                            <small class="text-muted">
+                                [{{ field_info.number }}]
+                            </small>
+                        {% endif %}
+                        {% if field.field.required %}
+                            <span class="text-danger">*</span>
+                        {% endif %}
+                    </span>
+                </label>
+                {% if field_info.help_text %}
+                    <div class="text-muted">
+                        {{ field_info.help_text }}
+                    </div>
+                {% endif %}
+            </div>
+        {% else %}
+            <label class="col-md-3 col-form-label overflow-wrap-break-word" for="{{ field.id_for_label }}">
+                {% spaceless %}
+                    <span>{{ field_info.label|default:field.label }}</span>
+                    {% if field_info.number %}
+                        <small class="text-muted">&nbsp;[{{ field_info.number }}]</small>
+                    {% endif %}
+                    {% if field.field.required %}
+                        <span class="text-danger">&nbsp;*</span>
+                    {% endif %}
+                    {% if field_info.help_text %}
+                        <div class="text-muted">{{ field_info.help_text }}</div>
+                    {% endif %}
+                {% endspaceless %}
+            </label>
+            <div class="col-md-9">
+                {% if field.field|type_name == "DateTimeField" %}
+                    <div class="DateTimeField input-group">
+                        {% render_field field class+="form-control" error_class="form-control-danger" %}
+                    </div>
+                {% elif field.field|type_name == "DateField"%}
+                    <div class="DateField">
+                        {% render_field field class+="form-control" error_class="form-control-danger" %}
+                    </div>
+                {% else %}
+                    {% render_field field class+="form-control" error_class="form-control-danger" %}
+                {% endif %}
+            </div>
+        {% endif %}
+        {% if field.errors %}
+            <div class="form-control-feedback col-md-9 push-md-3">
+                {% for error in field.errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endwith %}

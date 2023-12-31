@@ -1,0 +1,37 @@
+{% extends 'core.html' %}
+{% load i18n %}
+
+{% block htmltitle %}{% trans "PKI" %} | {{ block.super }}{% endblock %}
+
+{% block headertitle %}{% trans "PKI" %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <a href="{% url 'pki:cert_list' %}">
+        <span class="fa fa-backward"></span>
+        {% trans "Back to the certificate list" %}
+    </a>
+
+    <form action="{{ request.path }}" method="post" autocomplete="off">
+        {% csrf_token %}
+        {% for field in form %}
+            {% include "bootstrap/form_field.html" with inline=True %}
+        {% endfor %}
+        <input class="btn btn-primary" type="submit" value="{% trans 'Create Certificate' %}" />
+    </form>
+</div>
+{% endblock %}
+
+{% block jsbottom %}
+    {{ block.super }}
+    <script type="text/javascript">
+        $(function(){
+            var input = $('#{{ form.user.id_for_label }}');
+            input.select2({
+                width: '100%',
+                dropdownParent: input.parent(),
+            });
+        });
+    </script>
+{% endblock %}
+

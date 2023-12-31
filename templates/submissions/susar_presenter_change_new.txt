@@ -1,0 +1,6 @@
+{% extends 'msg_core.txt' %}
+{% load core %}
+
+{% block content %}
+Die Funktion des "Sicherheitsmeldungserstellers" für die Studie {{ submission|ec_number }} "{{ submission.project_title_display }}" wurde an Sie übertragen.
+{% endblock %}

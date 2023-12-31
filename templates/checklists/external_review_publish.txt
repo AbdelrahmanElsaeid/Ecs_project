@@ -1,0 +1,11 @@
+{% extends 'msg_core.txt' %}
+{% load core %}
+
+{% block content %}
+Zur Studie {{ submission|ec_number }} "{{ submission.project_title_display }}" ist ein Gutachten eingelangt.
+
+Dieses steht Ihnen im ECS unter dem Reiter "Beurteilungen" zur Verfügung.
+
+Klicken Sie auf den folgenden Link um das Gutachten als PDF-Datei herunterzuladen:
+{{ ABSOLUTE_URL_PREFIX }}{% url 'checklists:checklist_pdf' checklist_pk=checklist.pk %}
+{% endblock %}

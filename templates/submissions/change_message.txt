@@ -1,0 +1,6 @@
+{% extends 'msg_core.txt' %}
+{% load core %}
+
+{% block content %}
+Die Studie {{ submission|ec_number }} "{{ submission.project_title_display }}" wurde geändert.
+{% endblock %}
