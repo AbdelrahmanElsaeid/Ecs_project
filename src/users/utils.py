@@ -22,21 +22,32 @@ from typing import Callable
 
 def hash_email(email):
     return hashlib.md5(email.lower().encode('utf-8')).hexdigest()[:30]
-def create_username(email):
-    username = email.split('@')[0]
-    return username
+# def create_username(email):
+#     username = email.split('@')[0]
+#     return username
 
-def get_or_create_user(email, defaults=None, **kwargs):
+# def get_or_create_user(email, defaults=None, **kwargs):
+#     if defaults is None:
+#         defaults = {}
+
+#     #return User.objects.get_or_create(username=hash_email(email), email=email, defaults=defaults, **kwargs)
+#     return User.objects.get_or_create(username=create_username(email), email=email, defaults=defaults, **kwargs)
+
+
+# def create_user(email, **kwargs):
+#     return User.objects.create(username=hash_email(email), email=email, **kwargs)
+def get_or_create_user(email,username, defaults=None, **kwargs):
     if defaults is None:
         defaults = {}
 
-    #return User.objects.get_or_create(username=hash_email(email), email=email, defaults=defaults, **kwargs)
-    return User.objects.get_or_create(username=create_username(email), email=email, defaults=defaults, **kwargs)
+    return User.objects.get_or_create(username=username, email=email, defaults=defaults, **kwargs)
+    #return User.objects.get_or_create(username=create_username(email), email=email, defaults=defaults, **kwargs)
 
 
-def create_user(email, **kwargs):
-    return User.objects.create(username=hash_email(email), email=email, **kwargs)
-
+def create_user(email,username, **kwargs):
+    #return User.objects.create(username=hash_email(email), email=email, **kwargs)
+    return User.objects.create(username=username, email=email, **kwargs)
+    
 def get_user(email, **kwargs):
     try:
         name = hash_email(email)
