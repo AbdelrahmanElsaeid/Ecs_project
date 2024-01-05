@@ -149,7 +149,7 @@ def activate(request, token=None):
 
     form = ActivationForm(request.POST or None)
     if form.is_valid():
-        user = create_user(data['email'], first_name=data['first_name'], last_name=data['last_name'])
+        user = create_user(data['email'],username=data['user_name'], first_name=data['first_name'], last_name=data['last_name'])
         user.set_password(form.cleaned_data['password'])
         user.save()
         # the userprofile is auto-created, we only have to update some fields.

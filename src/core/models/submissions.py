@@ -790,7 +790,7 @@ def _post_submission_form_save(sender, instance, created, **kwargs):
     on_study_change.send(sender=Submission, submission=submission, old_form=old_sf, new_form=new_sf)
 
 class Investigator(models.Model):
-    submission_form = models.ForeignKey(SubmissionForm, related_name='investigators', blank=True,on_delete=models.CASCADE)
+    submission_form = models.ForeignKey(SubmissionForm, related_name='investigators',null=True, blank=True,on_delete=models.CASCADE)
     ethics_commission = models.ForeignKey(EthicsCommission, related_name='investigators', on_delete=models.CASCADE)
     main = models.BooleanField(default=True, blank=True)
 

@@ -17,7 +17,7 @@
             <ul class="nav nav-tabs flex-wrap tab_headers mb-3">
                 {% for tab in tabs %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#tabs-{{ forloop.counter }}">{{ tab }}</a>
+                        <a class="nav-link" href="#tabs-{{ forloop.counter }}">{{ tab.label }}</a>
                     </li>
                 {% endfor %}
                 {% block submission_action_buttons %}
@@ -29,14 +29,17 @@
       <div class="form_main{% if readonly %} readonly{% endif %}">
           {% block tabs %}
             {% for tab in tabs %}
+
                 <div id="tabs-{{ forloop.counter }}" class="collapse {% if tab.slug != 'measures' %}container{% endif %}">
                     
                     {% if unacknowledged_forms %}
+
                         <div class="alert alert-info text-center mb-3">
                             <strong>
                                 {% if unacknowledged_forms == 1 %}
                                     Es gibt eine neuere, unbestätigte Version.
                                 {% else %}
+
                                     Es gibt {{ unacknowledged_forms }} neuere, unbestätigte Versionen.
                                 {% endif %}
                             </strong>
@@ -179,7 +182,7 @@
                                             {% for field in investigatoremployee_formset.empty_form %}
                                                 {% if not field.is_hidden and not field.html_name|endswith:'-DELETE' %}
                                                     {% with field|get_field_info as field_info %}
-                                                    <th{% if field.field.required %} class="required"{% endif %}>
+                                                    <th {% if field.field.required %} class="required"{% endif %}>
                                                         {{ field_info.label|default:field.label }}
                                                         {% if field_info.number %}
                                                             <span class="text-muted">[{{ field_info.number }}]</span>
