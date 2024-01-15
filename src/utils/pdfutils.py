@@ -98,7 +98,6 @@ def decrypt_pdf(src):
 def html2pdf(html):
     script_path = os.path.join(settings.PROJECT_DIR, 'scriptsqq', 'html2pdf.py')
     
-    print(f"Script Path: {script_path}")
 
     p = subprocess.Popen(
         [
@@ -113,7 +112,6 @@ def html2pdf(html):
 
     stdout, stderr = p.communicate(html.encode('utf-8'))
     
-    print(f"Subprocess Output:\n{stdout.decode('utf-8')}")
     
     if p.returncode != 0:
         raise IOError(

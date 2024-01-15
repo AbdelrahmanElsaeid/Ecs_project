@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.utils.encoding import force_str
 from django.http import HttpRequest
 
-from src.users.middleware import current_user_store
+#from src.users.middleware import current_user_store
 from src.users.models import Invitation
 from src.communication.mailutils import deliver_to_recipient
 from src.utils.viewutils import render_html
@@ -18,6 +18,7 @@ from typing import Callable
 # Do not import models here which depend on the AuthorizationManager, because
 # the AuthorizationManager depends on this module. If you need to import a
 # model, do it inside a function.
+from src.users.user_context import current_user_store
 
 
 def hash_email(email):
@@ -48,18 +49,37 @@ def create_user(email,username, **kwargs):
     #return User.objects.create(username=hash_email(email), email=email, **kwargs)
     return User.objects.create(username=username, email=email, **kwargs)
     
+# def get_user(email, **kwargs):
+#     try:
+#         name = hash_email(email)
+#     except UnicodeEncodeError:
+#         raise User.DoesNotExist()
+#     return User.objects.get(username=name, **kwargs)
 def get_user(email, **kwargs):
     try:
         name = hash_email(email)
+        user = User.objects.get(email=email)
+        user_name = user.username
     except UnicodeEncodeError:
         raise User.DoesNotExist()
-    return User.objects.get(username=name, **kwargs)
+    return User.objects.get(username=user_name, **kwargs)
+
 
 def get_current_user():
-    if hasattr(current_user_store, 'User'):
-        return current_user_store.User
-    else:
-        return None
+    """
+    Get the current user from threading.local().
+    """
+    return getattr(current_user_store, 'current_user', None)
+
+# def get_current_user():
+#     if hasattr(current_user_store, 'user'):
+#         return current_user_store.user
+#     else:
+#         return None
+
+# def get_current_user():
+#     return getattr(current_user_store, 'user', None)
+    
 
 def get_full_name(User):
     profile = User.profile
@@ -122,8 +142,8 @@ def user_group_required(*groups):
     return user_passes_test(lambda u: u.groups.filter(name__in=groups).exists())
 
 
-def create_phantom_user(email, role=None):
-    user = create_user(email)
+def create_phantom_user(email,username, role=None):
+    user = create_user(email,username)
     profile = user.profile
     profile.is_phantom = True
     profile.forward_messages_after_minutes = 5

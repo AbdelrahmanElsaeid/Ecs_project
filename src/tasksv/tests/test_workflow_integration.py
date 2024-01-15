@@ -6,7 +6,7 @@ from src.workflow.tests.models import Foo
 from src.workflow.tests import flow_declarations as decl
 from src.workflow.tests import WorkflowTestCase
 
-from src.tasks.models import Task, TaskType
+from src.tasksv.models import Task, TaskType
 
 
 class WorkflowIntegrationTest(WorkflowTestCase):

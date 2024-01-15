@@ -69,7 +69,9 @@ def my_tasks(request, template='tasks/compact_list.html', submission_pk=None, ig
         .only(
             'accepted', 'content_type_id', 'data_id',
             'task_type__workflow_node__uid', 'task_type__is_delegatable',
-        ).order_by('task_type__workflow_node__uid', 'created_at', 'assigned_at'))
+        ).order_by('task_type__workflow_node__uid', 'created_at', 'assigned_at')
+                 )
+    print(f"all_tasks is ============= {all_tasks}")
     if submission_pk:
         submission = get_object_or_404(Submission, pk=submission_pk)
         all_tasks = all_tasks.for_submission(submission)
@@ -335,11 +337,7 @@ def my_tasks(request, template='tasks/compact_list.html', submission_pk=None, ig
         'proxy_tasks': proxy_tasks,
         'open_tasks': open_tasks,
     }
-    print("----------context----------------")
-    print(f"data sub is {submission}")
-    print(f"my_tasks is {my_tasks}")
-    print(f"proxy_tasks is {proxy_tasks}")
-    print(f"open_tasks is {open_tasks}")
+
     if not submission:
         data.update({
             'filterform': filterform,
@@ -407,8 +405,10 @@ def decline_task_full(request, task_pk=None):
 def do_task(request, task_pk=None):
     task = get_object_or_404(Task, assigned_to=request.user, pk=task_pk)
     url = task.url
+    print(f"url is=========={url}")
     if not task.closed_at is None:
         url = task.afterlife_url
+        print(f"afterlife_url is=========={url}")
         if url is None:
             raise Http404()
     return redirect(url)

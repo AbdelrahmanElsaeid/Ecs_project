@@ -79,14 +79,15 @@ import re
 import mimetypes
 
 from weasyprint import HTML
-from weasyprint.urls import open_data_url
+#from weasyprint.urls import open_data_url
+from weasyprint.urls import url_join
 
 static_root = None
 
 
 def _url_fetcher(url):
     if url.startswith('data:'):
-        return open_data_url(url)
+        return url_join(url)
     elif url.startswith('static:'):
         path = os.path.abspath(os.path.join(static_root, url[len('static:'):]))
         if not path.startswith(static_root):

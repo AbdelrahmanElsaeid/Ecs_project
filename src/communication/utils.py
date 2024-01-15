@@ -11,7 +11,7 @@ def msg_fun(func):
     @wraps(func)
     def _inner(sender, receiver, *args, **kwargs):
         # import here to prevent circular imports
-        from core.models import Submission
+        from src.core.models import Submission
 
         submission = kwargs.get('submission', None)
         if isinstance(sender, str):

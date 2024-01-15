@@ -42,7 +42,9 @@ def edit(request, submission_pk=None, pk=None):
         f = form.cleaned_data.get('file')
         if f:
             doctype = DocumentType.objects.get(identifier='other')
+            print(f"doctype is ===== {doctype}")
             mimetype = mimetypes.guess_type(f.name)[0]
+            print(f"mimetype is ===== {mimetype}")
             attachment = Document.objects.create(original_file_name=f.name,
                 mimetype=(mimetype or 'application/octet-stream'),
                 stamp_on_download=False, name=f.name, doctype=doctype,

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from datetime import timedelta
 import logging
 import os
 from pathlib import Path
@@ -93,7 +94,8 @@ MIDDLEWARE = [
     'src.userswitcher.middleware.UserSwitcherMiddleware',
     'src.pki.middleware.ClientCertMiddleware',
     #'ecs.TestMiddleware',
-    'src.users.middleware.GlobalUserMiddleware',
+    #'src.users.middleware.GlobalUserMiddleware',
+    'src.users.middleware.CurrentUserMiddleware',
     'reversion.middleware.RevisionMiddleware',
     'src.tasksv.middleware.RelatedTasksMiddleware',
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -136,7 +138,7 @@ WSGI_APPLICATION = "project.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "testfine",
+        'NAME': "ecs1",
         "USER": "postgres",
         'PASSWORD': '12345',
         'PORT': '5432',
@@ -146,7 +148,7 @@ DATABASES = {
 }
 
 # Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators            ecs1
+# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators            ecs1   testfine
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -310,22 +312,25 @@ SMTPD_CONFIG = {
     'store_exceptions': False,
 }
 
+# PDF Signing will use fake signing if PDFAS_SERVICE is "mock:"
+# deployment should use 'https://hostname/pdf-as-web/'
+PDFAS_SERVICE = 'mock:'
+import tempfile
 
 
-# Storage Vault settings
+
 STORAGE_VAULT = {
-    'dir': os.path.join(PROJECT_DIR, '..', 'ecs-storage-vault'),
-    'gpghome' : os.path.join(PROJECT_DIR, '..', 'ecs-gpg'),
-    'encryption_uid': 'ecs_mediaserver',
+    'dir': os.path.join(BASE_DIR, '..', 'ecs-storage-vault'),  # Use BASE_DIR instead of PROJECT_DIR
+    'gpghome': 'C:\\Users\\20128\\AppData\\Roaming\\gnupg',
+    'encryption_uid': 'ecs_authority@gmail.com',
     'signature_uid': 'ecs_authority',
 }
-
 
 # absolute URL prefix w/out trailing slash
 ABSOLUTE_URL_PREFIX = "http://"+ DOMAIN+ ":8000"
 
 # directory where to store zipped submission patientinformation and submission form pdfs
-ECS_DOWNLOAD_CACHE_DIR = os.path.realpath(os.path.join(PROJECT_DIR, "..", "ecs-cache"))
+ECS_DOWNLOAD_CACHE_DIR = os.path.realpath(os.path.join(PROJECT_DIR, "..", "src-cache"))
 ECS_DOWNLOAD_CACHE_MAX_AGE = 30 * 24 * 60 * 60  # 30 days
 
 
@@ -408,3 +413,19 @@ if 'runserver' in sys.argv:
         level = logging.DEBUG,
         format = '%(asctime)s %(levelname)s %(message)s',
     )
+
+
+# users in these groups receive messages even when they are not related to studies
+ECS_MEETING_AGENDA_RECEIVER_GROUPS = (
+    'Resident Board Member', 'Omniscient Board Member',
+)
+ECS_MEETING_PROTOCOL_RECEIVER_GROUPS = (
+    'Meeting Protocol Receiver', 'Resident Board Member',
+    'Omniscient Board Member',
+)
+
+ECS_AMG_MPG_VOTE_RECEIVERS = ('BASG.EKVoten@ages.at',)
+
+ECS_MEETING_GRACE_PERIOD = timedelta(days=5)    
+
+AUTHORIZATION_CONFIG = 'project.auth_conf'

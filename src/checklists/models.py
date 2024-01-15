@@ -65,23 +65,28 @@ class Checklist(models.Model):
     def short_name(self):
         if self.blueprint.multiple:
             u = get_current_user()
+            print(f"u is ======{u}")
             s = self.submission
+            print(f"s is ======{s}")
             sf = self.submission.current_submission_form
+            print(f"sf is ======{sf}")
             presenting_parties = [
                 s.presenter_id, s.susar_presenter_id,
                 sf.submitter_id, sf.sponsor_id,
                 *(inv.user_id for inv in sf.investigators.all())
             ]
+            #print(f"user_id is ======{user_id}")
             name = _('Anonymous') if self.blueprint.reviewer_is_anonymous else str(self.last_edited_by)
-            if u.id == self.user_id or (u is not None and u.profile.is_internal and not u.id in presenting_parties):
+            if  (u is not None and u.profile.is_internal and not u.id in presenting_parties):
                 name = str(self.last_edited_by)
             return "%s (%s)" % (self.blueprint, name)
         return str(self.blueprint)
 
-    # def __str__(self):
-    #     if not self.submission:
-    #         return self.short_name
-    #     return '%s für %s' % (self.short_name, str(self.submission))
+    def __str__(self):
+        if not self.submission:
+            return self.short_name
+        return '%s für %s' % (self.short_name, str(self.submission))
+   
 
         
     @property

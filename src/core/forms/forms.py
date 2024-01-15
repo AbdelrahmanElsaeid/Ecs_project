@@ -421,7 +421,7 @@ class SubmissionFilterForm(forms.Form, metaclass=SubmissionFilterFormMetaclass):
         return submissions.filter(reduce(lambda x, y: x | y, qs))
 
     def _filter_by_lane(self, submissions, user):
-        from core.models.constants import (
+        from src.core.models.constants import (
             SUBMISSION_LANE_EXPEDITED, SUBMISSION_LANE_LOCALEC,
             SUBMISSION_LANE_RETROSPECTIVE_THESIS, SUBMISSION_LANE_BOARD
         )

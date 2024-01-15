@@ -36,7 +36,7 @@
     </div>
 </div>
 
-{% url 'core.edit' submission_pk=submission.pk as create_url %}
+{% url 'core:edit' submission_pk=submission.pk as create_url %}
 <a class="btn btn-primary add-comment" href="{{ create_url }}">
     <span class="fa fa-plus"></span>
     {% trans 'Add Comment' %}

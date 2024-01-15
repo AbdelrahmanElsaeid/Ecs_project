@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Group
 
 from src.utils.testcases import EcsTestCase
-from src.tasks.models import TaskType, Task
+from src.tasksv.models import TaskType, Task
 from src.users.utils import create_user
 
 

@@ -3,7 +3,8 @@ from django.db.models.signals import post_save
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
-from src.workflow.controllers import Activity, guard  #, register
+from src.workflow.controllers import Activity, guard  
+from src.workflow import register
 from src.workflow.patterns import Generic
 from src.users.utils import get_current_user, sudo
 from src.core.models import Submission
@@ -14,7 +15,7 @@ from src.checklists.utils import get_checklist_answer
 from src.tasksv.models import Task
 from src.tasksv.utils import block_duplicate_task, block_if_task_exists
 
-#register(Submission, autostart_if=lambda s, created: bool(s.current_submission_form_id) and not s.workflow and not s.is_transient)
+register(Submission, autostart_if=lambda s, created: bool(s.current_submission_form_id) and not s.workflow and not s.is_transient)
 
 ##########################
 # acknowledgement guards #
@@ -328,21 +329,21 @@ class ChecklistReview(Activity):
             checklist.save()
             checklist.render_pdf_document()
 
-# @receiver(post_save, sender=Checklist)
-# def unlock_checklist_review(sender, **kwargs):
-#     kwargs['instance'].submission.workflow.unlock(ChecklistReview)
+@receiver(post_save, sender=Checklist)
+def unlock_checklist_review(sender, **kwargs):
+    kwargs['instance'].submission.workflow.unlock(ChecklistReview)
 
 # @receiver(post_save, sender=Checklist)
 # def unlock_checklist_review(sender, instance, **kwargs):
 #     instance.submission.workflow.unlock(ChecklistReview)
 
-@receiver(post_save, sender=Checklist)
-def unlock_checklist_review(sender, instance, **kwargs):
-    if hasattr(instance, 'submission') and hasattr(instance.submission, 'workflow'):
-        instance.submission.workflow.unlock(ChecklistReview)
-    else:
-        # Handle the case when the submission or workflow is missing
-        pass
+# @receiver(post_save, sender=Checklist)
+# def unlock_checklist_review(sender, instance, **kwargs):
+#     if hasattr(instance, 'submission') and hasattr(instance.submission, 'workflow'):
+#         instance.submission.workflow.unlock(ChecklistReview)
+#     else:
+#         # Handle the case when the submission or workflow is missing
+#         pass
 class VotePreparation(Activity):
     class Meta:
         model = Submission

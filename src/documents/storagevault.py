@@ -50,11 +50,18 @@ class StorageVault(object):
         assert len(identifier) >= self.max_depth
         subdir = os.path.join(*identifier[:self.max_depth-1])
         return os.path.join(self.root_dir, subdir, identifier)
+    # def _gen_path(self, identifier):
+    #     assert len(identifier) >= self.max_depth
+    #     subdir = os.path.join(*identifier[:self.max_depth-1])
+    #     path = os.path.join(self.root_dir, subdir, identifier)
+    #     return path.replace('\\', '/')
 
     def __setitem__(self, identifier, f):
         path = self._gen_path(identifier)
         assert not os.path.exists(path)
         os.makedirs(os.path.dirname(path), exist_ok=True)
+        print(f"f path =============  {f}")
+        print(f"full path ==========  {path}")
 
         gpgutils.encrypt_sign(
             f, path,
@@ -64,12 +71,18 @@ class StorageVault(object):
         )
 
     def __getitem__(self, identifier):
+        print(f"full path 8888888888  {self._gen_path(identifier)}")
         return gpgutils.decrypt_verify(
             self._gen_path(identifier),
             settings.STORAGE_VAULT['gpghome'],
             settings.STORAGE_VAULT['encryption_uid'],
             settings.STORAGE_VAULT['signature_uid']
+        
         )
+
 
     def __delitem__(self, identifier):
         os.remove(self._gen_path(identifier))
+
+
+

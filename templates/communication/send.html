@@ -46,7 +46,7 @@
                                 {% endif %}
                             {% endif %}
                             {% if choice.0 == "person" %}
-                                {{ form.receiver_person }}
+                                {% comment %} {{ form.receiver_person }} {% endcomment %}
                                 {% if form.receiver_person.errors %}
                                     <div class="errors">{{ form.receiver_person.errors }}</div>
                                 {% endif %}

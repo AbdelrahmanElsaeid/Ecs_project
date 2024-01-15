@@ -505,11 +505,12 @@ class SubmissionForm(models.Model):
         if not self.submission.is_transient:
             for x, org in (('submitter', 'submitter_organisation'), ('sponsor', 'sponsor_name')):
                 email = getattr(self, f'{x}_email')
+                username = getattr(self, f'{org}')
                 if email:
                     try:
                         user = get_user(email)
                     except User.DoesNotExist:
-                        user = create_phantom_user(email, role=x)
+                        user = create_phantom_user(email,username, role=x)
                         user.first_name = getattr(self, f'{x}_contact_first_name')
                         user.last_name = getattr(self, f'{x}_contact_last_name')
                         user.save()

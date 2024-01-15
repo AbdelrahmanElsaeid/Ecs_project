@@ -9,13 +9,15 @@ from django.core.exceptions import PermissionDenied
 from src.tasksv.models import Task
 from src.tasksv.forms import ManageTaskForm
 from src.users.utils import sudo
-
+from src.workflow.models import Workflow
 
 def get_obj_tasks(activities, obj, data=None):
     tasks = Task.objects.filter(workflow_token__in=obj.workflow.tokens.filter(node__node_type__in=[a._meta.node_type for a in activities]).values('pk').query, deleted_at=None)
+
     if data:
         tasks = tasks.filter(workflow_token__node__data_id=data.pk, workflow_token__node__data_ct=ContentType.objects.get_for_model(type(data)))
     return tasks
+
 
 
 def block_if_task_exists(node_uid, **kwargs):

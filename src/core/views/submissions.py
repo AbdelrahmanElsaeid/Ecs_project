@@ -1049,7 +1049,6 @@ def all_submissions(request):
     keyword = request.GET.get('keyword', None)
 
     submissions = Submission.objects.all()
-    print(f"sub is in func ----->   {submissions}")
     if keyword is None:
         kwargs = {
             'filtername': 'submission_filter_all',
@@ -1062,7 +1061,6 @@ def all_submissions(request):
         return submission_list(request, submissions, **kwargs)
 
     keyword = keyword.strip()
-    print(f"key is in func ----->   {keyword}")
 
 
     m = re.match(r'\+(\d{1,4})(/\d{1,4})?$', keyword)

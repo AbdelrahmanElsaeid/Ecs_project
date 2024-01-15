@@ -65,6 +65,7 @@ class SendMessageForm(forms.ModelForm):
             self.fields['receiver_involved'].set_submission(submission)
 
         user = get_current_user()
+        print(f"current user is &&&&&&&&&&&&&&&& {user}")
         if user.profile.is_internal:
             receiver_type_choices += [
                 ('person', _('Person'))

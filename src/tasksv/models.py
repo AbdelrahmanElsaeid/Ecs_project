@@ -160,14 +160,14 @@ class Task(models.Model):
         from src.notifications.models import Notification
 
         if isinstance(self.data, Notification):
-            return reverse('src.notifications.views.view_notification',
+            return reverse('notifications:view_notification',
                 kwargs={'notification_pk': self.data.pk})
 
         submission = self.data.get_submission()
         if not submission:
             return None
 
-        return reverse('view_submission',
+        return reverse('core:view_submission',
             kwargs={'submission_pk': submission.pk})
 
     @property

@@ -19,7 +19,7 @@ from src.utils.viewutils import render_pdf_context
 from src.tasksv.models import Task
 
 
-# @reversion.register(fields=('result', 'text'))
+@reversion.register(fields=('result', 'text'))
 class Vote(models.Model):
     submission_form = models.ForeignKey('core.SubmissionForm', related_name='votes', on_delete=models.CASCADE)
     top = models.OneToOneField('meetings.TimetableEntry', related_name='vote', null=True,blank=True, on_delete=models.CASCADE)

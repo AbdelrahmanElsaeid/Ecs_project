@@ -1,3 +1,4 @@
+import os
 from django.db import models
 
 # Create your models here.
@@ -97,9 +98,34 @@ class Document(models.Model):
             name_slices.insert(0, self.parent_object.get_filename_slice())
         name = slugify('-'.join(name_slices))
         return ''.join([name, ext])
+    
+    import os
+    def store(self, file):
+        from tempfile import NamedTemporaryFile
+        # Save the file to a temporary location
+        with NamedTemporaryFile(delete=False) as temp_file:
+            for chunk in file.chunks():
+                temp_file.write(chunk)
 
-    def store(self, f):
-        getVault()[self.uuid.hex] = f
+        try:
+            # Call the encrypt_sign function with the temporary file path
+            getVault()[self.uuid.hex] = temp_file.name
+        finally:
+            # Clean up: Delete the temporary file after encrypting/signing
+            os.remove(temp_file.name)
+    # def store(self, f):
+    #     getVault()[self.uuid.hex] = f
+    # from src.utils.gpgutils import encrypt_sign
+    # def store(self, file_content):
+    #     with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+    #         tmp_file.write(file_content.read())
+    #         tmp_file_path = tmp_file.name
+
+    #     try:
+    #         getVault()[self.uuid.hex] = tmp_file_path
+    #         encrypt_sign(tmp_file_path, encrypted_path, gpghome, encrypt_owner, signer_owner)
+    #     finally:
+    #         os.remove(tmp_file_path)
 
     def retrieve(self, user, context):
         hist = DownloadHistory.objects.create(document=self, user=user,
@@ -114,7 +140,6 @@ class Document(models.Model):
         return getVault()[self.uuid.hex]
     class Meta:
         app_label = 'documents'
-        #abstract  = True
 
 
 @receiver(post_delete, sender=Document)
