@@ -138,7 +138,7 @@ WSGI_APPLICATION = "project.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "ecs1",
+        'NAME': "newdataecs",
         "USER": "postgres",
         'PASSWORD': '12345',
         'PORT': '5432',
@@ -148,7 +148,7 @@ DATABASES = {
 }
 
 # Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators            ecs1   testfine
+# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators            ecs1   testfine ecs1
 
 AUTH_PASSWORD_VALIDATORS = [
     {
