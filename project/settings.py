@@ -31,6 +31,7 @@ SECRET_KEY = "django-insecure-_re378!*lrw@#6fz8cyfkbl_ts7+s@wl3&pydspmxphuf-kl(&
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+ALLOWED_HOSTS = ["64.23.129.214"]
 # import and execute ECS_SETTINGS from environment as python code if they exist
 
 # Application definition
@@ -135,15 +136,25 @@ WSGI_APPLICATION = "project.wsgi.application"
 #     }
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': "newdataecs",
+#         "USER": "postgres",
+#         'PASSWORD': '12345',
+#         'PORT': '5432',
+#         'HOST':'localhost',
+
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "newdataecs",
-        "USER": "postgres",
-        'PASSWORD': '12345',
-        'PORT': '5432',
-        'HOST':'localhost',
-
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'ecs_db',
+        'USER': 'ecs_db_user',
+        'PASSWORD': 'ecs12345',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -211,12 +222,13 @@ SITE_ID = 1
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 # STATIC_URL = "static/"
-STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR,"staticfiles")
-STATICFILES_DIRS = [
-    BASE_DIR/ "static",
-]
 
+STATIC_URL = "/static/"
+# STATIC_ROOT = os.path.join(BASE_DIR,"staticfiles")
+# STATICFILES_DIRS = [
+#     BASE_DIR/ "static",
+# ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
 
